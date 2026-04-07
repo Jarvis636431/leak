@@ -1,0 +1,64 @@
+# 音频特征提取配置
+audio:
+  sample_rate: 16000
+  n_fft: 1024
+  hop_length: 512
+  n_mels: 128
+  max_length: 5  # 秒
+
+# 数据集配置
+dataset:
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+  batch_size: 32
+  num_workers: 4
+  
+# 模型配置
+model:
+  name: "LeakDetectionCNN"
+  input_channels: 1
+  num_filters: [32, 64, 128, 256]
+  kernel_size: 3
+  dropout: 0.5
+  
+  # 多任务头
+  detection_head:
+    hidden_dim: 256
+    num_classes: 2  # 泄漏/无泄漏
+  
+  distance_head:
+    hidden_dim: 256
+    output_dim: 1  # 回归距离
+  
+  shape_head:
+    hidden_dim: 256
+    num_classes: 5  # 根据你的形状类别数调整
+
+# 训练配置
+training:
+  epochs: 100
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  scheduler: "cosine"
+  warmup_epochs: 5
+  early_stopping_patience: 10
+  
+  # 多任务损失权重
+  loss_weights:
+    detection: 1.0
+    distance: 0.5
+    shape: 0.8
+
+# 数据增强
+augmentation:
+  time_mask_param: 10
+  freq_mask_param: 10
+  noise_factor: 0.005
+  time_stretch_rate: 0.2
+
+# 输出路径
+output:
+  checkpoint_dir: "./outputs/checkpoints"
+  log_dir: "./outputs/logs"
+  result_dir: "./outputs/results"
