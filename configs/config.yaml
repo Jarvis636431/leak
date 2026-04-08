@@ -4,45 +4,53 @@ audio:
   n_fft: 1024
   hop_length: 512
   n_mels: 128
-  max_length: 5  # 秒
+  max_length: 5.0  # 秒
 
 # 数据集配置
-dataset:
-  train_split: 0.7
-  val_split: 0.15
-  test_split: 0.15
-  batch_size: 32
-  num_workers: 4
-  
-# 模型配置
+data:
+  train_audio_dir: "./data/audio/train"
+  train_annotation_file: "./data/annotations/train.csv"
+  val_audio_dir: "./data/audio/val"
+  val_annotation_file: "./data/annotations/val.csv"
+  test_audio_dir: "./data/audio/test"
+  test_annotation_file: "./data/annotations/test.csv"
+
+# 模型配置 - Conformer
 model:
-  name: "LeakDetectionCNN"
-  input_channels: 1
-  num_filters: [32, 64, 128, 256]
-  kernel_size: 3
-  dropout: 0.5
+  name: "ConformerLeakDetector"
+  n_mels: 128
+  
+  # Conformer Encoder 配置
+  d_model: 256           # 模型维度
+  num_layers: 4          # Conformer block 层数
+  num_heads: 8           # 注意力头数
+  d_ff: 1024             # Feed-forward 维度
+  kernel_size: 31        # 卷积核大小
+  dropout: 0.1           # Dropout 率
   
   # 多任务头
   detection_head:
     hidden_dim: 256
-    num_classes: 2  # 泄漏/无泄漏
+    num_classes: 2       # 泄漏/无泄漏
   
   distance_head:
     hidden_dim: 256
-    output_dim: 1  # 回归距离
+    output_dim: 1        # 回归距离
   
   shape_head:
     hidden_dim: 256
-    num_classes: 5  # 根据你的形状类别数调整
+    num_classes: 5       # 根据你的形状类别数调整
 
 # 训练配置
 training:
   epochs: 100
-  learning_rate: 0.001
+  batch_size: 16         # Conformer 较大，batch_size 可以减小
+  num_workers: 4
+  learning_rate: 0.0001  # Conformer 通常需要较小的学习率
   weight_decay: 0.0001
-  scheduler: "cosine"
+  scheduler: "cosine"    # 可选: "cosine", "step", null
   warmup_epochs: 5
-  early_stopping_patience: 10
+  early_stopping_patience: 15
   
   # 多任务损失权重
   loss_weights:
@@ -52,10 +60,8 @@ training:
 
 # 数据增强
 augmentation:
-  time_mask_param: 10
-  freq_mask_param: 10
-  noise_factor: 0.005
-  time_stretch_rate: 0.2
+  time_mask_param: 40    # SpecAugment time mask
+  freq_mask_param: 10    # SpecAugment frequency mask
 
 # 输出路径
 output:
