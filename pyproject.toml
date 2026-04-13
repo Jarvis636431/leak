@@ -68,9 +68,10 @@ dev = [
 ]
 
 [project.scripts]
-train = "src.train:main"
-evaluate = "src.evaluate:main"
-inference = "src.inference:main"
+leak-train = "leak_detection.cli.train:main"
+leak-evaluate = "leak_detection.cli.evaluate:main"
+leak-inference = "leak_detection.cli.inference:main"
+leak-prepare-dataset = "leak_detection.cli.prepare_dataset:main"
 
 [project.urls]
 Homepage = "https://github.com/yourusername/pipeline-leak-detection"
@@ -82,7 +83,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src"]
+packages = ["src/leak_detection"]
 
 [tool.uv]
 # uv 特定的配置

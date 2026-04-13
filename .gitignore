@@ -50,6 +50,7 @@ outputs/logs/
 
 # Data (usually shouldn't be in git)
 raw/
+artifacts/
 data/raw/
 data/processed/
 *.wav

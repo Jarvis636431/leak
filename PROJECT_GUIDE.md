@@ -18,15 +18,19 @@
 │       ├── val.csv
 │       └── test.csv
 ├── src/
-│   ├── models/
-│   │   └── conformer.py     # Conformer 模型实现
-│   ├── data/
-│   │   └── dataset.py       # 数据集和数据加载
-│   ├── utils/
-│   │   └── helpers.py       # 工具函数
-│   ├── train.py             # 训练脚本
-│   ├── evaluate.py          # 评估脚本
-│   └── inference.py         # 推理脚本
+│   └── leak_detection/
+│       ├── cli/
+│       │   ├── train.py             # 训练入口
+│       │   ├── evaluate.py          # 评估入口
+│       │   ├── inference.py         # 推理入口
+│       │   └── prepare_dataset.py   # 数据切分与标注生成
+│       ├── models/
+│       │   └── conformer.py         # Conformer 模型实现
+│       ├── data/
+│       │   └── dataset.py           # 数据集和数据加载
+│       └── utils/
+│           ├── helpers.py           # 工具函数
+│           └── runtime.py           # 配置和设备解析
 ├── notebooks/
 │   └── quickstart.ipynb     # 快速入门教程
 ├── outputs/
@@ -119,17 +123,17 @@ cp test.csv data/annotations/
 ### 基本用法
 
 ```bash
-python src/train.py --config configs/config.yaml
+leak-train --config configs/config.yaml
 ```
 
 ### 高级选项
 
 ```bash
 # 指定输出目录
-python src/train.py --config configs/config.yaml --output-dir outputs/experiment_1
+leak-train --config configs/config.yaml --output-dir outputs/experiment_1
 
 # 从检查点恢复训练
-python src/train.py --config configs/config.yaml --resume outputs/checkpoint_last.pth
+leak-train --config configs/config.yaml --resume outputs/checkpoint_last.pth
 ```
 
 ### 监控训练
@@ -144,7 +148,7 @@ tensorboard --logdir outputs/logs
 ## 评估模型
 
 ```bash
-python src/evaluate.py \
+leak-evaluate \
     --config configs/config.yaml \
     --checkpoint outputs/checkpoint_best.pth \
     --output-dir outputs/evaluation
@@ -161,7 +165,7 @@ python src/evaluate.py \
 ### 单文件推理
 
 ```bash
-python src/inference.py \
+leak-inference \
     --audio path/to/audio.wav \
     --checkpoint outputs/checkpoint_best.pth \
     --shape-labels Circle Crack Corrosion Hole Other

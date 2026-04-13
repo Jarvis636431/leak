@@ -27,17 +27,22 @@ uv pip install -e .
 
 ### Training
 ```bash
-python src/train.py --config configs/config.yaml
+leak-train --config configs/config.yaml
 ```
 
 ### Evaluation
 ```bash
-python src/evaluate.py --checkpoint outputs/checkpoints/best_model.pth
+leak-evaluate --checkpoint outputs/checkpoints/best_model.pth
 ```
 
 ### Inference
 ```bash
-python src/inference.py --audio path/to/audio.wav
+leak-inference --audio path/to/audio.wav --checkpoint outputs/checkpoints/best_model.pth
+```
+
+### Dataset Preparation
+```bash
+leak-prepare-dataset --raw-dir raw --output-dir artifacts/5sdata
 ```
 
 ## Project Structure
@@ -45,14 +50,14 @@ python src/inference.py --audio path/to/audio.wav
 ```
 .
 ├── configs/              # Configuration files
-├── data/                 # Data directory
-│   ├── raw/             # Raw audio files
-│   ├── processed/       # Processed features
-│   └── annotations/     # Labels and annotations
-├── src/                  # Source code
-│   ├── data/            # Data loading and preprocessing
-│   ├── models/          # Model architectures
-│   └── utils/           # Utility functions
+├── raw/                  # Ignored raw source CSV/audio data
+├── artifacts/            # Generated datasets and experiment outputs
+├── src/                  # Source root
+│   └── leak_detection/   # Installable Python package
+│       ├── cli/          # Training / evaluation / inference entry points
+│       ├── data/         # Data loading and preprocessing
+│       ├── models/       # Model architectures
+│       └── utils/        # Utility functions
 ├── outputs/             # Training outputs
 │   ├── checkpoints/     # Model checkpoints
 │   ├── logs/           # Training logs

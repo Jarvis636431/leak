@@ -1,9 +1,5 @@
-"""
-Training script for Conformer-based Pipeline Leak Detection
-"""
+"""Training CLI for the Conformer-based pipeline leak detector."""
 
-import os
-import yaml
 import argparse
 from datetime import datetime
 from pathlib import Path
@@ -13,10 +9,10 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
-import numpy as np
 
-from src.models.conformer import ConformerLeakDetector
-from src.data.dataset import create_dataloader
+from leak_detection.data import create_dataloader
+from leak_detection.models import ConformerLeakDetector
+from leak_detection.utils import count_parameters, load_config, resolve_device
 
 
 class MultiTaskLoss(nn.Module):
@@ -89,9 +85,7 @@ class Trainer:
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
         # Setup device
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        if torch.backends.mps.is_available():
-            self.device = torch.device("mps")
+        self.device = resolve_device()
         print(f"Using device: {self.device}")
 
         # Create dataloaders
@@ -104,10 +98,7 @@ class Trainer:
         self.model = ConformerLeakDetector(config["model"]).to(self.device)
 
         # Count parameters
-        total_params = sum(p.numel() for p in self.model.parameters())
-        trainable_params = sum(
-            p.numel() for p in self.model.parameters() if p.requires_grad
-        )
+        total_params, trainable_params = count_parameters(self.model)
         print(f"Total parameters: {total_params:,}")
         print(f"Trainable parameters: {trainable_params:,}")
 
@@ -380,9 +371,7 @@ def main():
     )
     args = parser.parse_args()
 
-    # Load config
-    with open(args.config, "r") as f:
-        config = yaml.safe_load(f)
+    config = load_config(args.config)
 
     # Create output directory
     if args.output_dir is None:

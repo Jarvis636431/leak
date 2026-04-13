@@ -1,18 +1,14 @@
-"""
-Inference script for single audio file prediction
-"""
+"""Inference CLI for single-file leak predictions."""
 
-import os
-import yaml
 import argparse
 from pathlib import Path
 
 import torch
-import numpy as np
 import torchaudio
 import torchaudio.transforms as T
 
-from src.models.conformer import ConformerLeakDetector
+from leak_detection.models import ConformerLeakDetector
+from leak_detection.utils import load_config, resolve_device
 
 
 def load_audio(filepath, sample_rate=16000, max_length=5.0):
@@ -77,9 +73,7 @@ def inference(audio_path, config, checkpoint_path, shape_labels=None):
         predictions: Dict with prediction results
     """
     # Setup device
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    if torch.backends.mps.is_available():
-        device = torch.device("mps")
+    device = resolve_device()
 
     # Load model
     model = ConformerLeakDetector(config["model"]).to(device)
@@ -179,9 +173,7 @@ def main():
     )
     args = parser.parse_args()
 
-    # Load config
-    with open(args.config, "r") as f:
-        config = yaml.safe_load(f)
+    config = load_config(args.config)
 
     # Run inference
     results = inference(args.audio, config, args.checkpoint, args.shape_labels)

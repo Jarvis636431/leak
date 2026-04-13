@@ -1,9 +1,5 @@
-"""
-Evaluation script for trained Conformer model
-"""
+"""Evaluation CLI for trained Conformer checkpoints."""
 
-import os
-import yaml
 import argparse
 from pathlib import Path
 
@@ -20,8 +16,9 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from src.models.conformer import ConformerLeakDetector
-from src.data.dataset import create_dataloader
+from leak_detection.data import create_dataloader
+from leak_detection.models import ConformerLeakDetector
+from leak_detection.utils import load_config, resolve_device
 
 
 class Evaluator:
@@ -31,9 +28,7 @@ class Evaluator:
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
         # Setup device
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        if torch.backends.mps.is_available():
-            self.device = torch.device("mps")
+        self.device = resolve_device()
         print(f"Using device: {self.device}")
 
         # Load model
@@ -317,9 +312,7 @@ def main():
     )
     args = parser.parse_args()
 
-    # Load config
-    with open(args.config, "r") as f:
-        config = yaml.safe_load(f)
+    config = load_config(args.config)
 
     # Create evaluator
     evaluator = Evaluator(config, args.checkpoint, args.output_dir)
