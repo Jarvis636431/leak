@@ -49,6 +49,7 @@ outputs/logs/
 *.pt
 
 # Data (usually shouldn't be in git)
+raw/
 data/raw/
 data/processed/
 *.wav
