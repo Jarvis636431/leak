@@ -24,9 +24,18 @@
 │       │   ├── evaluate.py          # 评估入口
 │       │   ├── inference.py         # 推理入口
 │       │   └── prepare_dataset.py   # 数据切分与标注生成
+│       ├── training/
+│       │   ├── trainer.py           # 训练引擎
+│       │   └── losses.py            # 多任务损失
+│       ├── evaluation/
+│       │   └── evaluator.py         # 评估流程和结果产出
+│       ├── inference/
+│       │   └── predictor.py         # 单文件预测服务
 │       ├── models/
 │       │   └── conformer.py         # Conformer 模型实现
 │       ├── data/
+│       │   ├── audio.py             # 波形加载和裁切
+│       │   ├── features.py          # Mel 特征提取
 │       │   └── dataset.py           # 数据集和数据加载
 │       └── utils/
 │           ├── helpers.py           # 工具函数

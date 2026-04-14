@@ -56,6 +56,9 @@ leak-prepare-dataset --raw-dir raw --output-dir artifacts/5sdata
 │   └── leak_detection/   # Installable Python package
 │       ├── cli/          # Training / evaluation / inference entry points
 │       ├── data/         # Data loading and preprocessing
+│       ├── training/     # Training engine and losses
+│       ├── evaluation/   # Evaluation pipeline and reports
+│       ├── inference/    # Single-file prediction service
 │       ├── models/       # Model architectures
 │       └── utils/        # Utility functions
 ├── outputs/             # Training outputs

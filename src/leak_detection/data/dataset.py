@@ -1,14 +1,14 @@
-"""
-Dataset and DataLoader for Pipeline Leak Detection
-"""
+"""Dataset and dataloader definitions."""
 
-import os
-import torch
-import numpy as np
+from pathlib import Path
+
 import pandas as pd
-from torch.utils.data import Dataset, DataLoader
-import torchaudio
 import torchaudio.transforms as T
+from torch.utils.data import DataLoader, Dataset
+import torch
+
+from leak_detection.data.audio import fit_waveform_length, load_waveform
+from leak_detection.data.features import build_mel_transform, extract_mel_features
 
 
 class LeakAudioDataset(Dataset):
@@ -43,17 +43,18 @@ class LeakAudioDataset(Dataset):
             max_length: Maximum audio length in seconds
             augment: Whether to apply data augmentation
         """
-        self.audio_dir = audio_dir
+        self.audio_dir = Path(audio_dir)
         self.annotations = pd.read_csv(annotation_file)
         self.sample_rate = sample_rate
         self.max_length = max_length
         self.augment = augment
 
-        # Audio transforms
-        self.mel_spectrogram = T.MelSpectrogram(
-            sample_rate=sample_rate, n_fft=n_fft, hop_length=hop_length, n_mels=n_mels
+        self.mel_spectrogram, self.amplitude_to_db = build_mel_transform(
+            sample_rate=sample_rate,
+            n_mels=n_mels,
+            n_fft=n_fft,
+            hop_length=hop_length,
         )
-        self.amplitude_to_db = T.AmplitudeToDB(st_ref=1.0, top_db=80.0)
 
         # Augmentation transforms
         if augment:
@@ -62,40 +63,6 @@ class LeakAudioDataset(Dataset):
 
     def __len__(self):
         return len(self.annotations)
-
-    def _load_audio(self, filepath):
-        """Load and preprocess audio file"""
-        waveform, sr = torchaudio.load(filepath)
-
-        # Convert to mono if stereo
-        if waveform.shape[0] > 1:
-            waveform = torch.mean(waveform, dim=0, keepdim=True)
-
-        # Resample if necessary
-        if sr != self.sample_rate:
-            resampler = T.Resample(sr, self.sample_rate)
-            waveform = resampler(waveform)
-
-        return waveform
-
-    def _pad_or_truncate(self, waveform):
-        """Pad or truncate to fixed length"""
-        target_length = int(self.sample_rate * self.max_length)
-        current_length = waveform.shape[1]
-
-        if current_length > target_length:
-            # Random crop during training, center crop during validation
-            if self.augment:
-                start = np.random.randint(0, current_length - target_length)
-            else:
-                start = (current_length - target_length) // 2
-            waveform = waveform[:, start : start + target_length]
-        elif current_length < target_length:
-            # Pad with zeros
-            padding = target_length - current_length
-            waveform = torch.nn.functional.pad(waveform, (0, padding))
-
-        return waveform
 
     def _apply_augmentation(self, spec):
         """Apply SpecAugment"""
@@ -109,26 +76,24 @@ class LeakAudioDataset(Dataset):
         row = self.annotations.iloc[idx]
 
         # Load audio
-        filepath = os.path.join(self.audio_dir, row["filename"])
-        waveform = self._load_audio(filepath)
+        filepath = self.audio_dir / row["filename"]
+        waveform = load_waveform(filepath, self.sample_rate)
 
-        # Pad/truncate
-        waveform = self._pad_or_truncate(waveform)
+        waveform = fit_waveform_length(
+            waveform,
+            sample_rate=self.sample_rate,
+            max_length=self.max_length,
+            random_crop=self.augment,
+        )
 
-        # Convert to mel spectrogram
-        mel_spec = self.mel_spectrogram(waveform)  # (1, n_mels, time)
-        mel_spec = self.amplitude_to_db(mel_spec)
+        mel_spec = extract_mel_features(
+            waveform,
+            mel_spectrogram=self.mel_spectrogram,
+            amplitude_to_db=self.amplitude_to_db,
+        )
 
-        # Normalize
-        mel_spec = (mel_spec - mel_spec.mean()) / (mel_spec.std() + 1e-8)
-
-        # Apply augmentation
         mel_spec = self._apply_augmentation(mel_spec)
 
-        # Reshape to (time, n_mels) for Conformer
-        mel_spec = mel_spec.squeeze(0).transpose(0, 1)  # (time, n_mels)
-
-        # Get labels
         has_leak = torch.tensor(row["has_leak"], dtype=torch.long)
         distance = torch.tensor(row["distance"], dtype=torch.float32)
         shape = torch.tensor(row["shape"], dtype=torch.long)
@@ -173,63 +138,3 @@ def create_dataloader(config, split="train"):
     )
 
     return dataloader
-
-
-if __name__ == "__main__":
-    # Test dataset
-    import tempfile
-    import os
-
-    # Create dummy data
-    with tempfile.TemporaryDirectory() as tmpdir:
-        # Create dummy audio files
-        audio_dir = os.path.join(tmpdir, "audio")
-        os.makedirs(audio_dir)
-
-        for i in range(10):
-            waveform = torch.randn(1, 16000 * 3)  # 3 seconds
-            torchaudio.save(os.path.join(audio_dir, f"audio_{i}.wav"), waveform, 16000)
-
-        # Create dummy annotation CSV
-        annotations = pd.DataFrame(
-            {
-                "filename": [f"audio_{i}.wav" for i in range(10)],
-                "has_leak": np.random.randint(0, 2, 10),
-                "distance": np.random.uniform(0, 100, 10),
-                "shape": np.random.randint(0, 5, 10),
-            }
-        )
-        annotation_file = os.path.join(tmpdir, "annotations.csv")
-        annotations.to_csv(annotation_file, index=False)
-
-        # Test dataset
-        dataset = LeakAudioDataset(
-            audio_dir=audio_dir,
-            annotation_file=annotation_file,
-            sample_rate=16000,
-            n_mels=128,
-            max_length=5.0,
-            augment=True,
-        )
-
-        print(f"Dataset size: {len(dataset)}")
-
-        # Test getitem
-        sample = dataset[0]
-        print(f"\nSample shapes:")
-        print(f"  Audio: {sample['audio'].shape}")
-        print(f"  Has leak: {sample['has_leak']}")
-        print(f"  Distance: {sample['distance']}")
-        print(f"  Shape: {sample['shape']}")
-
-        # Test dataloader
-        from torch.utils.data import DataLoader
-
-        dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
-
-        batch = next(iter(dataloader))
-        print(f"\nBatch shapes:")
-        print(f"  Audio: {batch['audio'].shape}")
-        print(f"  Has leak: {batch['has_leak'].shape}")
-        print(f"  Distance: {batch['distance'].shape}")
-        print(f"  Shape: {batch['shape'].shape}")
