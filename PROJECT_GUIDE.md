@@ -1,280 +1,147 @@
-# 管道泄漏识别系统
+# 管道泄漏训练指南
 
-当前代码已经切换为基于 `prepare_dataset` 产物的分段 CSV 训练流程。
+这个项目当前采用两阶段训练流程，直接消费 `prepare_dataset` 生成的分段 CSV 数据。
 
-这个文件中的旧版 Conformer / 音频推理说明已经不再适用，请优先参考 `README.md` 和 `configs/` 下的现有配置。
+## 当前任务定义
+
+### Stage2
+
+- 输入：`artifacts/5sdata/stage2.csv`
+- 单条样本：一个单通道分段 CSV
+- 标签：`label`
+- 任务：3 分类
+
+### Stage1
+
+- 输入：`artifacts/5sdata/stage1.csv`
+- 单条样本：一对左右通道分段 CSV
+- 标签：`distance`
+- 任务：距离回归
 
 ## 项目结构
 
-```
+```text
 .
 ├── configs/
-│   └── config.yaml          # 配置文件
-├── data/
-│   ├── audio/               # 音频文件
-│   │   ├── train/
-│   │   ├── val/
-│   │   └── test/
-│   └── annotations/         # 标注文件
-│       ├── train.csv
-│       ├── val.csv
-│       └── test.csv
-├── src/
-│   └── leak_detection/
-│       ├── cli/
-│       │   ├── train.py             # 训练入口
-│       │   ├── evaluate.py          # 评估入口
-│       │   ├── inference.py         # 推理入口
-│       │   └── prepare_dataset.py   # 数据切分与标注生成
-│       ├── training/
-│       │   ├── trainer.py           # 训练引擎
-│       │   └── losses.py            # 多任务损失
-│       ├── evaluation/
-│       │   └── evaluator.py         # 评估流程和结果产出
-│       ├── inference/
-│       │   └── predictor.py         # 单文件预测服务
-│       ├── models/
-│       │   └── conformer.py         # Conformer 模型实现
-│       ├── data/
-│       │   ├── audio.py             # 波形加载和裁切
-│       │   ├── features.py          # Mel 特征提取
-│       │   └── dataset.py           # 数据集和数据加载
-│       └── utils/
-│           ├── helpers.py           # 工具函数
-│           └── runtime.py           # 配置和设备解析
-├── notebooks/
-│   └── quickstart.ipynb     # 快速入门教程
-├── outputs/
-│   ├── checkpoints/         # 模型检查点
-│   ├── logs/                # 训练日志
-│   └── results/             # 评估结果
-├── pyproject.toml           # 项目配置
-└── README.md                # 项目说明
-
+│   ├── stage1.yaml
+│   └── stage2.yaml
+├── raw/
+│   ├── leak/
+│   └── normal/
+├── artifacts/5sdata/
+│   ├── stage1.csv
+│   ├── stage2.csv
+│   ├── stage1data/
+│   └── stage2data/
+├── src/leak_detection/
+│   ├── cli/
+│   │   ├── prepare_dataset.py
+│   │   └── train.py
+│   ├── data/
+│   │   └── segmented.py
+│   ├── models/
+│   │   └── signal_models.py
+│   ├── training/
+│   │   └── trainer.py
+│   └── utils/
+└── outputs/
 ```
 
 ## 环境配置
 
-### 1. 创建虚拟环境
-
 ```bash
-# 使用 uv（推荐）
 uv venv --python 3.12
 source .venv/bin/activate
-
-# 或使用 conda
-conda create -n leak python=3.12
-conda activate leak
-```
-
-### 2. 安装依赖
-
-```bash
-# 使用 uv
-uv pip install -e .
-
-# 或使用 pip
-pip install -e .
-```
-
-### 3. 安装 PyTorch
-
-```bash
-# Mac M1/M2/M3 (MPS 加速)
-uv pip install torch torchvision torchaudio
-
-# Linux/Windows (CUDA)
-uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+uv pip install .
 ```
 
 ## 数据准备
 
-### 数据格式
+原始数据目录约定：
 
-#### 音频文件
-- 格式：`.wav`, `.mp3`, `.flac`
-- 建议采样率：16kHz
-- 建议时长：3-5 秒
-
-#### 标注文件 (CSV)
-
-```csv
-filename,has_leak,distance,shape
-audio_001.wav,1,25.5,0
-audio_002.wav,0,0.0,0
-audio_003.wav,1,42.0,2
-...
+```text
+raw/
+├── leak/
+│   ├── ABC1.csv
+│   ├── ABC2.csv
+│   └── ...
+└── normal/
+    ├── ABC187.csv
+    └── ...
 ```
 
-字段说明：
-- `filename`: 音频文件名
-- `has_leak`: 是否有泄漏（0=无，1=有）
-- `distance`: 泄漏距离（米）
-- `shape`: 泄漏形状类别（0-4）
-
-### 数据目录结构
+执行数据切分：
 
 ```bash
-mkdir -p data/audio/{train,val,test}
-mkdir -p data/annotations
-
-# 放置你的音频文件
-cp your_audio_files/*.wav data/audio/train/
-cp your_audio_files/*.wav data/audio/val/
-cp your_audio_files/*.wav data/audio/test/
-
-# 放置标注文件
-cp train.csv data/annotations/
-cp val.csv data/annotations/
-cp test.csv data/annotations/
+leak-prepare-dataset --raw-dir raw --output-dir artifacts/5sdata
 ```
 
-## 训练模型
+完成后会生成：
 
-### 基本用法
+```text
+artifacts/5sdata/
+├── stage1.csv
+├── stage2.csv
+├── stage1data/{train,val,test}/*.csv
+└── stage2data/{train,val,test}/*.csv
+```
+
+## 训练
+
+### Stage2 分类
 
 ```bash
-leak-train --config configs/config.yaml
+leak-train --config configs/stage2.yaml
 ```
 
-### 高级选项
+### Stage1 回归
 
 ```bash
-# 指定输出目录
-leak-train --config configs/config.yaml --output-dir outputs/experiment_1
-
-# 从检查点恢复训练
-leak-train --config configs/config.yaml --resume outputs/checkpoint_last.pth
+leak-train --config configs/stage1.yaml
 ```
 
-### 监控训练
+### 指定输出目录
 
 ```bash
-# 启动 TensorBoard
-tensorboard --logdir outputs/logs
-
-# 在浏览器中打开 http://localhost:6006
+leak-train --config configs/stage2.yaml --output-dir outputs/custom_stage2_run
 ```
 
-## 评估模型
+### 从 checkpoint 恢复
 
 ```bash
-leak-evaluate \
-    --config configs/config.yaml \
-    --checkpoint outputs/checkpoint_best.pth \
-    --output-dir outputs/evaluation
+leak-train --config configs/stage1.yaml --resume outputs/stage1/stage1_YYYYMMDD_HHMMSS/checkpoint_last.pth
 ```
 
-评估结果将包括：
-- 混淆矩阵
-- 准确率、精确率、召回率、F1 分数
-- 距离估计的 MAE、RMSE、MAPE
-- 预测结果 CSV 文件
+## 配置说明
 
-## 推理
+### `configs/stage2.yaml`
 
-### 单文件推理
+- `data.manifest`: `stage2.csv` 路径
+- `model.num_classes`: 分类类别数
+- `training.batch_size`: 分类任务 batch size
+
+### `configs/stage1.yaml`
+
+- `data.manifest`: `stage1.csv` 路径
+- `training.regression_loss`: 回归损失，当前支持 `smooth_l1` 或 `mse`
+- `training.batch_size`: 回归任务 batch size
+
+## 输出内容
+
+每次训练会生成：
+
+- `checkpoint_last.pth`
+- `checkpoint_best.pth`
+- `logs/` TensorBoard 日志
+
+训练结束后会自动加载最佳 checkpoint，并在 test split 上输出最终指标。
+
+## 当前实现说明
+
+- 旧的音频推理、Conformer、多任务联合训练已经移除
+- 训练模型现在是面向长序列分段 CSV 的 1D CNN
+- 如果修改了 `pyproject.toml` 或 CLI 脚本入口，需要重新执行：
 
 ```bash
-leak-inference \
-    --audio path/to/audio.wav \
-    --checkpoint outputs/checkpoint_best.pth \
-    --shape-labels Circle Crack Corrosion Hole Other
+uv pip install .
 ```
-
-输出示例：
-```
-==================================================
-PREDICTION RESULTS
-==================================================
-
-1. Leak Detection:
-   Status: LEAK DETECTED
-   Confidence: 95.23%
-
-2. Distance Estimation:
-   Estimated Distance: 32.45 meters
-
-3. Leak Shape Classification:
-   Predicted Shape: Crack
-
-   Shape Probabilities:
-      Circle: 2.14%
-      Crack: 87.35%
-      Corrosion: 5.21%
-      Hole: 3.45%
-      Other: 1.85%
-```
-
-## 模型配置
-
-编辑 `configs/config.yaml` 来调整模型和训练参数：
-
-### Conformer 模型参数
-
-```yaml
-model:
-  d_model: 256        # 模型维度（128, 256, 512）
-  num_layers: 4       # Conformer block 层数
-  num_heads: 8        # 注意力头数
-  d_ff: 1024          # Feed-forward 维度
-  kernel_size: 31     # 卷积核大小
-  dropout: 0.1        # Dropout 率
-```
-
-### 训练参数
-
-```yaml
-training:
-  epochs: 100
-  batch_size: 16
-  learning_rate: 0.0001
-  scheduler: "cosine"  # 学习率调度器
-```
-
-## 性能优化建议
-
-1. **数据增强**：使用 SpecAugment（已在代码中实现）
-2. **学习率**：Conformer 通常需要较小的学习率（1e-4 到 5e-4）
-3. **Batch Size**：根据 GPU 内存调整，建议 8-32
-4. **模型大小**：
-   - 小模型：`d_model=128, num_layers=4` (~3M 参数)
-   - 中模型：`d_model=256, num_layers=6` (~9M 参数)
-   - 大模型：`d_model=512, num_layers=12` (~35M 参数)
-
-## 常见问题
-
-### Q: 显存不足怎么办？
-A: 减小 `batch_size` 或 `d_model`
-
-### Q: 训练 loss 不下降？
-A: 
-- 检查学习率是否过大
-- 检查数据是否正确加载
-- 尝试预训练权重
-
-### Q: 如何调整多任务权重？
-A: 修改 `config.yaml` 中的 `loss_weights`：
-```yaml
-loss_weights:
-  detection: 1.0    # 泄漏检测权重
-  distance: 0.5     # 距离估计权重
-  shape: 0.8        # 形状分类权重
-```
-
-## 引用
-
-如果使用了本项目，请引用 Conformer 论文：
-
-```bibtex
-@article{gulati2020conformer,
-  title={Conformer: Convolution-augmented Transformer for Speech Recognition},
-  author={Gulati, Anmol and Qin, James and Chiu, Chung-Cheng and Parmar, Niki and Yu, Jiahui and Zhang, Wei and Han, Khe and Wang, Shibo and Zhang, Zhengdong and Wu, Yonghui and Pang, Ruoming},
-  journal={arXiv preprint arXiv:2005.08100},
-  year={2020}
-}
-```
-
-## License
-
-MIT License

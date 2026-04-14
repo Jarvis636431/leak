@@ -8,7 +8,7 @@ from leak_detection.utils import load_config
 def main() -> None:
     parser = argparse.ArgumentParser(description="Train a model on stage1 or stage2 manifests")
     parser.add_argument(
-        "--config", type=str, default="configs/config.yaml", help="Path to a task config file"
+        "--config", type=str, default="configs/stage2.yaml", help="Path to a task config file"
     )
     parser.add_argument(
         "--output-dir",

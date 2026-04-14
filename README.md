@@ -15,10 +15,23 @@ leak-prepare-dataset --raw-dir raw --output-dir artifacts/5sdata
 
 ```bash
 # Stage2: single-channel classification on stage2.csv
-PYTHONPATH=src python -m leak_detection.cli.train --config configs/config.yaml
+PYTHONPATH=src python -m leak_detection.cli.train --config configs/stage2.yaml
 
 # Stage1: dual-channel distance regression on stage1.csv
 PYTHONPATH=src python -m leak_detection.cli.train --config configs/stage1.yaml
+```
+
+## Using just
+
+If you have `just` installed, the common workflows are wrapped in the project `Justfile`:
+
+```bash
+just install
+just prepare
+just train-stage2
+just train-stage1
+just smoke-stage2
+just smoke-stage1
 ```
 
 ## Dataset Contracts
