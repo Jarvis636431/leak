@@ -1,30 +1,28 @@
-"""Training CLI for the Conformer-based pipeline leak detector."""
+"""Training CLI for segmented signal tasks."""
 
 import argparse
 from leak_detection.training import Trainer
 from leak_detection.utils import load_config
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Train Conformer Leak Detection Model")
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Train a model on stage1 or stage2 manifests")
     parser.add_argument(
-        "--config", type=str, default="configs/config.yaml", help="Path to config file"
+        "--config", type=str, default="configs/config.yaml", help="Path to a task config file"
     )
     parser.add_argument(
         "--output-dir",
         type=str,
         default=None,
-        help="Output directory (default: outputs/timestamp)",
+        help="Override the configured output directory",
     )
-    parser.add_argument(
-        "--resume", type=str, default=None, help="Path to checkpoint to resume from"
-    )
+    parser.add_argument("--resume", type=str, default=None, help="Path to checkpoint to resume from")
     args = parser.parse_args()
 
     config = load_config(args.config)
 
     if args.output_dir is None:
-        args.output_dir = Trainer.default_output_dir()
+        args.output_dir = Trainer.default_output_dir(config["output"]["base_dir"], config["task"])
 
     trainer = Trainer(config, args.output_dir)
     if args.resume:

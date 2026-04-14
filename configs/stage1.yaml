@@ -1,7 +1,7 @@
-task: stage2
+task: stage1
 
 data:
-  manifest: artifacts/5sdata/stage2.csv
+  manifest: artifacts/5sdata/stage1.csv
   normalize: true
 
 model:
@@ -10,12 +10,11 @@ model:
   strides: [4, 4, 4, 4]
   hidden_dim: 128
   dropout: 0.2
-  num_classes: 3
 
 training:
   seed: 42
   epochs: 40
-  batch_size: 64
+  batch_size: 32
   num_workers: 0
   pin_memory: false
   learning_rate: 0.001
@@ -23,6 +22,7 @@ training:
   scheduler: cosine
   early_stopping_patience: 8
   gradient_clip_norm: 1.0
+  regression_loss: smooth_l1
 
 output:
-  base_dir: outputs/stage2
+  base_dir: outputs/stage1

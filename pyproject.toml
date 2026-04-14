@@ -1,14 +1,14 @@
 [project]
 name = "pipeline-leak-detection"
 version = "0.1.0"
-description = "Audio recognition system for pipeline leak detection, distance estimation, and leak shape classification"
+description = "Segmented signal training pipeline for pipeline leak detection and distance estimation"
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.10,<3.13"
 authors = [
     {name = "Your Name", email = "your.email@example.com"}
 ]
-keywords = ["audio", "deep-learning", "pytorch", "leak-detection", "pipeline"]
+keywords = ["signal", "deep-learning", "pytorch", "leak-detection", "pipeline"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
@@ -24,12 +24,6 @@ dependencies = [
     # Deep Learning
     "torch>=2.0.0",
     "torchvision>=0.15.0",
-    "torchaudio>=2.0.0",
-    
-    # Audio Processing
-    "librosa>=0.10.0",
-    "soundfile>=0.12.0",
-    "audioread>=3.0.0",
     
     # Data Science
     "numpy>=1.24.0",
@@ -69,8 +63,6 @@ dev = [
 
 [project.scripts]
 leak-train = "leak_detection.cli.train:main"
-leak-evaluate = "leak_detection.cli.evaluate:main"
-leak-inference = "leak_detection.cli.inference:main"
 leak-prepare-dataset = "leak_detection.cli.prepare_dataset:main"
 
 [project.urls]
