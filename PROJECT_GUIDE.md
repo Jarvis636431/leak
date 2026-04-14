@@ -109,7 +109,7 @@ leak-train --config configs/stage2.yaml --output-dir outputs/custom_stage2_run
 ### 从 checkpoint 恢复
 
 ```bash
-leak-train --config configs/stage1.yaml --resume outputs/stage1/stage1_YYYYMMDD_HHMMSS/checkpoint_last.pth
+leak-train --config configs/stage1.yaml --resume outputs/stage1/YYYYMMDD_HHMMSS/checkpoint_last.pth
 ```
 
 ## 配置说明

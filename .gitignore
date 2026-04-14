@@ -42,9 +42,8 @@ env/
 .env
 .env.local
 
-# Model checkpoints and outputs (optional - adjust as needed)
-outputs/checkpoints/*.pth
-outputs/logs/
+# Model checkpoints and outputs
+outputs/
 *.pth
 *.pt
 

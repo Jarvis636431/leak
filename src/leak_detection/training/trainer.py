@@ -57,7 +57,7 @@ class Trainer:
     def default_output_dir(base_dir: str, task: str) -> str:
         """Generate the default timestamped output directory."""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        return f"{base_dir}/{task}_{timestamp}"
+        return f"{base_dir}/{timestamp}"
 
     def _build_scheduler(self):
         scheduler_name = self.config["training"].get("scheduler")
