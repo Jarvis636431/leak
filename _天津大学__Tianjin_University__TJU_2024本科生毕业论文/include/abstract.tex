@@ -1,23 +1,15 @@
 % !Mode:: "TeX:UTF-8"
 
 \cabstract{
-中文摘要一般为300~400字，简要介绍毕业设计（论文）的研究目的、方法、结果和结论，语言力求精炼。英文摘要应与中文摘要相对应。中英文摘要均要有关键词，一般为3\~8个，中英文摘要要相互对应。
-
-中文摘要。“摘要”两字之间空一个全角空格或两个半角空格，字体为宋体二号字加粗，居中显示，摘要内容采用正文样式。中文关键词与摘要内容间隔一行，无缩进左对齐书写。“关键词：”采用宋体四号字加粗，关键词内容采用正文样式，且换行不缩进。关键词之间用逗号分隔。
-
-英文摘要。此部分皆为Times New Roman字体。“ABSTRACT”为二号字加粗，居中显示。英文摘要内容采用正文样式。英文关键词与英文摘要内容间隔一行，无缩进左对齐书写。“KEY WORDS:”为四号字加粗，英文关键词采用正文样式，且换行不缩进，关键词之间用逗号分隔，词义和中文关键词相同。“ABSTRACT”和“KEY WORDS”一律用大写字母，每个关键词的首字母要大写。
+针对管道输送系统中泄漏故障发现困难、定位精度不足的问题，本文围绕双通道时序传感信号，研究了一种基于深度学习的两阶段泄漏检测与定位方法。首先，依据原始 CSV 采样数据构建自动化数据处理流程，将长时序双通道信号按固定时间窗口切分为可训练样本，并分别生成用于分类任务和回归任务的数据清单。其次，针对泄漏识别与距离估计两个目标，设计了统一的一维卷积神经网络框架。其中，分类阶段以单通道分段信号为输入，实现正常状态与不同泄漏形态的识别；回归阶段以左右双通道信号对为输入，实现泄漏距离估计。最后，基于统一训练框架完成模型训练与评估，并采用准确率、平均绝对误差和均方根误差对方法性能进行分析。本文工作完成了从原始信号处理、任务定义到模型训练的完整流程，为后续开展正式实验、对比分析与工程化部署提供了基础。
 }
 
-\ckeywords{关键词1，关键词2，关键词3，关键词4，关键词5，关键词6，\quad
-关键词7 
-}
+\ckeywords{管道泄漏检测，时序信号分析，深度学习，一维卷积神经网络，距离回归}
 
 \eabstract{
-Chinese Abstract. "Abstract" is written in bold with size 2, and centered in boldface, using Song typeface. The abstract content is in regular text style. There should be a space between "Abstract" and the content. Chinese keywords are separated from the abstract content by one line, left-aligned with no indentation. "Keywords:" is in bold with size 4, and the keywords are in regular text style, separated by commas without indentation.
-
-English Abstract. This section is all in Times New Roman font. "ABSTRACT" is written in bold with size 2, centered in boldface. The abstract content is in regular text style. English keywords are separated from the abstract content by one line, left-aligned with no indentation. "KEY WORDS:" is in bold with size 4, and the keywords are in regular text style, separated by commas without indentation, and the meanings should correspond to the Chinese keywords. "ABSTRACT" and "KEY WORDS" are all capitalized. The first letter of each keyword should be capitalized.
+To address the difficulty of leak discovery and the insufficient localization accuracy in pipeline transport systems, this thesis studies a two-stage leak detection and localization method based on dual-channel time-series sensor signals. First, an automated data processing pipeline is constructed from raw CSV measurements. Long dual-channel signals are segmented with a fixed time window to generate trainable samples for both classification and regression tasks. Second, a unified one-dimensional convolutional neural network framework is designed for leak recognition and distance estimation. In the classification stage, segmented single-channel signals are used to identify normal states and different leak patterns. In the regression stage, paired left-right channel signals are used to estimate leak distance. Finally, a unified training framework is employed for model optimization and evaluation, and the method is analyzed with accuracy, mean absolute error, and root mean square error. The work in this thesis establishes a complete workflow from raw signal processing and task definition to model training, providing a foundation for subsequent formal experiments, comparative analysis, and engineering deployment.
 }
 
-\ekeywords{Heat transfer, Mechanics, Combustion, Engine, Analysis}
+\ekeywords{Pipeline Leak Detection, Time-series Signal Analysis, Deep Learning, One-dimensional Convolutional Neural Network, Distance Regression}
 
 \makeabstract
