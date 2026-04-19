@@ -89,3 +89,12 @@ show-stage2:
     print()
     print(manifest["label"].value_counts().sort_index().to_string())
     PY
+
+thesis-build:
+    cd 2024-latex && latexmk -xelatex main.tex
+
+thesis-clean:
+    cd 2024-latex && latexmk -c
+
+thesis-rebuild:
+    cd 2024-latex && latexmk -C && latexmk -xelatex main.tex
