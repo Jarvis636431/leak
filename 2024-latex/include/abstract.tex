@@ -1,0 +1,15 @@
+% !Mode:: "TeX:UTF-8"
+
+\cabstract{
+针对管道输送系统中泄漏故障发现困难、人工特征设计依赖较强以及定位精度不足的问题，本文围绕双通道时序传感信号，研究了一种基于深度学习的两阶段管道泄漏检测与定位方法。首先，依据原始 CSV 采样数据构建自动化数据处理流程，将长时序双通道信号按照固定时间窗口切分为可训练样本，并分别生成用于分类任务与回归任务的数据清单。其次，针对泄漏状态识别与泄漏距离估计两个目标，设计了统一的一维卷积神经网络框架。其中，第二阶段分类任务以单通道分段信号为输入，用于识别正常状态与两类不同泄漏形态；第一阶段回归任务以左右双通道信号对为输入，用于估计泄漏距离。最后，基于统一训练框架完成模型训练、验证与测试，并从片段级与原始文件级两个层面分析分类性能，同时采用平均绝对误差和均方根误差评价距离估计效果。实验结果表明，在当前随机文件级划分下，本文方法在分类任务上取得了较高识别性能，测试集片段级准确率达到 0.9968，片段级 macro-F1 达到 0.9972，按原始文件聚合后的文件级准确率与文件级 macro-F1 均达到 1.0000；在距离回归任务上，测试集平均绝对误差为 0.3703，均方根误差为 0.5934。结果说明，本文提出的两阶段方法能够有效完成管道泄漏状态识别与距离估计任务，并为后续进一步开展严格泛化验证与工程部署提供了实验基础。
+}
+
+\ckeywords{管道泄漏检测，时序信号分析，深度学习，一维卷积神经网络，距离回归}
+
+\eabstract{
+To address the difficulty of leak discovery, the strong dependence on handcrafted features, and the insufficient localization accuracy in pipeline transport systems, this thesis studies a two-stage pipeline leak detection and localization method based on dual-channel time-series sensor signals. First, an automated data processing pipeline is constructed from raw CSV measurements. Long dual-channel signals are segmented with a fixed time window to generate trainable samples for both classification and regression tasks. Second, a unified one-dimensional convolutional neural network framework is designed for leak recognition and distance estimation. In the classification stage, segmented single-channel signals are used to identify normal states and two different leak patterns. In the regression stage, paired left-right channel signals are used to estimate leak distance. Finally, a unified training framework is employed for model optimization, validation, and testing. Classification performance is evaluated at both the segment level and the original-file level, while distance estimation performance is measured by mean absolute error and root mean square error. Experimental results show that, under the current random file-level split, the proposed method achieves strong performance on the classification task, with a segment-level accuracy of 0.9968, a segment-level macro-F1 of 0.9972, and both file-level accuracy and file-level macro-F1 reaching 1.0000 on the test set. On the distance regression task, the test mean absolute error is 0.3703 and the root mean square error is 0.5934. These results indicate that the proposed two-stage method can effectively accomplish both leak state recognition and distance estimation, and provide an experimental basis for subsequent stricter generalization evaluation and engineering deployment.
+}
+
+\ekeywords{Pipeline Leak Detection, Time-series Signal Analysis, Deep Learning, One-dimensional Convolutional Neural Network, Distance Regression}
+
+\makeabstract
