@@ -98,3 +98,6 @@ thesis-clean:
 
 thesis-rebuild:
     cd 2024-latex && latexmk -C && latexmk -xelatex main.tex
+
+thesis-open:
+    open 2024-latex/main.pdf
