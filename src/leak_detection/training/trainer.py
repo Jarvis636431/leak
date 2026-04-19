@@ -2,14 +2,17 @@
 
 from __future__ import annotations
 
+import re
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.tensorboard import SummaryWriter
+from sklearn.metrics import confusion_matrix, f1_score
+from torch.utils.tensorboard.writer import SummaryWriter
 from tqdm import tqdm
 
 from leak_detection.data import build_dataloaders
@@ -19,6 +22,8 @@ from leak_detection.utils import count_parameters, resolve_device, set_seed
 
 class Trainer:
     """Train task-specific models directly on segmented CSV manifests."""
+
+    RAW_ID_PATTERN = re.compile(r"(ABC\d+)_seg\d+")
 
     def __init__(self, config: dict, output_dir: str | Path):
         self.config = config
@@ -92,7 +97,60 @@ class Trainer:
         self.best_val_score = checkpoint["best_val_score"]
         print(f"Resumed from {checkpoint_path}")
 
-    def _step(self, batch: dict[str, torch.Tensor], training: bool) -> dict[str, float]:
+    @classmethod
+    def _extract_raw_id(cls, path: str) -> str:
+        match = cls.RAW_ID_PATTERN.search(Path(path).stem)
+        if match is None:
+            raise ValueError(f"Unable to extract raw file id from path: {path}")
+        return match.group(1)
+
+    @staticmethod
+    def _compute_stage2_metrics(
+        targets: np.ndarray,
+        predictions: np.ndarray,
+        num_classes: int,
+    ) -> dict[str, Any]:
+        labels = list(range(num_classes))
+        metrics: dict[str, Any] = {
+            "accuracy": float(np.mean(predictions == targets)),
+            "macro_f1": float(f1_score(targets, predictions, labels=labels, average="macro")),
+            "confusion_matrix": confusion_matrix(targets, predictions, labels=labels),
+        }
+        return metrics
+
+    def _aggregate_stage2_by_file(
+        self,
+        paths: list[str],
+        targets: np.ndarray,
+        logits: np.ndarray,
+    ) -> dict[str, Any]:
+        grouped: dict[str, dict[str, Any]] = {}
+        for path, target, logit in zip(paths, targets, logits):
+            raw_id = self._extract_raw_id(path)
+            entry = grouped.setdefault(raw_id, {"target": int(target), "logits": []})
+            if entry["target"] != int(target):
+                raise ValueError(f"Inconsistent targets found for raw file id {raw_id}")
+            entry["logits"].append(logit)
+
+        file_targets = []
+        file_predictions = []
+        for raw_id in sorted(grouped):
+            entry = grouped[raw_id]
+            mean_logits = np.mean(np.stack(entry["logits"], axis=0), axis=0)
+            file_targets.append(entry["target"])
+            file_predictions.append(int(np.argmax(mean_logits)))
+
+        file_targets_array = np.asarray(file_targets, dtype=np.int64)
+        file_predictions_array = np.asarray(file_predictions, dtype=np.int64)
+        metrics = self._compute_stage2_metrics(
+            targets=file_targets_array,
+            predictions=file_predictions_array,
+            num_classes=self.config["model"]["num_classes"],
+        )
+        metrics["file_count"] = int(file_targets_array.size)
+        return metrics
+
+    def _step(self, batch: dict[str, Any], training: bool) -> dict[str, Any]:
         signals = batch["signal"].to(self.device)
         targets = batch["target"].to(self.device)
 
@@ -109,11 +167,15 @@ class Trainer:
                 torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=clip_norm)
             self.optimizer.step()
 
-        metrics = {"loss": float(loss.item())}
+        metrics: dict[str, Any] = {"loss": float(loss.item())}
         if self.task == "stage2":
             predictions = torch.argmax(outputs, dim=1)
             metrics["correct"] = float((predictions == targets).sum().item())
             metrics["count"] = float(targets.size(0))
+            metrics["targets"] = targets.detach().cpu().numpy()
+            metrics["predictions"] = predictions.detach().cpu().numpy()
+            metrics["logits"] = outputs.detach().cpu().numpy()
+            metrics["paths"] = list(batch["path"])
         else:
             errors = torch.abs(outputs - targets)
             squared_errors = torch.square(outputs - targets)
@@ -122,13 +184,17 @@ class Trainer:
             metrics["count"] = float(targets.size(0))
         return metrics
 
-    def _run_epoch(self, split: str, training: bool) -> dict[str, float]:
+    def _run_epoch(self, split: str, training: bool) -> dict[str, Any]:
         loader = self.loaders[split]
         self.model.train(mode=training)
 
-        summary: dict[str, float] = {"loss": 0.0, "count": 0.0}
+        summary: dict[str, Any] = {"loss": 0.0, "count": 0.0}
         if self.task == "stage2":
             summary["correct"] = 0.0
+            all_targets: list[np.ndarray] = []
+            all_predictions: list[np.ndarray] = []
+            all_logits: list[np.ndarray] = []
+            all_paths: list[str] = []
         else:
             summary["mae_sum"] = 0.0
             summary["mse_sum"] = 0.0
@@ -141,13 +207,37 @@ class Trainer:
                 summary["count"] += metrics["count"]
                 if self.task == "stage2":
                     summary["correct"] += metrics["correct"]
+                    all_targets.append(metrics["targets"])
+                    all_predictions.append(metrics["predictions"])
+                    all_logits.append(metrics["logits"])
+                    all_paths.extend(metrics["paths"])
                 else:
                     summary["mae_sum"] += metrics["mae_sum"]
                     summary["mse_sum"] += metrics["mse_sum"]
 
         summary["loss"] /= max(len(loader), 1)
         if self.task == "stage2":
-            summary["accuracy"] = summary["correct"] / max(summary["count"], 1.0)
+            targets = np.concatenate(all_targets, axis=0)
+            predictions = np.concatenate(all_predictions, axis=0)
+            logits = np.concatenate(all_logits, axis=0)
+
+            segment_metrics = self._compute_stage2_metrics(
+                targets=targets,
+                predictions=predictions,
+                num_classes=self.config["model"]["num_classes"],
+            )
+            file_metrics = self._aggregate_stage2_by_file(
+                paths=all_paths,
+                targets=targets,
+                logits=logits,
+            )
+
+            summary["accuracy"] = segment_metrics["accuracy"]
+            summary["macro_f1"] = segment_metrics["macro_f1"]
+            summary["confusion_matrix"] = segment_metrics["confusion_matrix"]
+            summary["file_accuracy"] = file_metrics["accuracy"]
+            summary["file_macro_f1"] = file_metrics["macro_f1"]
+            summary["file_confusion_matrix"] = file_metrics["confusion_matrix"]
             summary["score"] = summary["accuracy"]
         else:
             summary["mae"] = summary["mae_sum"] / max(summary["count"], 1.0)
@@ -163,6 +253,12 @@ class Trainer:
         if self.task == "stage2":
             self.writer.add_scalar("Metrics/train_accuracy", train_metrics["accuracy"], epoch)
             self.writer.add_scalar("Metrics/val_accuracy", val_metrics["accuracy"], epoch)
+            self.writer.add_scalar("Metrics/train_macro_f1", train_metrics["macro_f1"], epoch)
+            self.writer.add_scalar("Metrics/val_macro_f1", val_metrics["macro_f1"], epoch)
+            self.writer.add_scalar("Metrics/train_file_accuracy", train_metrics["file_accuracy"], epoch)
+            self.writer.add_scalar("Metrics/val_file_accuracy", val_metrics["file_accuracy"], epoch)
+            self.writer.add_scalar("Metrics/train_file_macro_f1", train_metrics["file_macro_f1"], epoch)
+            self.writer.add_scalar("Metrics/val_file_macro_f1", val_metrics["file_macro_f1"], epoch)
         else:
             self.writer.add_scalar("Metrics/train_mae", train_metrics["mae"], epoch)
             self.writer.add_scalar("Metrics/val_mae", val_metrics["mae"], epoch)
@@ -216,7 +312,10 @@ class Trainer:
                     f"Epoch {epoch}: "
                     f"train_loss={train_metrics['loss']:.4f} "
                     f"val_loss={val_metrics['loss']:.4f} "
-                    f"val_acc={val_metrics['accuracy']:.4f}"
+                    f"val_acc={val_metrics['accuracy']:.4f} "
+                    f"val_macro_f1={val_metrics['macro_f1']:.4f} "
+                    f"val_file_acc={val_metrics['file_accuracy']:.4f} "
+                    f"val_file_macro_f1={val_metrics['file_macro_f1']:.4f}"
                 )
             else:
                 print(
@@ -243,9 +342,18 @@ class Trainer:
         if self.task == "stage2":
             print(f"Best validation accuracy: {self.best_val_score:.4f}")
             print(
-                f"Test metrics: loss={test_metrics['loss']:.4f} "
-                f"accuracy={test_metrics['accuracy']:.4f}"
+                f"Test segment metrics: loss={test_metrics['loss']:.4f} "
+                f"accuracy={test_metrics['accuracy']:.4f} "
+                f"macro_f1={test_metrics['macro_f1']:.4f}"
             )
+            print(
+                f"Test file metrics: accuracy={test_metrics['file_accuracy']:.4f} "
+                f"macro_f1={test_metrics['file_macro_f1']:.4f}"
+            )
+            print("Test segment confusion matrix:")
+            print(test_metrics["confusion_matrix"])
+            print("Test file confusion matrix:")
+            print(test_metrics["file_confusion_matrix"])
         else:
             print(f"Best validation MAE: {self.best_val_score:.4f}")
             print(
