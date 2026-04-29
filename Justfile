@@ -12,6 +12,10 @@ prepare:
     source .venv/bin/activate
     leak-prepare-dataset --raw-dir raw --output-dir artifacts/5sdata
 
+prepare-kfold:
+    source .venv/bin/activate
+    PYTHONPATH=src python -m leak_detection.cli.prepare_dataset --raw-dir raw --output-dir artifacts/5sdata_kfold --k-folds 5
+
 train-stage2:
     source .venv/bin/activate
     leak-train --config configs/stage2.yaml
@@ -27,6 +31,10 @@ train-stage2-out output_dir:
 train-stage1-out output_dir:
     source .venv/bin/activate
     leak-train --config configs/stage1.yaml --output-dir {{output_dir}}
+
+train-stage1-fold fold:
+    source .venv/bin/activate
+    PYTHONPATH=src python -m leak_detection.cli.train --config configs/stage1.yaml --manifest artifacts/5sdata_kfold/fold_{{fold}}/stage1.csv --output-dir outputs/stage1_kfold/fold_{{fold}}
 
 resume-stage2 checkpoint:
     source .venv/bin/activate

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 import re
 from datetime import datetime
 from pathlib import Path
@@ -150,6 +151,96 @@ class Trainer:
         metrics["file_count"] = int(file_targets_array.size)
         return metrics
 
+    @staticmethod
+    def _compute_stage1_metrics(targets: np.ndarray, predictions: np.ndarray) -> dict[str, Any]:
+        errors = predictions - targets
+        absolute_errors = np.abs(errors)
+        squared_errors = np.square(errors)
+        target_variance_sum = float(np.sum(np.square(targets - np.mean(targets))))
+
+        metrics: dict[str, Any] = {
+            "mae": float(np.mean(absolute_errors)),
+            "rmse": float(np.sqrt(np.mean(squared_errors))),
+            "min_ae": float(np.min(absolute_errors)),
+            "median_ae": float(np.median(absolute_errors)),
+            "max_ae": float(np.max(absolute_errors)),
+            "p95_ae": float(np.percentile(absolute_errors, 95)),
+            "bias": float(np.mean(errors)),
+            "signed_error_min": float(np.min(errors)),
+            "signed_error_max": float(np.max(errors)),
+            "within_0_5": float(np.mean(absolute_errors <= 0.5)),
+            "within_1_0": float(np.mean(absolute_errors <= 1.0)),
+            "within_2_0": float(np.mean(absolute_errors <= 2.0)),
+            "rounded_exact": float(np.mean(np.rint(predictions) == targets)),
+            "rounded_within_1": float(np.mean(np.abs(np.rint(predictions) - targets) <= 1.0)),
+            "prediction_min": float(np.min(predictions)),
+            "prediction_max": float(np.max(predictions)),
+        }
+        metrics["r2"] = (
+            float(1.0 - np.sum(squared_errors) / target_variance_sum)
+            if target_variance_sum > 0
+            else float("nan")
+        )
+        return metrics
+
+    @staticmethod
+    def _compute_stage1_by_distance(
+        targets: np.ndarray,
+        predictions: np.ndarray,
+    ) -> list[dict[str, float]]:
+        rows = []
+        for distance in sorted(np.unique(targets)):
+            mask = targets == distance
+            distance_targets = targets[mask]
+            distance_predictions = predictions[mask]
+            metrics = Trainer._compute_stage1_metrics(distance_targets, distance_predictions)
+            rows.append(
+                {
+                    "distance": float(distance),
+                    "count": int(mask.sum()),
+                    "mae": metrics["mae"],
+                    "rmse": metrics["rmse"],
+                    "min_ae": metrics["min_ae"],
+                    "max_ae": metrics["max_ae"],
+                    "bias": metrics["bias"],
+                    "signed_error_min": metrics["signed_error_min"],
+                    "signed_error_max": metrics["signed_error_max"],
+                    "within_1_0": metrics["within_1_0"],
+                }
+            )
+        return rows
+
+    def _aggregate_stage1_by_file(
+        self,
+        paths: list[str],
+        targets: np.ndarray,
+        predictions: np.ndarray,
+    ) -> dict[str, Any]:
+        grouped: dict[str, dict[str, Any]] = {}
+        for path, target, prediction in zip(paths, targets, predictions):
+            raw_id = self._extract_raw_id(path)
+            entry = grouped.setdefault(raw_id, {"target": float(target), "predictions": []})
+            if not np.isclose(entry["target"], float(target)):
+                raise ValueError(f"Inconsistent targets found for raw file id {raw_id}")
+            entry["predictions"].append(float(prediction))
+
+        file_targets = []
+        file_predictions = []
+        for raw_id in sorted(grouped):
+            entry = grouped[raw_id]
+            file_targets.append(entry["target"])
+            file_predictions.append(float(np.mean(entry["predictions"])))
+
+        file_targets_array = np.asarray(file_targets, dtype=np.float32)
+        file_predictions_array = np.asarray(file_predictions, dtype=np.float32)
+        metrics = self._compute_stage1_metrics(file_targets_array, file_predictions_array)
+        metrics["file_count"] = int(file_targets_array.size)
+        metrics["by_distance"] = self._compute_stage1_by_distance(
+            file_targets_array,
+            file_predictions_array,
+        )
+        return metrics
+
     def _step(self, batch: dict[str, Any], training: bool) -> dict[str, Any]:
         signals = batch["signal"].to(self.device)
         targets = batch["target"].to(self.device)
@@ -182,6 +273,10 @@ class Trainer:
             metrics["mae_sum"] = float(errors.sum().item())
             metrics["mse_sum"] = float(squared_errors.sum().item())
             metrics["count"] = float(targets.size(0))
+            metrics["targets"] = targets.detach().cpu().numpy()
+            metrics["predictions"] = outputs.detach().cpu().numpy()
+            metrics["paths"] = list(batch["path_left"])
+            metrics["paths_right"] = list(batch["path_right"])
         return metrics
 
     def _run_epoch(self, split: str, training: bool) -> dict[str, Any]:
@@ -198,6 +293,10 @@ class Trainer:
         else:
             summary["mae_sum"] = 0.0
             summary["mse_sum"] = 0.0
+            all_targets = []
+            all_predictions = []
+            all_paths = []
+            all_paths_right = []
 
         context = torch.enable_grad() if training else torch.no_grad()
         with context:
@@ -214,6 +313,10 @@ class Trainer:
                 else:
                     summary["mae_sum"] += metrics["mae_sum"]
                     summary["mse_sum"] += metrics["mse_sum"]
+                    all_targets.append(metrics["targets"])
+                    all_predictions.append(metrics["predictions"])
+                    all_paths.extend(metrics["paths"])
+                    all_paths_right.extend(metrics["paths_right"])
 
         summary["loss"] /= max(len(loader), 1)
         if self.task == "stage2":
@@ -240,8 +343,36 @@ class Trainer:
             summary["file_confusion_matrix"] = file_metrics["confusion_matrix"]
             summary["score"] = summary["accuracy"]
         else:
-            summary["mae"] = summary["mae_sum"] / max(summary["count"], 1.0)
-            summary["rmse"] = float(np.sqrt(summary["mse_sum"] / max(summary["count"], 1.0)))
+            targets = np.concatenate(all_targets, axis=0)
+            predictions = np.concatenate(all_predictions, axis=0)
+            segment_metrics = self._compute_stage1_metrics(targets, predictions)
+            file_metrics = self._aggregate_stage1_by_file(
+                paths=all_paths,
+                targets=targets,
+                predictions=predictions,
+            )
+
+            summary.update(segment_metrics)
+            summary["targets"] = targets
+            summary["predictions"] = predictions
+            summary["paths"] = all_paths
+            summary["paths_right"] = all_paths_right
+            summary["by_distance"] = self._compute_stage1_by_distance(targets, predictions)
+            summary["file_mae"] = file_metrics["mae"]
+            summary["file_rmse"] = file_metrics["rmse"]
+            summary["file_min_ae"] = file_metrics["min_ae"]
+            summary["file_median_ae"] = file_metrics["median_ae"]
+            summary["file_max_ae"] = file_metrics["max_ae"]
+            summary["file_p95_ae"] = file_metrics["p95_ae"]
+            summary["file_bias"] = file_metrics["bias"]
+            summary["file_signed_error_min"] = file_metrics["signed_error_min"]
+            summary["file_signed_error_max"] = file_metrics["signed_error_max"]
+            summary["file_r2"] = file_metrics["r2"]
+            summary["file_within_1_0"] = file_metrics["within_1_0"]
+            summary["file_prediction_min"] = file_metrics["prediction_min"]
+            summary["file_prediction_max"] = file_metrics["prediction_max"]
+            summary["file_count"] = file_metrics["file_count"]
+            summary["file_by_distance"] = file_metrics["by_distance"]
             summary["score"] = -summary["mae"]
         return summary
 
@@ -264,6 +395,16 @@ class Trainer:
             self.writer.add_scalar("Metrics/val_mae", val_metrics["mae"], epoch)
             self.writer.add_scalar("Metrics/train_rmse", train_metrics["rmse"], epoch)
             self.writer.add_scalar("Metrics/val_rmse", val_metrics["rmse"], epoch)
+            self.writer.add_scalar("Metrics/train_median_ae", train_metrics["median_ae"], epoch)
+            self.writer.add_scalar("Metrics/val_median_ae", val_metrics["median_ae"], epoch)
+            self.writer.add_scalar("Metrics/train_bias", train_metrics["bias"], epoch)
+            self.writer.add_scalar("Metrics/val_bias", val_metrics["bias"], epoch)
+            self.writer.add_scalar("Metrics/train_within_1_0", train_metrics["within_1_0"], epoch)
+            self.writer.add_scalar("Metrics/val_within_1_0", val_metrics["within_1_0"], epoch)
+            self.writer.add_scalar("Metrics/train_file_mae", train_metrics["file_mae"], epoch)
+            self.writer.add_scalar("Metrics/val_file_mae", val_metrics["file_mae"], epoch)
+            self.writer.add_scalar("Metrics/train_file_rmse", train_metrics["file_rmse"], epoch)
+            self.writer.add_scalar("Metrics/val_file_rmse", val_metrics["file_rmse"], epoch)
 
     def _save_checkpoint(self, is_best: bool) -> None:
         checkpoint = {
@@ -281,6 +422,59 @@ class Trainer:
         if self.task == "stage2":
             return val_metrics["score"] > self.best_val_score
         return val_metrics["score"] > -self.best_val_score
+
+    @staticmethod
+    def _print_stage1_distance_table(rows: list[dict[str, float]]) -> None:
+        print("distance  count  mae     rmse    min_ae  max_ae  bias    err_min  err_max  within_1.0")
+        for row in rows:
+            print(
+                f"{row['distance']:>8.0f}  "
+                f"{row['count']:>5.0f}  "
+                f"{row['mae']:.4f}  "
+                f"{row['rmse']:.4f}  "
+                f"{row['min_ae']:.4f}  "
+                f"{row['max_ae']:.4f}  "
+                f"{row['bias']:.4f}  "
+                f"{row['signed_error_min']:.4f}  "
+                f"{row['signed_error_max']:.4f}  "
+                f"{row['within_1_0']:.4f}"
+            )
+
+    def _write_stage1_prediction_details(self, metrics: dict[str, Any], split: str) -> Path:
+        output_path = self.output_dir / f"{split}_stage1_predictions.csv"
+        with output_path.open("w", newline="") as file:
+            writer = csv.DictWriter(
+                file,
+                fieldnames=[
+                    "path_left",
+                    "path_right",
+                    "raw_id",
+                    "target_distance",
+                    "predicted_distance",
+                    "signed_error",
+                    "absolute_error",
+                ],
+            )
+            writer.writeheader()
+            for path_left, path_right, target, prediction in zip(
+                metrics["paths"],
+                metrics["paths_right"],
+                metrics["targets"],
+                metrics["predictions"],
+            ):
+                signed_error = float(prediction - target)
+                writer.writerow(
+                    {
+                        "path_left": path_left,
+                        "path_right": path_right,
+                        "raw_id": self._extract_raw_id(path_left),
+                        "target_distance": float(target),
+                        "predicted_distance": float(prediction),
+                        "signed_error": signed_error,
+                        "absolute_error": abs(signed_error),
+                    }
+                )
+        return output_path
 
     def train(self) -> None:
         """Execute the full training loop and report test metrics for the best run."""
@@ -323,7 +517,9 @@ class Trainer:
                     f"train_loss={train_metrics['loss']:.4f} "
                     f"val_loss={val_metrics['loss']:.4f} "
                     f"val_mae={val_metrics['mae']:.4f} "
-                    f"val_rmse={val_metrics['rmse']:.4f}"
+                    f"val_rmse={val_metrics['rmse']:.4f} "
+                    f"val_within_1.0={val_metrics['within_1_0']:.4f} "
+                    f"val_file_mae={val_metrics['file_mae']:.4f}"
                 )
 
             if self.patience_counter >= self.config["training"]["early_stopping_patience"]:
@@ -355,9 +551,52 @@ class Trainer:
             print("Test file confusion matrix:")
             print(test_metrics["file_confusion_matrix"])
         else:
+            prediction_details_path = self._write_stage1_prediction_details(test_metrics, "test")
             print(f"Best validation MAE: {self.best_val_score:.4f}")
             print(
-                f"Test metrics: loss={test_metrics['loss']:.4f} "
+                f"Test segment metrics: loss={test_metrics['loss']:.4f} "
                 f"mae={test_metrics['mae']:.4f} "
-                f"rmse={test_metrics['rmse']:.4f}"
+                f"rmse={test_metrics['rmse']:.4f} "
+                f"min_ae={test_metrics['min_ae']:.4f} "
+                f"median_ae={test_metrics['median_ae']:.4f} "
+                f"p95_ae={test_metrics['p95_ae']:.4f} "
+                f"max_ae={test_metrics['max_ae']:.4f} "
+                f"bias={test_metrics['bias']:.4f} "
+                f"err_min={test_metrics['signed_error_min']:.4f} "
+                f"err_max={test_metrics['signed_error_max']:.4f} "
+                f"r2={test_metrics['r2']:.4f}"
             )
+            print(
+                f"Test segment prediction range: min={test_metrics['prediction_min']:.4f} "
+                f"max={test_metrics['prediction_max']:.4f}"
+            )
+            print(
+                f"Test segment tolerances: within_0.5={test_metrics['within_0_5']:.4f} "
+                f"within_1.0={test_metrics['within_1_0']:.4f} "
+                f"within_2.0={test_metrics['within_2_0']:.4f} "
+                f"rounded_exact={test_metrics['rounded_exact']:.4f} "
+                f"rounded_within_1={test_metrics['rounded_within_1']:.4f}"
+            )
+            print(
+                f"Test file metrics: files={test_metrics['file_count']} "
+                f"mae={test_metrics['file_mae']:.4f} "
+                f"rmse={test_metrics['file_rmse']:.4f} "
+                f"min_ae={test_metrics['file_min_ae']:.4f} "
+                f"median_ae={test_metrics['file_median_ae']:.4f} "
+                f"p95_ae={test_metrics['file_p95_ae']:.4f} "
+                f"max_ae={test_metrics['file_max_ae']:.4f} "
+                f"bias={test_metrics['file_bias']:.4f} "
+                f"err_min={test_metrics['file_signed_error_min']:.4f} "
+                f"err_max={test_metrics['file_signed_error_max']:.4f} "
+                f"r2={test_metrics['file_r2']:.4f} "
+                f"within_1.0={test_metrics['file_within_1_0']:.4f}"
+            )
+            print(
+                f"Test file prediction range: min={test_metrics['file_prediction_min']:.4f} "
+                f"max={test_metrics['file_prediction_max']:.4f}"
+            )
+            print("Test segment metrics by distance:")
+            self._print_stage1_distance_table(test_metrics["by_distance"])
+            print("Test file metrics by distance:")
+            self._print_stage1_distance_table(test_metrics["file_by_distance"])
+            print(f"Test prediction details written to: {prediction_details_path}")

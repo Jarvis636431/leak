@@ -11,6 +11,15 @@ Training pipeline for segmented CSV signals generated from raw pipeline sensor d
 leak-prepare-dataset --raw-dir raw --output-dir artifacts/5sdata
 ```
 
+To generate a separate file-level k-fold dataset without touching `artifacts/5sdata`:
+
+```bash
+PYTHONPATH=src python -m leak_detection.cli.prepare_dataset \
+  --raw-dir raw \
+  --output-dir artifacts/5sdata_kfold \
+  --k-folds 5
+```
+
 3. Train a task-specific model directly on the generated manifests:
 
 ```bash
@@ -19,6 +28,12 @@ PYTHONPATH=src python -m leak_detection.cli.train --config configs/stage2.yaml
 
 # Stage1: dual-channel distance regression on stage1.csv
 PYTHONPATH=src python -m leak_detection.cli.train --config configs/stage1.yaml
+
+# Stage1 fold 0
+PYTHONPATH=src python -m leak_detection.cli.train \
+  --config configs/stage1.yaml \
+  --manifest artifacts/5sdata_kfold/fold_0/stage1.csv \
+  --output-dir outputs/stage1_kfold/fold_0
 ```
 
 ## Using just
@@ -57,6 +72,7 @@ just smoke-stage1
 ├── configs/                # Task configs for stage1/stage2 training
 ├── raw/                    # Raw source CSV data
 ├── artifacts/5sdata/       # Generated segmented datasets
+├── artifacts/5sdata_kfold/ # Optional k-fold manifests and shared segments
 ├── src/leak_detection/
 │   ├── cli/                # Dataset preparation and training entry points
 │   ├── data/               # Segmented CSV datasets and dataloaders

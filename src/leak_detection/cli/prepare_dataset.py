@@ -6,6 +6,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from sklearn.model_selection import StratifiedKFold
 
 DEFAULT_LABEL_MAP = {
     (1, 6): (11, 1),
@@ -83,6 +84,42 @@ def split_files(files: list[dict], train_ratio: float, val_ratio: float, seed: i
     }
 
 
+def get_stratification_label(item: dict) -> str:
+    """Build a stable file-level label for stratified k-fold splitting."""
+    label_cfg = item["label_cfg"]
+    if isinstance(label_cfg, (tuple, list)):
+        distance, shape = label_cfg
+        return f"leak_d{distance}_s{shape}"
+    return f"normal_{label_cfg}"
+
+
+def split_files_kfold(files: list[dict], k_folds: int, seed: int, val_fold_offset: int) -> list[dict]:
+    """Create file-level k-fold split maps without mixing segments from the same raw file."""
+    labels = [get_stratification_label(item) for item in files]
+    splitter = StratifiedKFold(n_splits=k_folds, shuffle=True, random_state=seed)
+    file_indices = np.arange(len(files))
+    fold_indices = [test_indices for _, test_indices in splitter.split(file_indices, labels)]
+
+    split_maps = []
+    for test_fold_index, test_indices in enumerate(fold_indices):
+        val_fold_index = (test_fold_index + val_fold_offset) % k_folds
+        val_indices = set(fold_indices[val_fold_index].tolist())
+        test_indices_set = set(test_indices.tolist())
+        train_indices = [
+            index
+            for index in file_indices.tolist()
+            if index not in val_indices and index not in test_indices_set
+        ]
+        split_maps.append(
+            {
+                "train": [files[index] for index in train_indices],
+                "val": [files[index] for index in sorted(val_indices)],
+                "test": [files[index] for index in sorted(test_indices_set)],
+            }
+        )
+    return split_maps
+
+
 def process_split(
     file_list: list[dict],
     split_name: str,
@@ -142,6 +179,87 @@ def process_split(
     return stage1_rows, stage2_rows
 
 
+def process_kfold_segments(
+    files: list[dict],
+    stage1_dir: Path,
+    stage2_dir: Path,
+    segment_points: int,
+) -> tuple[list[dict], list[dict]]:
+    """Write each segment once and return fold-ready manifests with raw ids."""
+    stage1_rows = []
+    stage2_rows = []
+
+    stage1_dir.mkdir(parents=True, exist_ok=True)
+    stage2_dir.mkdir(parents=True, exist_ok=True)
+
+    for item in files:
+        dataframe = read_csv_safe(item["path"])
+        if len(dataframe) < segment_points:
+            continue
+
+        left = dataframe.iloc[:, 1].values.astype(np.float32)
+        right = dataframe.iloc[:, 2].values.astype(np.float32)
+        num_segments = len(dataframe) // segment_points
+        abc_num = item["abc"]
+        raw_id = f"ABC{abc_num}"
+        label_cfg = item["label_cfg"]
+
+        is_leak = isinstance(label_cfg, (tuple, list))
+        if is_leak:
+            distance, shape = label_cfg
+        else:
+            distance = 0
+            shape = label_cfg
+
+        for index in range(num_segments):
+            start = index * segment_points
+            end = (index + 1) * segment_points
+            segment_name = f"{raw_id}_seg{index}"
+
+            left_stage2 = stage2_dir / f"{segment_name}_left.csv"
+            right_stage2 = stage2_dir / f"{segment_name}_right.csv"
+            pd.DataFrame(left[start:end]).to_csv(left_stage2, index=False, header=False)
+            pd.DataFrame(right[start:end]).to_csv(right_stage2, index=False, header=False)
+            stage2_rows.append({"path": str(left_stage2), "label": shape, "raw_id": raw_id})
+            stage2_rows.append({"path": str(right_stage2), "label": shape, "raw_id": raw_id})
+
+            if not is_leak:
+                continue
+
+            left_stage1 = stage1_dir / f"{segment_name}_left.csv"
+            right_stage1 = stage1_dir / f"{segment_name}_right.csv"
+            pd.DataFrame(left[start:end]).to_csv(left_stage1, index=False, header=False)
+            pd.DataFrame(right[start:end]).to_csv(right_stage1, index=False, header=False)
+            stage1_rows.append(
+                {
+                    "path_left": str(left_stage1),
+                    "path_right": str(right_stage1),
+                    "distance": distance,
+                    "raw_id": raw_id,
+                }
+            )
+
+    return stage1_rows, stage2_rows
+
+
+def attach_split_column(rows: list[dict], split_map: dict) -> list[dict]:
+    """Add train/val/test split labels to manifest rows for one fold."""
+    raw_to_split = {}
+    for split_name, files in split_map.items():
+        for item in files:
+            raw_to_split[f"ABC{item['abc']}"] = split_name
+
+    fold_rows = []
+    for row in rows:
+        split_name = raw_to_split.get(row["raw_id"])
+        if split_name is None:
+            continue
+        fold_row = dict(row)
+        fold_row["split"] = split_name
+        fold_rows.append(fold_row)
+    return fold_rows
+
+
 def ensure_split_dirs(*base_dirs: Path) -> None:
     """Create per-split output directories."""
     for base_dir in base_dirs:
@@ -155,7 +273,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--raw-dir", default="raw", help="Directory containing raw CSV files")
     parser.add_argument(
         "--output-dir",
-        default="artifacts/5sdata",
+        default=None,
         help="Output directory for generated stage datasets",
     )
     parser.add_argument("--segment-seconds", type=int, default=5, help="Segment length in seconds")
@@ -163,6 +281,18 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--train-ratio", type=float, default=0.7, help="Train split ratio")
     parser.add_argument("--val-ratio", type=float, default=0.2, help="Validation split ratio")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for split shuffling")
+    parser.add_argument(
+        "--k-folds",
+        type=int,
+        default=0,
+        help="Generate file-level stratified k-fold manifests in a separate output tree",
+    )
+    parser.add_argument(
+        "--val-fold-offset",
+        type=int,
+        default=1,
+        help="For k-fold output, use fold (test_fold + offset) as validation",
+    )
     return parser
 
 
@@ -170,14 +300,55 @@ def main() -> None:
     args = build_parser().parse_args()
 
     raw_dir = Path(args.raw_dir)
-    output_dir = Path(args.output_dir)
+    output_dir = Path(
+        args.output_dir
+        or ("artifacts/5sdata_kfold" if args.k_folds else "artifacts/5sdata")
+    )
     stage1_dir = output_dir / "stage1data"
     stage2_dir = output_dir / "stage2data"
     segment_points = args.sampling_rate * args.segment_seconds
 
-    ensure_split_dirs(stage1_dir, stage2_dir)
-
     all_files = collect_files(raw_dir, DEFAULT_LABEL_MAP)
+
+    if args.k_folds:
+        if args.k_folds < 3:
+            raise ValueError("--k-folds must be at least 3 when one fold is reserved for validation")
+
+        segments_dir = output_dir / "segments"
+        stage1_rows, stage2_rows = process_kfold_segments(
+            files=all_files,
+            stage1_dir=segments_dir / "stage1data",
+            stage2_dir=segments_dir / "stage2data",
+            segment_points=segment_points,
+        )
+        split_maps = split_files_kfold(
+            files=all_files,
+            k_folds=args.k_folds,
+            seed=args.seed,
+            val_fold_offset=args.val_fold_offset,
+        )
+
+        for fold_index, split_map in enumerate(split_maps):
+            fold_dir = output_dir / f"fold_{fold_index}"
+            fold_dir.mkdir(parents=True, exist_ok=True)
+            pd.DataFrame(attach_split_column(stage1_rows, split_map)).to_csv(
+                fold_dir / "stage1.csv",
+                index=False,
+            )
+            pd.DataFrame(attach_split_column(stage2_rows, split_map)).to_csv(
+                fold_dir / "stage2.csv",
+                index=False,
+            )
+
+        print("\nK-fold dataset preparation completed.")
+        print(f"Raw files scanned: {len(all_files)}")
+        print(f"K folds: {args.k_folds}")
+        print(f"Stage1 leak pairs per full fold manifest: {len(stage1_rows)}")
+        print(f"Stage2 labeled segments per full fold manifest: {len(stage2_rows)}")
+        print(f"Artifacts written to: {output_dir}")
+        return
+
+    ensure_split_dirs(stage1_dir, stage2_dir)
     split_map = split_files(all_files, args.train_ratio, args.val_ratio, args.seed)
 
     stage1_rows: list[dict] = []

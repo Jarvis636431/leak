@@ -76,6 +76,29 @@ raw/
 leak-prepare-dataset --raw-dir raw --output-dir artifacts/5sdata
 ```
 
+如需生成独立的 k-fold 数据，不覆盖现有 `artifacts/5sdata`：
+
+```bash
+PYTHONPATH=src python -m leak_detection.cli.prepare_dataset \
+  --raw-dir raw \
+  --output-dir artifacts/5sdata_kfold \
+  --k-folds 5
+```
+
+该模式会把切分片段写入 `artifacts/5sdata_kfold/segments/`，并为每一折生成独立 manifest：
+
+```text
+artifacts/5sdata_kfold/
+├── segments/
+│   ├── stage1data/*.csv
+│   └── stage2data/*.csv
+├── fold_0/{stage1.csv,stage2.csv}
+├── fold_1/{stage1.csv,stage2.csv}
+└── ...
+```
+
+每个 fold manifest 通过 `split` 列标记 `train`、`val`、`test`，同一个 `ABCxxx` 原始文件的所有片段只会出现在同一个 split 中。
+
 完成后会生成：
 
 ```text
@@ -98,6 +121,15 @@ leak-train --config configs/stage2.yaml
 
 ```bash
 leak-train --config configs/stage1.yaml
+```
+
+### Stage1 k-fold 单折训练
+
+```bash
+PYTHONPATH=src python -m leak_detection.cli.train \
+  --config configs/stage1.yaml \
+  --manifest artifacts/5sdata_kfold/fold_0/stage1.csv \
+  --output-dir outputs/stage1_kfold/fold_0
 ```
 
 ### 指定输出目录

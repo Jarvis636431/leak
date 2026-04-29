@@ -16,10 +16,18 @@ def main() -> None:
         default=None,
         help="Override the configured output directory",
     )
+    parser.add_argument(
+        "--manifest",
+        type=str,
+        default=None,
+        help="Override the configured data manifest path",
+    )
     parser.add_argument("--resume", type=str, default=None, help="Path to checkpoint to resume from")
     args = parser.parse_args()
 
     config = load_config(args.config)
+    if args.manifest is not None:
+        config["data"]["manifest"] = args.manifest
 
     if args.output_dir is None:
         args.output_dir = Trainer.default_output_dir(config["output"]["base_dir"], config["task"])

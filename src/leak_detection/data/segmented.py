@@ -26,6 +26,9 @@ def _load_signal(path: str | Path, normalize: bool) -> torch.Tensor:
 
 
 def _filter_split(dataframe: pd.DataFrame, column: str, split: str) -> pd.DataFrame:
+    if "split" in dataframe.columns:
+        return dataframe.loc[dataframe["split"] == split].reset_index(drop=True)
+
     pattern = f"/{split}/"
     mask = dataframe[column].astype(str).str.contains(pattern, regex=False)
     return dataframe.loc[mask].reset_index(drop=True)
