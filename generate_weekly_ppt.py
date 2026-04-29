@@ -6,7 +6,11 @@ from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN
+import csv
+import math
 import os
+from collections import defaultdict
+from pathlib import Path
 
 # 创建演示文稿 (16:9)
 prs = Presentation()
@@ -21,6 +25,119 @@ COLOR_WARNING = RGBColor(0xE6, 0x7E, 0x22)   # 橙色
 COLOR_TEXT = RGBColor(0x33, 0x33, 0x33)      # 深灰
 COLOR_LIGHT_BG = RGBColor(0xF5, 0xF8, 0xFA)  # 浅灰背景
 COLOR_WHITE = RGBColor(0xFF, 0xFF, 0xFF)
+
+STAGE1_PREDICTIONS_PATH = Path("outputs/stage1/latest_metrics/test_stage1_predictions.csv")
+
+
+def _metric_summary(rows):
+    """计算回归误差摘要，字段与 stage1 预测明细保持一致。"""
+    if not rows:
+        return {
+            "n": 0,
+            "mae": 0.0,
+            "rmse": 0.0,
+            "min_ae": 0.0,
+            "max_ae": 0.0,
+            "bias": 0.0,
+            "err_min": 0.0,
+            "err_max": 0.0,
+            "within1": 0.0,
+            "pred_min": 0.0,
+            "pred_max": 0.0,
+        }
+    ae = [row["absolute_error"] for row in rows]
+    se = [row["signed_error"] for row in rows]
+    pred = [row["predicted_distance"] for row in rows]
+    n = len(rows)
+    return {
+        "n": n,
+        "mae": sum(ae) / n,
+        "rmse": math.sqrt(sum(error * error for error in se) / n),
+        "min_ae": min(ae),
+        "max_ae": max(ae),
+        "bias": sum(se) / n,
+        "err_min": min(se),
+        "err_max": max(se),
+        "within1": sum(error <= 1.0 for error in ae) / n,
+        "pred_min": min(pred),
+        "pred_max": max(pred),
+    }
+
+
+def load_stage1_report_data(path=STAGE1_PREDICTIONS_PATH):
+    """读取最新 stage1 预测明细，生成 PPT 所需的总体、分距离和文件级统计。"""
+    if not path.exists():
+        return None
+
+    rows = []
+    with path.open(newline="") as file:
+        for row in csv.DictReader(file):
+            parsed = dict(row)
+            for key in ("target_distance", "predicted_distance", "signed_error", "absolute_error"):
+                parsed[key] = float(parsed[key])
+            rows.append(parsed)
+
+    by_distance = defaultdict(list)
+    by_file = defaultdict(list)
+    for row in rows:
+        by_distance[row["target_distance"]].append(row)
+        by_file[row["raw_id"]].append(row)
+
+    distance_rows = []
+    for distance in sorted(by_distance):
+        summary = _metric_summary(by_distance[distance])
+        summary["distance"] = distance
+        distance_rows.append(summary)
+
+    file_rows = []
+    for raw_id, file_segments in sorted(by_file.items()):
+        target = file_segments[0]["target_distance"]
+        prediction = sum(row["predicted_distance"] for row in file_segments) / len(file_segments)
+        signed_error = prediction - target
+        file_rows.append(
+            {
+                "raw_id": raw_id,
+                "target_distance": target,
+                "predicted_distance": prediction,
+                "signed_error": signed_error,
+                "absolute_error": abs(signed_error),
+            }
+        )
+
+    return {
+        "source_path": str(path),
+        "segment": _metric_summary(rows),
+        "file": _metric_summary(file_rows),
+        "by_distance": distance_rows,
+        "worst_segments": sorted(rows, key=lambda row: row["absolute_error"], reverse=True)[:6],
+        "best_segments": sorted(rows, key=lambda row: row["absolute_error"])[:3],
+        "worst_files": sorted(file_rows, key=lambda row: row["absolute_error"], reverse=True)[:5],
+    }
+
+
+STAGE1_REPORT = load_stage1_report_data()
+
+
+def metric_value(key, level="segment", default=0.0):
+    if STAGE1_REPORT is None:
+        fallback = {
+            ("segment", "mae"): 0.3703,
+            ("segment", "rmse"): 0.5934,
+            ("segment", "within1"): 0.9286,
+            ("segment", "min_ae"): 0.0060,
+            ("segment", "max_ae"): 2.4668,
+            ("segment", "bias"): -0.1504,
+            ("segment", "err_min"): -2.4668,
+            ("segment", "err_max"): 1.1769,
+            ("segment", "pred_min"): 1.9274,
+            ("segment", "pred_max"): 16.1776,
+            ("file", "mae"): 0.2534,
+            ("file", "rmse"): 0.4603,
+            ("file", "within1"): 0.9524,
+            ("file", "max_ae"): 1.8852,
+        }
+        return fallback.get((level, key), default)
+    return STAGE1_REPORT[level][key]
 
 # ============================================================
 # 辅助函数
@@ -739,14 +856,14 @@ p.font.color.rgb = RGBColor(0xAA, 0xCC, 0xDD)
 
 txBox2 = slide.shapes.add_textbox(Inches(0.7), Inches(2.1), Inches(5.4), Inches(0.8))
 p2 = txBox2.text_frame.paragraphs[0]
-p2.text = "0.3703"
+p2.text = f"{metric_value('mae'):.4f}"
 p2.font.size = Pt(48)
 p2.font.bold = True
 p2.font.color.rgb = COLOR_WHITE
 
 txBox3 = slide.shapes.add_textbox(Inches(0.7), Inches(2.95), Inches(5.4), Inches(0.5))
 p3 = txBox3.text_frame.paragraphs[0]
-p3.text = "均方根误差 RMSE: 0.5934"
+p3.text = f"均方根误差 RMSE: {metric_value('rmse'):.4f}"
 p3.font.size = Pt(14)
 p3.font.color.rgb = RGBColor(0xAA, 0xCC, 0xDD)
 
@@ -786,10 +903,11 @@ p7.font.bold = True
 p7.font.color.rgb = COLOR_PRIMARY
 
 points = [
-    "测试集 MAE 仅为 0.3703，相比基线（>3）有数量级优势",
+    f"测试集 MAE 仅为 {metric_value('mae'):.4f}，相比基线（>3）有数量级优势",
+    f"误差 ≤ 1 个距离单位的片段占比为 {metric_value('within1') * 100:.1f}%",
+    f"文件级聚合后 MAE 降至 {metric_value('mae', 'file'):.4f}，说明多片段平均能进一步稳定定位",
+    f"最大绝对误差为 {metric_value('max_ae'):.4f}，主要来自个别距离档位的低估",
     "说明模型有效捕获了双通道信号模式与泄漏距离的映射关系",
-    "误差通常控制在相邻距离档位附近，具有较好的估计能力",
-    "双通道输入确实为泄漏距离估计提供了有效信息",
 ]
 for pt in points:
     p = tf.add_paragraph()
@@ -797,6 +915,173 @@ for pt in points:
     p.font.size = Pt(15)
     p.font.color.rgb = COLOR_TEXT
     p.space_after = Pt(10)
+
+# Stage1 物理误差分析页
+slide = prs.slide_layouts[6]
+slide = prs.slides.add_slide(slide)
+add_slide_background(slide)
+add_header_bar(slide, "Stage1 物理误差分析", "最大/最小误差 · 误差方向 · 文件级聚合")
+
+metric_cards = [
+    ("最小绝对误差", f"{metric_value('min_ae'):.4f}", "单个片段几乎完全命中"),
+    ("最大绝对误差", f"{metric_value('max_ae'):.4f}", "用于定位最坏预测案例"),
+    ("最大低估", f"{metric_value('err_min'):.4f}", "prediction - target"),
+    ("最大高估", f"{metric_value('err_max'):.4f}", "prediction - target"),
+    ("预测范围", f"{metric_value('pred_min'):.2f} ~ {metric_value('pred_max'):.2f}", "真实距离范围 2 ~ 16"),
+    ("文件级 MAE", f"{metric_value('mae', 'file'):.4f}", "同一 ABC 多片段取均值"),
+]
+
+for idx, (title, value, note) in enumerate(metric_cards):
+    col = idx % 3
+    row_idx = idx // 3
+    left = 0.55 + col * 4.25
+    top = 1.55 + row_idx * 1.65
+    card = slide.shapes.add_shape(1, Inches(left), Inches(top), Inches(3.75), Inches(1.25))
+    card.fill.solid()
+    card.fill.fore_color.rgb = COLOR_LIGHT_BG
+    card.line.color.rgb = COLOR_ACCENT
+
+    title_box = slide.shapes.add_textbox(Inches(left + 0.18), Inches(top + 0.12), Inches(3.4), Inches(0.28))
+    p = title_box.text_frame.paragraphs[0]
+    p.text = title
+    p.font.size = Pt(13)
+    p.font.bold = True
+    p.font.color.rgb = COLOR_PRIMARY
+
+    value_box = slide.shapes.add_textbox(Inches(left + 0.18), Inches(top + 0.44), Inches(3.4), Inches(0.45))
+    p2 = value_box.text_frame.paragraphs[0]
+    p2.text = value
+    p2.font.size = Pt(24 if len(value) < 10 else 18)
+    p2.font.bold = True
+    p2.font.color.rgb = COLOR_WARNING if "低估" in title or "最大" in title else COLOR_SUCCESS
+
+    note_box = slide.shapes.add_textbox(Inches(left + 0.18), Inches(top + 0.9), Inches(3.4), Inches(0.25))
+    p3 = note_box.text_frame.paragraphs[0]
+    p3.text = note
+    p3.font.size = Pt(10)
+    p3.font.color.rgb = RGBColor(0x66, 0x66, 0x66)
+
+summary_box = slide.shapes.add_textbox(Inches(0.7), Inches(5.05), Inches(12), Inches(1.25))
+tf = summary_box.text_frame
+tf.word_wrap = True
+p = tf.paragraphs[0]
+p.text = "汇报解读："
+p.font.size = Pt(16)
+p.font.bold = True
+p.font.color.rgb = COLOR_PRIMARY
+interpretations = [
+    f"片段级 {metric_value('within1') * 100:.1f}% 的预测误差不超过 1 个距离单位，说明大多数定位结果具备工程可读性",
+    f"文件级聚合后 MAE 从 {metric_value('mae'):.4f} 降至 {metric_value('mae', 'file'):.4f}，多片段平均能抑制单段波动",
+    "最大低估比最大高估更明显，后续应重点分析高距离档位信号特征是否不足",
+]
+for item in interpretations:
+    p = tf.add_paragraph()
+    p.text = "• " + item
+    p.font.size = Pt(13)
+    p.font.color.rgb = COLOR_TEXT
+    p.space_after = Pt(4)
+
+# Stage1 分距离与异常样本页
+slide = prs.slide_layouts[6]
+slide = prs.slides.add_slide(slide)
+add_slide_background(slide)
+add_header_bar(slide, "Stage1 误差定位", "按真实距离档位拆解 + 最大误差样本")
+
+txBox = slide.shapes.add_textbox(Inches(0.5), Inches(1.45), Inches(6.2), Inches(0.35))
+p = txBox.text_frame.paragraphs[0]
+p.text = "按距离档位误差"
+p.font.size = Pt(16)
+p.font.bold = True
+p.font.color.rgb = COLOR_PRIMARY
+
+distance_data = STAGE1_REPORT["by_distance"] if STAGE1_REPORT else [
+    {"distance": 2, "n": 6, "mae": 0.0750, "max_ae": 0.1482, "bias": 0.0277, "within1": 1.0},
+    {"distance": 3, "n": 24, "mae": 0.2519, "max_ae": 0.8743, "bias": 0.0756, "within1": 1.0},
+    {"distance": 12, "n": 30, "mae": 0.3519, "max_ae": 2.4668, "bias": -0.1672, "within1": 0.9667},
+    {"distance": 16, "n": 12, "mae": 1.1186, "max_ae": 2.2493, "bias": -1.0627, "within1": 0.5},
+]
+
+table = slide.shapes.add_table(len(distance_data) + 1, 5, Inches(0.5), Inches(1.9), Inches(6.25), Inches(3.8)).table
+headers = ["距离", "样本", "MAE", "最大误差", "Bias"]
+for col_idx, header in enumerate(headers):
+    cell = table.cell(0, col_idx)
+    cell.text = header
+    cell.fill.solid()
+    cell.fill.fore_color.rgb = COLOR_PRIMARY
+    p = cell.text_frame.paragraphs[0]
+    p.font.size = Pt(11)
+    p.font.bold = True
+    p.font.color.rgb = COLOR_WHITE
+    p.alignment = PP_ALIGN.CENTER
+
+for row_idx, row_data in enumerate(distance_data):
+    values = [
+        f"{row_data['distance']:.0f}",
+        f"{row_data['n']:.0f}",
+        f"{row_data['mae']:.3f}",
+        f"{row_data['max_ae']:.3f}",
+        f"{row_data['bias']:.3f}",
+    ]
+    for col_idx, value in enumerate(values):
+        cell = table.cell(row_idx + 1, col_idx)
+        cell.text = value
+        if row_data["mae"] > 1.0:
+            cell.fill.solid()
+            cell.fill.fore_color.rgb = RGBColor(0xFF, 0xEE, 0xDD)
+        p = cell.text_frame.paragraphs[0]
+        p.font.size = Pt(10)
+        p.font.color.rgb = COLOR_TEXT
+        p.alignment = PP_ALIGN.CENTER
+
+txBox2 = slide.shapes.add_textbox(Inches(7.05), Inches(1.45), Inches(5.8), Inches(0.35))
+p = txBox2.text_frame.paragraphs[0]
+p.text = "最大误差样本"
+p.font.size = Pt(16)
+p.font.bold = True
+p.font.color.rgb = COLOR_PRIMARY
+
+worst_segments = STAGE1_REPORT["worst_segments"] if STAGE1_REPORT else []
+worst_table = slide.shapes.add_table(7, 5, Inches(7.05), Inches(1.9), Inches(5.75), Inches(3.8)).table
+headers = ["文件", "真实", "预测", "误差", "|误差|"]
+for col_idx, header in enumerate(headers):
+    cell = worst_table.cell(0, col_idx)
+    cell.text = header
+    cell.fill.solid()
+    cell.fill.fore_color.rgb = COLOR_WARNING
+    p = cell.text_frame.paragraphs[0]
+    p.font.size = Pt(11)
+    p.font.bold = True
+    p.font.color.rgb = COLOR_WHITE
+    p.alignment = PP_ALIGN.CENTER
+
+for row_idx in range(6):
+    row_data = worst_segments[row_idx] if row_idx < len(worst_segments) else {
+        "raw_id": "",
+        "target_distance": 0,
+        "predicted_distance": 0,
+        "signed_error": 0,
+        "absolute_error": 0,
+    }
+    values = [
+        row_data["raw_id"],
+        f"{row_data['target_distance']:.0f}" if row_data["raw_id"] else "",
+        f"{row_data['predicted_distance']:.2f}" if row_data["raw_id"] else "",
+        f"{row_data['signed_error']:.2f}" if row_data["raw_id"] else "",
+        f"{row_data['absolute_error']:.2f}" if row_data["raw_id"] else "",
+    ]
+    for col_idx, value in enumerate(values):
+        cell = worst_table.cell(row_idx + 1, col_idx)
+        cell.text = value
+        p = cell.text_frame.paragraphs[0]
+        p.font.size = Pt(9)
+        p.font.color.rgb = COLOR_TEXT
+        p.alignment = PP_ALIGN.CENTER
+
+note_box = slide.shapes.add_textbox(Inches(0.6), Inches(6.0), Inches(12.0), Inches(0.65))
+p = note_box.text_frame.paragraphs[0]
+p.text = "关键发现：16 距离档位存在系统性低估；最大单段误差来自 ABC155（真实 12，预测 9.53），最大文件级误差来自 ABC162（真实 16，均值预测 14.11）。"
+p.font.size = Pt(13)
+p.font.color.rgb = COLOR_TEXT
 
 # 结果分析页
 slide = prs.slide_layouts[6]
