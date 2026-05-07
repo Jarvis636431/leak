@@ -65,6 +65,11 @@ dev = [
 [project.scripts]
 leak-train = "leak_detection.cli.train:main"
 leak-prepare-dataset = "leak_detection.cli.prepare_dataset:main"
+leak-ablation = "leak_detection.cli.run_ablation:main"
+leak-baselines = "leak_detection.cli.run_baselines:main"
+leak-plot-cm = "leak_detection.analysis.plot_confusion_matrix:main"
+leak-plot-curves = "leak_detection.analysis.plot_training_curves:main"
+leak-plot-errors = "leak_detection.analysis.plot_error_distribution:main"
 
 [project.urls]
 Homepage = "https://github.com/yourusername/pipeline-leak-detection"

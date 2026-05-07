@@ -62,8 +62,9 @@ class Stage2Classifier(nn.Module):
 
     def __init__(self, config: dict):
         super().__init__()
+        in_channels = config.get("in_channels", 1)
         self.encoder = SignalEncoder(
-            in_channels=1,
+            in_channels=in_channels,
             channels=config["channels"],
             kernel_sizes=config["kernel_sizes"],
             strides=config["strides"],
@@ -86,8 +87,9 @@ class Stage1Regressor(nn.Module):
 
     def __init__(self, config: dict):
         super().__init__()
+        in_channels = config.get("in_channels", 2)
         self.encoder = SignalEncoder(
-            in_channels=2,
+            in_channels=in_channels,
             channels=config["channels"],
             kernel_sizes=config["kernel_sizes"],
             strides=config["strides"],
