@@ -27,14 +27,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-xetex texlive-lang-chinese \
+            texlive-latex-extra latexmk fonts-noto-cjk
+          sudo tlmgr update --self
+          sudo tlmgr install multirow
+
       - name: Compile LaTeX
-        uses: xu-cheng/latex-action@v3
-        with:
-          root_file: main.tex
-          working_directory: 2024-latex
-          latexmk_shell_escape: true
-          latexmk_use_xelatex: true
-          extra_system_packages: "fonts-noto-cjk"
+        run: latexmk -xelatex -shell-escape main.tex
 
       - name: Upload PDF
         uses: actions/upload-artifact@v4
