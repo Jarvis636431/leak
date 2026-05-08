@@ -456,6 +456,7 @@ INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/txfonts/ts1txr.fd
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/txfonts/ts1txr.fd
 INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/txfonts/ts1txr.fd
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/tcxr.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/t1xr.tfm
 OUTPUT main.toc
 INPUT ./include/body.tex
 INPUT ./include/body.tex
@@ -464,11 +465,6 @@ INPUT ./include/body.tex
 INPUT ./include/body.tex
 INPUT include/body.tex
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/t1xr.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/t1xr.tfm
-INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/txfonts/t1txtt.fd
-INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/txfonts/t1txtt.fd
-INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/txfonts/t1txtt.fd
-INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/t1xtt.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/txr.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/txr.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/txmi.tfm
@@ -499,6 +495,14 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/txbsy.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/txbsy.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/txbex.tfm
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/txbex.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/t1xr.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/t1xb.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/tcxr.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/t1xr.tfm
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/txfonts/t1txtt.fd
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/txfonts/t1txtt.fd
+INPUT /usr/local/texlive/2026/texmf-dist/tex/latex/txfonts/t1txtt.fd
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/txfonts/t1xtt.tfm
 INPUT ./main.bbl
 INPUT ./main.bbl
 INPUT main.bbl
