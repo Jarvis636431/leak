@@ -185,13 +185,19 @@ def aggregate_features_by_file(
     features: np.ndarray,
 ) -> pd.DataFrame:
     """Aggregate segment features by file (mean, std)."""
-    grouped: dict[str, list[np.ndarray]] = {}
     raw_ids = []
     for path in paths:
         raw_id = _extract_raw_id(path)
         raw_ids.append(raw_id)
 
-    df = pd.DataFrame(features, columns=FEATURE_NAMES)
+    if features.shape[1] == len(FEATURE_NAMES):
+        feature_names = FEATURE_NAMES
+    elif features.shape[1] == 2 * len(FEATURE_NAMES):
+        feature_names = [f"left_{name}" for name in FEATURE_NAMES] + [f"right_{name}" for name in FEATURE_NAMES]
+    else:
+        feature_names = [f"feature_{idx}" for idx in range(features.shape[1])]
+
+    df = pd.DataFrame(features, columns=feature_names)
     df["raw_id"] = raw_ids
     agg_df = df.groupby("raw_id").agg(["mean", "std"])
     agg_df.columns = [f"{col[0]}_{col[1]}" for col in agg_df.columns]
@@ -347,13 +353,6 @@ def main() -> None:
     train_feats_scaled = scaler.fit_transform(train_feats)
     test_feats_scaled = scaler.transform(test_feats)
 
-    # Also prepare file-level aggregated features
-    train_file_feats = aggregate_features_by_file(train_paths, train_feats_scaled)
-    # File-level targets
-    train_file_targets = []
-    for path in sorted(set(_extract_raw_id(p) for p in train_paths)):
-        train_file_targets.append(train_targets[train_paths.index(path)])
-
     results: list[dict[str, Any]] = []
 
     for model_name in args.models:
@@ -391,13 +390,6 @@ def main() -> None:
         row = {"model": model_name, "level": "file"}
         row.update(file_metrics)
         results.append(row)
-
-        # ---- Also train on file-level features (for comparison) ----
-        if len(train_file_feats) > 10 and model_name != "knn":
-            file_model = model_cls()
-            file_model.fit(train_file_feats, train_file_targets)
-            # can't evaluate on test easily without file-level test features
-            # skip this for simplicity
 
     # Write results
     fieldnames = ["model", "level"]

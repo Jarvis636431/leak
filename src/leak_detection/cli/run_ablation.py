@@ -10,11 +10,12 @@ from pathlib import Path
 from typing import Any, Callable
 
 import numpy as np
+import pandas as pd
 import torch
 from torch.utils.data import DataLoader
 
 from leak_detection.data import Stage1Dataset, Stage2Dataset
-from leak_detection.models import build_model
+from leak_detection.data.segmented import _filter_split, _load_signal
 from leak_detection.training import Trainer
 from leak_detection.utils import load_config
 
@@ -90,15 +91,85 @@ def _make_truncated_loader(config: dict, split: str, num_samples: int) -> DataLo
         batch_size=config["training"]["batch_size"],
         shuffle=(split == "train"),
         num_workers=config["training"].get("num_workers", 0),
+        pin_memory=config["training"].get("pin_memory", False),
     )
 
 
-def _build_channel_model(config: dict, in_channels: int) -> torch.nn.Module:
-    """Build a model with the requested number of input channels."""
-    cfg = copy.deepcopy(config["model"])
-    cfg["in_channels"] = in_channels
-    config["model"] = cfg
-    return build_model(config)
+def _stage2_pair_key(path: str) -> str:
+    stem = Path(path).stem
+    if stem.endswith("_left"):
+        return stem.removesuffix("_left")
+    if stem.endswith("_right"):
+        return stem.removesuffix("_right")
+    return stem
+
+
+def _make_channel_loader(config: dict, split: str, in_channels: int) -> DataLoader:
+    """Create a dataloader whose signal channel count matches the ablation model."""
+    task = config["task"]
+    normalize = config["data"].get("normalize", True)
+    manifest_path = config["data"]["manifest"]
+
+    if task == "stage1":
+        if in_channels == 2:
+            dataset = Stage1Dataset(manifest_path, split, normalize)
+        elif in_channels == 1:
+            class SingleChannelStage1Dataset(Stage1Dataset):  # type: ignore[misc]
+                def __getitem__(self, index: int) -> dict:
+                    item = super().__getitem__(index)
+                    item["signal"] = item["signal"][:1, :]
+                    return item
+
+            dataset = SingleChannelStage1Dataset(manifest_path, split, normalize)
+        else:
+            raise ValueError(f"Unsupported stage1 channel count: {in_channels}")
+    else:
+        if in_channels == 1:
+            dataset = Stage2Dataset(manifest_path, split, normalize)
+        elif in_channels == 2:
+            class PairedStage2Dataset(torch.utils.data.Dataset):
+                def __init__(self) -> None:
+                    manifest = pd.read_csv(manifest_path)
+                    samples = _filter_split(manifest, "path", split)
+                    grouped: dict[str, dict[str, Any]] = {}
+                    for _, row in samples.iterrows():
+                        path = str(row["path"])
+                        key = _stage2_pair_key(path)
+                        entry = grouped.setdefault(key, {"label": int(row["label"])})
+                        if path.endswith("_left.csv"):
+                            entry["left"] = path
+                        elif path.endswith("_right.csv"):
+                            entry["right"] = path
+                    self.samples = [
+                        entry
+                        for entry in grouped.values()
+                        if "left" in entry and "right" in entry
+                    ]
+                    if not self.samples:
+                        raise ValueError(f"No paired stage2 samples found for split={split!r} in {manifest_path}")
+
+                def __len__(self) -> int:
+                    return len(self.samples)
+
+                def __getitem__(self, index: int) -> dict:
+                    row = self.samples[index]
+                    left = _load_signal(row["left"], normalize)
+                    right = _load_signal(row["right"], normalize)
+                    signal = torch.stack((left, right), dim=0)
+                    target = torch.tensor(row["label"], dtype=torch.long)
+                    return {"signal": signal, "target": target, "path": row["left"]}
+
+            dataset = PairedStage2Dataset()
+        else:
+            raise ValueError(f"Unsupported stage2 channel count: {in_channels}")
+
+    return DataLoader(
+        dataset,
+        batch_size=config["training"]["batch_size"],
+        shuffle=(split == "train"),
+        num_workers=config["training"].get("num_workers", 0),
+        pin_memory=config["training"].get("pin_memory", False),
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -209,11 +280,18 @@ def run_channel_ablation(base_config: dict, output_base: str | Path) -> list[dic
     results: list[dict[str, Any]] = []
     for variant in variants:
         print(f"\n{'='*60}\nChannel ablation: {variant['name']} ({variant['desc']})\n{'='*60}")
+
+        def _modify_channel_config(cfg: dict, in_channels: int = variant["in_channels"]) -> None:
+            cfg["model"]["in_channels"] = in_channels
+
         summary = _run_ablation_variant(
             base_config,
             f"channel_{variant['name']}",
             output_base,
-            model_override_fn=lambda cfg, ic=variant["in_channels"]: _build_channel_model(cfg, ic),
+            train_loader_override=lambda cfg, split, ic=variant["in_channels"]: _make_channel_loader(cfg, split, ic),
+            val_loader_override=lambda cfg, split, ic=variant["in_channels"]: _make_channel_loader(cfg, split, ic),
+            test_loader_override=lambda cfg, split, ic=variant["in_channels"]: _make_channel_loader(cfg, split, ic),
+            config_modifier_fn=_modify_channel_config,
         )
         summary["in_channels"] = variant["in_channels"]
         results.append(summary)
