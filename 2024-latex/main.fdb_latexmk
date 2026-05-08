@@ -1,22 +1,22 @@
 # Fdb version 4
-["bibtex main"] 1778236548.45489 "main.aux" "main.bbl" "main" 1778236551.66307 0
+["bibtex main"] 1778237209.41418 "main.aux" "main.bbl" "main" 1778237214.43215 0
   "./references/ref.bib" 1778234287.85676 3750 1c817086725a666082fad8ce89a6d244 ""
   "./references/ref.bst" 1776239924 54967 c8f1e6f7e160b58047985370663fc276 ""
-  "appendix/acknowledgements.aux" 1778236550.19621 2522 47d533dd88477e2798c0e94606d05bf5 "xelatex"
-  "include/abstract.aux" 1778236549.8497 2165 f936afe1e05668e29c1b294efd6705a6 "xelatex"
-  "include/body.aux" 1778236550.17639 11341 675149a64d43c46bfed9c8bae51c628d "xelatex"
-  "include/cover.aux" 1778236549.82275 2162 33d88698d74130ee2c52081937466b2e "xelatex"
-  "main.aux" 1778236550.19678 1931 81864510b9f6f6a4ce96e67562f1952d "xelatex"
+  "appendix/acknowledgements.aux" 1778237211.15185 2522 9490b505a85dfa08c73a2e61b01c27f1 "xelatex"
+  "include/abstract.aux" 1778237210.80419 2165 f936afe1e05668e29c1b294efd6705a6 "xelatex"
+  "include/body.aux" 1778237211.13214 12455 cf81ec56ee7a910f24c83a824a3ca1df "xelatex"
+  "include/cover.aux" 1778237210.77611 2162 33d88698d74130ee2c52081937466b2e "xelatex"
+  "main.aux" 1778237211.15237 1931 fbd42c239ae75acfa7a5087088062885 "xelatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["xdvipdfmx"] 1778236550.67619 "main.xdv" "main.pdf" "main" 1778236551.66538 0
-  "main.xdv" 1778236550.20067 452628 284e3eb527ff658dc4a3461c55e46dbc "xelatex"
+["xdvipdfmx"] 1778237211.64109 "main.xdv" "main.pdf" "main" 1778237214.435 0
+  "main.xdv" 1778237211.15667 457492 7c542b6c6811420c0df5cbd100abb7f9 "xelatex"
   (generated)
   "main.pdf"
   (rewritten before read)
-["xelatex"] 1778236548.62298 "main.tex" "main.xdv" "main" 1778236551.66327 0
+["xelatex"] 1778237209.56589 "main.tex" "main.xdv" "main" 1778237214.43235 0
   "/System/Library/Fonts/Menlo.ttc" 1755369869 2156036 ec05dfca6821d85440da0899493002c3 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
@@ -179,21 +179,27 @@
   "/usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf" 1770478701 43630 e9fa012910491fe5ae08a72c3c2997a7 ""
   "/usr/local/texlive/2026/texmf-var/web2c/xetex/xelatex.fmt" 1776598934 5948562 7cd794c9d64eb80039d363b6f78c2fe6 ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "appendix/acknowledgements.aux" 1778236550.19621 2522 47d533dd88477e2798c0e94606d05bf5 "xelatex"
+  "appendix/acknowledgements.aux" 1778237211.15185 2522 9490b505a85dfa08c73a2e61b01c27f1 "xelatex"
   "appendix/acknowledgements.tex" 1778234287.85461 1365 87f636c88592ecf262647a44b844a03a ""
+  "figures/experiments/error_by_distance_boxplot.png" 1778236773.06409 85184 3d214a8db20bf99fabc9a0e102131498 ""
+  "figures/experiments/pred_vs_target_scatter.png" 1778236772.82627 94685 c07f816e522c86bcd84211be29f63f8b ""
+  "figures/experiments/stage1_curves/loss_curves.png" 1778236843.40252 90709 1c2424b7c752e008c78bd3414e3b3486 ""
+  "figures/experiments/stage1_curves/mae_curves.png" 1778236843.60189 123940 ce11f90330efc40e4b53621edfb75119 ""
+  "figures/experiments/stage2_file_confusion_matrix.png" 1778236829.37542 83565 89b13b2ab9344b992ba4465e124a9b6f ""
+  "figures/experiments/stage2_segment_confusion_matrix.png" 1778236830.84969 89222 a2fad39517a64c633eff880ce01bf6d3 ""
   "figures/tjulogo.png" 1776239924 867341 5a69c23dc7065dbd1a1a0f392b3d0b9d ""
   "figures/tjuname.png" 1776239924 33860 ec4bf4ab2a2d1bc204cc10bdaecdb633 ""
-  "include/abstract.aux" 1778236549.8497 2165 f936afe1e05668e29c1b294efd6705a6 "xelatex"
+  "include/abstract.aux" 1778237210.80419 2165 f936afe1e05668e29c1b294efd6705a6 "xelatex"
   "include/abstract.tex" 1778236202.16186 4431 956d4b5719019a8b31d8d6731d75a532 ""
-  "include/body.aux" 1778236550.17639 11341 675149a64d43c46bfed9c8bae51c628d "xelatex"
-  "include/body.tex" 1778236450.43441 53418 ef33de1e59c2ba0e24d7ed3ab7f9236b ""
-  "include/cover.aux" 1778236549.82275 2162 33d88698d74130ee2c52081937466b2e "xelatex"
+  "include/body.aux" 1778237211.13214 12455 cf81ec56ee7a910f24c83a824a3ca1df "xelatex"
+  "include/body.tex" 1778236922.7653 55243 703591719a6c87f3bf39a70834c593f8 ""
+  "include/cover.aux" 1778237210.77611 2162 33d88698d74130ee2c52081937466b2e "xelatex"
   "include/cover.tex" 1778234287.85584 747 8e0923c255b49b50d3996db6650698d9 ""
-  "main.aux" 1778236550.19678 1931 81864510b9f6f6a4ce96e67562f1952d "xelatex"
-  "main.bbl" 1778236548.61807 2585 8c692087372f1eb57747fd360fe33337 "bibtex main"
-  "main.out" 1778236550.20001 7881 5162fbc52a3f7ffdf11f1a6699e03a99 "xelatex"
+  "main.aux" 1778237211.15237 1931 fbd42c239ae75acfa7a5087088062885 "xelatex"
+  "main.bbl" 1778237209.56223 2585 8c692087372f1eb57747fd360fe33337 "bibtex main"
+  "main.out" 1778237211.1561 7881 d1d76ba8c54f999b1d182a3eb812119d "xelatex"
   "main.tex" 1776239924 1427 3b188b159cb962f79a5d94f097c4a9d3 ""
-  "main.toc" 1778236550.20057 5243 400295931e26a278602b2116614e3c63 "xelatex"
+  "main.toc" 1778237211.15658 5243 685b4ab4c3bfe8cd8d838cb85316a7ef "xelatex"
   "setup/format.tex" 1776239924 13591 a8a8ac8631dc7d79a2b27cc543f12d75 ""
   "setup/package.tex" 1776239924 4068 ebf9e9f1d01996d60c1d43db59cc6392 ""
   (generated)
