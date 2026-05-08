@@ -372,9 +372,24 @@ Acc_{\tau} = \frac{1}{N}\sum_{i=1}^{N}\mathbf{1}(|\hat{d}_i-d_i|\leq \tau)
   \end{tabular}
 \end{table}
 
-从混淆矩阵看，片段级测试样本中仅存在一次误分类，即真实类别 1 的一个片段被误判为类别 2，其余样本均被正确识别。文件级混淆矩阵全部位于主对角线上，表明测试集中 26 个原始文件均被正确分类。上述结果说明，模型性能并非仅由多数类样本支撑，而是在当前测试集的各类别上均表现稳定。
+从混淆矩阵看，片段级测试样本中仅存在一次误分类，即真实类别 1 的一个片段被误判为类别 2，其余样本均被正确识别；对应可视化结果如图\ref{fig:stage2_confusion_matrix} 所示。文件级混淆矩阵全部位于主对角线上，表明测试集中 26 个原始文件均被正确分类。上述结果说明，模型性能并非仅由多数类样本支撑，而是在当前测试集的各类别上均表现稳定。
 
 唯一误分类片段发生在类别 1 与类别 2 之间，而正常样本（类别 0）均被正确区分。这一现象具有一定合理性：正常信号与泄漏信号在波形形态上差异较明显，模型较容易学习二者边界；而两类泄漏形态之间可能存在更强的波形相似性，因此少数边界样本仍可能发生混淆。从文件级角度看，将同一原始文件下的多个片段按平均 logits 聚合后，所有测试文件均被正确分类，说明文件级聚合能够有效削弱个别片段预测波动。
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/experiments/stage2_segment_confusion_matrix.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/experiments/stage2_file_confusion_matrix.png}
+  \end{minipage}
+  \caption{Stage2 分类任务混淆矩阵（左：片段级；右：文件级）}
+  \label{fig:stage2_confusion_matrix}
+\end{figure}
 
 \subsection{Stage1 距离回归结果}
 
@@ -414,7 +429,7 @@ Acc_{\tau} = \frac{1}{N}\sum_{i=1}^{N}\mathbf{1}(|\hat{d}_i-d_i|\leq \tau)
   \end{tabular}
 \end{table}
 
-进一步从物理误差角度分析，本文统计了最小绝对误差、最大绝对误差、误差方向和预测距离范围，结果如表\ref{tab:stage1_physical_error} 所示。片段级最小绝对误差为 0.0060，最大绝对误差为 2.4668；有符号误差最小值为 -2.4668，最大值为 1.1769，说明较大误差主要表现为低估。片段级误差不超过 1 个距离单位的比例为 0.9286。将同一原始文件下多个片段的预测取均值后，文件级 MAE 降至 0.2534，RMSE 降至 0.4603，表明多片段聚合能够进一步削弱单段预测波动。
+进一步从物理误差角度分析，本文统计了最小绝对误差、最大绝对误差、误差方向和预测距离范围，结果如表\ref{tab:stage1_physical_error} 所示，预测值与真实值关系及不同距离档位误差分布如图\ref{fig:stage1_error_visualization} 所示。片段级最小绝对误差为 0.0060，最大绝对误差为 2.4668；有符号误差最小值为 -2.4668，最大值为 1.1769，说明较大误差主要表现为低估。片段级误差不超过 1 个距离单位的比例为 0.9286。将同一原始文件下多个片段的预测取均值后，文件级 MAE 降至 0.2534，RMSE 降至 0.4603，表明多片段聚合能够进一步削弱单段预测波动。
 
 \begin{table}[!htbp]
   \centering
@@ -437,6 +452,21 @@ Acc_{\tau} = \frac{1}{N}\sum_{i=1}^{N}\mathbf{1}(|\hat{d}_i-d_i|\leq \tau)
     \bottomrule
   \end{tabular}
 \end{table}
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/experiments/pred_vs_target_scatter.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/experiments/error_by_distance_boxplot.png}
+  \end{minipage}
+  \caption{Stage1 回归任务文件级预测误差可视化（左：预测值与真实值；右：不同距离档位的绝对误差分布）}
+  \label{fig:stage1_error_visualization}
+\end{figure}
 
 由于距离标签为多个离散档位，本文进一步按真实距离拆分误差，结果如表\ref{tab:stage1_distance_error} 所示。可以看出，大多数距离档位的 MAE 均低于 0.5，且误差不超过 1 个距离单位的比例接近或达到 1.0；但距离 16 的 MAE 为 1.1186，平均有符号误差为 -1.0627，明显存在低估现象。该现象说明模型在高距离档位上的定位能力相对较弱，可能与该距离档位样本数量、信号衰减特征或与相邻距离档位的波形相似性有关。
 
@@ -461,7 +491,22 @@ Acc_{\tau} = \frac{1}{N}\sum_{i=1}^{N}\mathbf{1}(|\hat{d}_i-d_i|\leq \tau)
   \end{tabular}
 \end{table}
 
-从最大误差样本看，片段级最大绝对误差来自 \texttt{ABC155}，真实距离为 12，预测值为 9.5332，误差为 -2.4668；文件级最大误差来自 \texttt{ABC162}，真实距离为 16，多个片段平均预测为 14.1148，误差为 -1.8852。从误差方向上看，平均有符号误差为 -0.1504，说明模型整体呈现出轻微低估的倾向，即预测距离略小于真实距离。这一偏差在高距离档位（距离 16）上尤为突出，平均有符号误差达到 -1.0627，说明模型在该距离上存在系统性低估现象。可能的原因包括：该距离档位的训练样本数量较少（仅 144 个样本中的 12 个出现在测试集中），导致模型对该距离的估计能力不足；此外，远距离泄漏信号在传播过程中衰减加剧，信号特征减弱，使得模型倾向于将模糊输入预测为更常见的中间距离值。这进一步说明后续优化应重点关注高距离档位及个别异常文件的误差来源。
+从最大误差样本看，片段级最大绝对误差来自 \texttt{ABC155}，真实距离为 12，预测值为 9.5332，误差为 -2.4668；文件级最大误差来自 \texttt{ABC162}，真实距离为 16，多个片段平均预测为 14.1148，误差为 -1.8852。从误差方向上看，平均有符号误差为 -0.1504，说明模型整体呈现出轻微低估的倾向，即预测距离略小于真实距离。这一偏差在高距离档位（距离 16）上尤为突出，平均有符号误差达到 -1.0627，说明模型在该距离上存在系统性低估现象。可能的原因包括：该距离档位的训练样本数量较少（仅 144 个样本中的 12 个出现在测试集中），导致模型对该距离的估计能力不足；此外，远距离泄漏信号在传播过程中衰减加剧，信号特征减弱，使得模型倾向于将模糊输入预测为更常见的中间距离值。训练过程曲线如图\ref{fig:stage1_training_curves} 所示，验证集曲线整体与训练集变化趋势一致，说明当前结果未表现出明显的训练后期发散问题。
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/experiments/stage1_curves/loss_curves.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/experiments/stage1_curves/mae_curves.png}
+  \end{minipage}
+  \caption{Stage1 回归任务训练过程曲线（左：损失曲线；右：MAE 曲线）}
+  \label{fig:stage1_training_curves}
+\end{figure}
 
 \begin{table}[!htbp]
   \centering
