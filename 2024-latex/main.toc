@@ -18,15 +18,15 @@
 \contentsline {section}{\numberline {2.2}泄漏声信号形成机制}{5}{section*.18}%
 \contentsline {section}{\numberline {2.3}数据特征分析与建模需求}{6}{section*.19}%
 \contentsline {section}{\numberline {2.4}原始数据组织方式}{6}{section*.20}%
-\contentsline {section}{\numberline {2.5}标签映射与任务拆分}{7}{section*.21}%
+\contentsline {section}{\numberline {2.5}标签映射与任务拆分}{6}{section*.21}%
 \contentsline {section}{\numberline {2.6}分段策略与样本生成}{7}{section*.22}%
-\contentsline {section}{\numberline {2.7}数据集统计}{8}{section*.23}%
+\contentsline {section}{\numberline {2.7}数据集统计}{7}{section*.23}%
 \contentsline {section}{\numberline {2.8}相关损失函数与优化理论}{8}{section*.26}%
 \contentsline {subsection}{\numberline {2.8.1}交叉熵损失与分类任务优化}{8}{section*.27}%
-\contentsline {subsection}{\numberline {2.8.2}Smooth L1 损失与距离回归任务优化}{9}{section*.28}%
+\contentsline {subsection}{\numberline {2.8.2}Smooth L1 损失与距离回归任务优化}{8}{section*.28}%
 \contentsline {subsection}{\numberline {2.8.3}AdamW 优化器与余弦退火调度}{9}{section*.29}%
 \contentsline {chapter}{\numberline {第三章\hspace {.3em}}两阶段泄漏检测模型设计}{10}{section*.30}%
-\contentsline {section}{\numberline {3.1}深度学习方法基础}{10}{section*.31}%
+\contentsline {section}{\numberline {3.1}方法基础}{10}{section*.31}%
 \contentsline {section}{\numberline {3.2}总体框架}{10}{section*.32}%
 \contentsline {section}{\numberline {3.3}输入表示与归一化}{11}{section*.33}%
 \contentsline {section}{\numberline {3.4}一维卷积特征提取网络}{11}{section*.34}%
@@ -44,11 +44,11 @@
 \contentsline {section}{\numberline {4.1}实验环境与配置}{15}{section*.46}%
 \contentsline {section}{\numberline {4.2}评价指标}{15}{section*.47}%
 \contentsline {subsection}{\numberline {4.2.1}分类任务指标}{15}{section*.48}%
-\contentsline {subsection}{\numberline {4.2.2}回归任务指标}{16}{section*.49}%
+\contentsline {subsection}{\numberline {4.2.2}回归任务指标}{15}{section*.49}%
 \contentsline {section}{\numberline {4.3}实验结果}{16}{section*.50}%
 \contentsline {subsection}{\numberline {4.3.1}Stage2 分类结果}{16}{section*.51}%
 \contentsline {subsection}{\numberline {4.3.2}Stage1 距离回归结果}{17}{section*.54}%
-\contentsline {section}{\numberline {4.4}结果分析}{20}{section*.65}%
+\contentsline {section}{\numberline {4.4}结果分析}{19}{section*.65}%
 \contentsline {chapter}{\numberline {第五章\hspace {.3em}}结论与展望}{22}{section*.66}%
 \contentsline {section}{\numberline {5.1}全文总结}{22}{section*.67}%
 \contentsline {section}{\numberline {5.2}后续工作展望}{23}{section*.68}%
