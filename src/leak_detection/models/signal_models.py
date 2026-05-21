@@ -110,6 +110,20 @@ class Stage1Regressor(nn.Module):
 def build_model(config: dict) -> nn.Module:
     """Create a model that matches the configured task."""
     task = config["task"]
+    model_type = config["model"].get("type", "cnn")
+
+    if model_type == "conformer":
+        from .conformer import Stage1ConformerRegressor, Stage2ConformerClassifier
+
+        if task == "stage1":
+            return Stage1ConformerRegressor(config["model"])
+        if task == "stage2":
+            return Stage2ConformerClassifier(config["model"])
+        raise ValueError(f"Unsupported task: {task}")
+
+    if model_type != "cnn":
+        raise ValueError(f"Unsupported model type: {model_type}")
+
     if task == "stage1":
         return Stage1Regressor(config["model"])
     if task == "stage2":

@@ -1,0 +1,32 @@
+task: stage1
+
+data:
+  manifest: artifacts/internoise_5sdata/stage1.csv
+  normalize: true
+
+model:
+  type: conformer
+  d_model: 128
+  d_ff: 512
+  num_heads: 4
+  num_layers: 4
+  kernel_size: 31
+  subsample_strides: [8, 8, 4]
+  hidden_dim: 128
+  dropout: 0.15
+
+training:
+  seed: 42
+  epochs: 40
+  batch_size: 16
+  num_workers: 2
+  pin_memory: true
+  learning_rate: 0.0005
+  weight_decay: 0.0001
+  scheduler: cosine
+  early_stopping_patience: 8
+  gradient_clip_norm: 1.0
+  regression_loss: smooth_l1
+
+output:
+  base_dir: outputs/stage1
