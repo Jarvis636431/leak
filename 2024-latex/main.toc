@@ -48,12 +48,15 @@
 \contentsline {section}{\numberline {4.3}实验结果}{17}{section*.50}%
 \contentsline {subsection}{\numberline {4.3.1}Stage2 分类结果}{17}{section*.51}%
 \contentsline {subsection}{\numberline {4.3.2}Stage1 距离回归结果}{19}{section*.58}%
-\contentsline {section}{\numberline {4.4}结果分析}{19}{section*.69}%
-\contentsline {chapter}{\numberline {第五章\hspace {.3em}}结论与展望}{22}{section*.70}%
-\contentsline {section}{\numberline {5.1}全文总结}{22}{section*.71}%
-\contentsline {section}{\numberline {5.2}后续工作展望}{22}{section*.72}%
-\contentsline {chapter}{参考文献}{24}{section*.75}%
+\contentsline {section}{\numberline {4.4}结果分析}{22}{section*.71}%
+\contentsline {subsection}{\numberline {4.4.1}Stage2 分类结果分析}{22}{section*.72}%
+\contentsline {subsection}{\numberline {4.4.2}Stage1 回归结果分析}{22}{section*.73}%
+\contentsline {subsection}{\numberline {4.4.3}训练过程分析}{23}{section*.74}%
+\contentsline {chapter}{\numberline {第五章\hspace {.3em}}结论与展望}{24}{section*.75}%
+\contentsline {section}{\numberline {5.1}全文总结}{24}{section*.76}%
+\contentsline {section}{\numberline {5.2}后续工作展望}{25}{section*.77}%
+\contentsline {chapter}{参考文献}{27}{section*.80}%
 \ttl@change@i {\@ne }{chapter}{2em}{\vspace {.25\baselineskip }\sihao \song }{\thecontentslabel \qquad }{}{\titlerule *[5pt]{$\cdot $}\sihao \contentspage }\relax 
 \ttl@change@v {chapter}{}{}{}\relax 
-\contentsline {chapter}{致\hspace {1em} 谢}{25}{section*.76}%
+\contentsline {chapter}{致\hspace {1em} 谢}{28}{section*.81}%
 \contentsfinish 

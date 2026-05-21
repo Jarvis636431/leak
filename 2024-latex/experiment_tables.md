@@ -93,16 +93,65 @@ File-level confusion matrix:
 ```tex
 \begin{table}[!htbp]
   \centering
-  \caption{Stage1 回归任务结果}
+  \caption{Stage1 回归任务测试结果}
   \label{tab:stage1_results_final}
+  \vspace{0.5em}
+  \begin{tabular}{lccc}
+    \toprule
+    评测层级 & 指标 & 训练集 & 测试集 \\
+    \midrule
+    片段级 & MAE & 0.35 & 1.90 \\
+    片段级 & RMSE & 0.50 & 2.43 \\
+    文件级 & MAE & 0.15 & 2.46 \\
+    文件级 & RMSE & 0.20 & 2.94 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+```
+
+```tex
+\begin{table}[!htbp]
+  \centering
+  \caption{Stage1 回归任务物理误差分析}
+  \label{tab:stage1_physical_error_final}
   \vspace{0.5em}
   \begin{tabular}{lcc}
     \toprule
-    数据划分 & 指标 & 数值 \\
+    指标 & 片段级 & 文件级 \\
     \midrule
-    验证集最优模型 & MAE & -- \\
-    测试集 & MAE & -- \\
-    测试集 & RMSE & -- \\
+    MAE & 1.90 & 2.46 \\
+    RMSE & 2.43 & 2.94 \\
+    中位绝对误差 & 1.45 & 2.14 \\
+    P95 绝对误差 & 4.99 & 5.15 \\
+    最大绝对误差 & 6.86 & 5.65 \\
+    $R^2$ & 0.54 & 0.30 \\
+    误差 $\leq 0.5$ 占比 & 0.15 & 0.13 \\
+    误差 $\leq 1.0$ 占比 & 0.35 & 0.25 \\
+    误差 $\leq 2.0$ 占比 & 0.66 & 0.44 \\
+    有符号偏差 (Bias) & +0.45 & +0.91 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+```
+
+```tex
+\begin{table}[!htbp]
+  \centering
+  \caption{Stage1 回归任务按距离档位误差（片段级）}
+  \label{tab:stage1_by_distance_final}
+  \vspace{0.5em}
+  \begin{tabular}{lcccccc}
+    \toprule
+    真实距离 (m) & 样本数 & MAE & RMSE & Bias & 误差 $\leq 1.0$ 占比 & 文件级 MAE \\
+    \midrule
+    $-3$ & 118 & 2.83 & 3.28 & +2.66 & 0.13 & 3.29 \\
+    $-1$ & 23 & 4.85 & 4.86 & +4.85 & 0.00 & 4.85 \\
+    $0$ & 69 & 0.67 & 0.83 & +0.23 & 0.74 & 0.23 \\
+    $+1$ & 46 & 2.14 & 2.32 & $-$2.14 & 0.09 & 2.14 \\
+    $+3$ & 53 & 2.44 & 2.66 & $-$1.21 & 0.08 & 2.92 \\
+    $+5$ & 46 & 1.24 & 1.32 & $-$1.24 & 0.37 & 1.24 \\
+    $+6$ & 46 & 0.61 & 0.74 & +0.48 & 0.85 & 0.48 \\
+    $+7$ & 46 & 0.95 & 1.04 & $-$0.95 & 0.61 & 0.95 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -118,10 +167,10 @@ File-level confusion matrix:
   \vspace{0.5em}
   \begin{tabular}{lccc}
     \toprule
-    任务 & 测试指标 1 & 测试指标 2 & 备注 \\
+    任务 & 主要指标 & 辅助指标 & 备注 \\
     \midrule
-    Stage2 分类 & Accuracy = 0.9415 & Macro-F1 = 0.9180 & 文件级 Accuracy = 0.9783 \\
-    Stage1 回归 & -- & -- & 双通道距离估计 \\
+    Stage2 分类 & Acc = 0.9415 & Macro-F1 = 0.9180 & 文件级 Acc = 0.9783 \\
+    Stage1 回归 & MAE = 1.90 m & RMSE = 2.43 m & 文件级 MAE = 2.46 m \\
     \bottomrule
   \end{tabular}
 \end{table}
