@@ -49,6 +49,7 @@ outputs/
 
 # Data (usually shouldn't be in git)
 raw/
+internoisedata/
 artifacts/
 data/raw/
 data/processed/

@@ -1,7 +1,7 @@
 task: stage2
 
 data:
-  manifest: artifacts/5sdata/stage2.csv
+  manifest: artifacts/internoise_5sdata/stage2.csv
   normalize: true
 
 model:
@@ -10,7 +10,7 @@ model:
   strides: [4, 4, 4, 4]
   hidden_dim: 128
   dropout: 0.2
-  num_classes: 3
+  num_classes: 5
 
 training:
   seed: 42

@@ -1,7 +1,7 @@
 task: stage1
 
 data:
-  manifest: artifacts/5sdata/stage1.csv
+  manifest: artifacts/internoise_5sdata/stage1.csv
   normalize: true
 
 model:
