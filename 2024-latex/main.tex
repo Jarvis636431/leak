@@ -2,10 +2,55 @@
 % !TEX program = xelatex
 
 \def\usewhat{xelatex}
-\documentclass[12pt,openany,oneside,fontset=fandol]{ctexbook}
+\documentclass[12pt,openany,oneside,fontset=none]{ctexbook}
+\setCJKmainfont{Songti SC}[
+  BoldFont = Heiti SC,
+  ItalicFont = Songti SC
+]
+\setCJKsansfont{Heiti SC}[
+  BoldFont = Heiti SC,
+  ItalicFont = Heiti SC
+]
+\setCJKmonofont{Songti SC}[
+  BoldFont = Heiti SC,
+  ItalicFont = Songti SC
+]
+\setCJKfamilyfont{zhsong}{Songti SC}
+\setCJKfamilyfont{zhhei}{Heiti SC}
+\setCJKfamilyfont{zhkai}{Songti SC}
+\setCJKfamilyfont{zhfs}{Songti SC}
+\providecommand{\songti}{\CJKfamily{zhsong}}
+\providecommand{\heiti}{\CJKfamily{zhhei}}
+\providecommand{\kaishu}{\CJKfamily{zhkai}}
+\providecommand{\fangsong}{\CJKfamily{zhfs}}
+\providecommand{\lishu}{\CJKfamily{zhhei}}
 \usepackage{anyfontsize}
 									% 本科生毕业论文通常采用单页排版
 \input{setup/package}							% 定义本文所使用宏包
+\setmainfont[
+  Path = /System/Library/Fonts/Supplemental/,
+  UprightFont = Times New Roman.ttf,
+  BoldFont = Times New Roman Bold.ttf,
+  ItalicFont = Times New Roman Italic.ttf,
+  BoldItalicFont = Times New Roman Bold Italic.ttf,
+  Ligatures = TeX
+]{Times New Roman}
+\setsansfont[
+  Path = /System/Library/Fonts/Supplemental/,
+  UprightFont = Times New Roman.ttf,
+  BoldFont = Times New Roman Bold.ttf,
+  ItalicFont = Times New Roman Italic.ttf,
+  BoldItalicFont = Times New Roman Bold Italic.ttf,
+  Ligatures = TeX
+]{Times New Roman}
+\setmonofont[
+  Path = /System/Library/Fonts/Supplemental/,
+  UprightFont = Times New Roman.ttf,
+  BoldFont = Times New Roman Bold.ttf,
+  ItalicFont = Times New Roman Italic.ttf,
+  BoldItalicFont = Times New Roman Bold Italic.ttf,
+  Ligatures = TeX
+]{Times New Roman}
 \graphicspath{figures/}							% 定义所有的图像文件在 figures 子目录下
 
 \begin{document}							% 开始全文

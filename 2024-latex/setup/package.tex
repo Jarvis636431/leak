@@ -4,8 +4,7 @@
 
 %%%%%%%%%% Package %%%%%%%%%%%%
 \usepackage{CJK}
-\usepackage{lmodern}
-\usepackage[T1]{fontenc}
+% XeLaTeX uses fontspec fonts configured in main.tex.
 \usepackage{graphicx}                       % 支持插图处理
 \usepackage[a4paper,top= 27.5true mm,bottom=25.4 true mm,left=35.7 true mm,right=27.7 true mm, headheight=15true mm,footskip=17.5true mm]{geometry}
                                             % 支持版面尺寸设置
@@ -28,7 +27,7 @@
 \usepackage[sort&compress,numbers]{natbib}  % 支持引用缩写的宏包
 \usepackage{enumitem}                       % 使用enumitem宏包,改变列表项的格式
 \usepackage{calc}                           % 长度可以用+ - * / 进行计算
-\usepackage{txfonts}                        % 字体宏包
+% \usepackage{txfonts}                        % 字体宏包
 \usepackage{bm}                             % 处理数学公式中的黑斜体的宏包
 \usepackage[amsmath,thmmarks,hyperref]{ntheorem}  % 定理类环境宏包，其中 amsmath 选项用来兼容 AMS LaTeX 的宏包
 \usepackage{CJKnumb}                        % 提供将阿拉伯数字转换成中文数字的命令

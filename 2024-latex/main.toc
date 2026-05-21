@@ -25,39 +25,39 @@
 \contentsline {subsection}{\numberline {2.8.1}交叉熵损失与分类任务优化}{8}{section*.27}%
 \contentsline {subsection}{\numberline {2.8.2}Smooth L1 损失与距离回归任务优化}{9}{section*.28}%
 \contentsline {subsection}{\numberline {2.8.3}AdamW 优化器与余弦退火调度}{9}{section*.29}%
-\contentsline {chapter}{\numberline {第三章\hspace {.3em}}两阶段泄漏检测模型设计}{11}{section*.30}%
-\contentsline {section}{\numberline {3.1}方法基础}{11}{section*.31}%
-\contentsline {section}{\numberline {3.2}总体框架}{11}{section*.32}%
-\contentsline {section}{\numberline {3.3}输入表示与归一化}{12}{section*.33}%
-\contentsline {section}{\numberline {3.4}一维卷积特征提取网络}{12}{section*.34}%
-\contentsline {section}{\numberline {3.5}分类头与回归头设计}{13}{section*.35}%
-\contentsline {subsection}{\numberline {3.5.1}Stage2 分类模型}{13}{section*.36}%
-\contentsline {subsection}{\numberline {3.5.2}Stage1 回归模型}{13}{section*.37}%
-\contentsline {section}{\numberline {3.6}训练策略}{13}{section*.38}%
-\contentsline {section}{\numberline {3.7}正则化与过拟合抑制策略}{14}{section*.39}%
-\contentsline {subsection}{\numberline {3.7.1}早停机制}{14}{section*.40}%
-\contentsline {subsection}{\numberline {3.7.2}权重衰减}{14}{section*.41}%
-\contentsline {subsection}{\numberline {3.7.3}梯度裁剪}{14}{section*.42}%
-\contentsline {subsection}{\numberline {3.7.4}批归一化的正则化效应}{15}{section*.43}%
-\contentsline {subsection}{\numberline {3.7.5}数据层面的泛化保障}{15}{section*.44}%
-\contentsline {chapter}{\numberline {第四章\hspace {.3em}}实验设计与结果分析}{16}{section*.45}%
-\contentsline {section}{\numberline {4.1}实验环境与配置}{16}{section*.46}%
-\contentsline {section}{\numberline {4.2}评价指标}{16}{section*.47}%
-\contentsline {subsection}{\numberline {4.2.1}分类任务指标}{16}{section*.48}%
-\contentsline {subsection}{\numberline {4.2.2}回归任务指标}{17}{section*.49}%
-\contentsline {section}{\numberline {4.3}实验结果}{17}{section*.50}%
-\contentsline {subsection}{\numberline {4.3.1}Stage2 分类结果}{17}{section*.51}%
-\contentsline {subsection}{\numberline {4.3.2}Stage1 距离回归结果}{19}{section*.60}%
-\contentsline {section}{\numberline {4.4}结果分析}{22}{section*.77}%
-\contentsline {subsection}{\numberline {4.4.1}Stage2 分类结果分析}{22}{section*.78}%
-\contentsline {subsection}{\numberline {4.4.2}Stage1 回归结果分析}{23}{section*.79}%
-\contentsline {subsection}{\numberline {4.4.3}对比实验与消融实验分析}{24}{section*.80}%
-\contentsline {subsection}{\numberline {4.4.4}训练过程分析}{25}{section*.81}%
-\contentsline {chapter}{\numberline {第五章\hspace {.3em}}结论与展望}{26}{section*.82}%
-\contentsline {section}{\numberline {5.1}全文总结}{26}{section*.83}%
-\contentsline {section}{\numberline {5.2}后续工作展望}{27}{section*.84}%
-\contentsline {chapter}{参考文献}{29}{section*.87}%
+\contentsline {chapter}{\numberline {第三章\hspace {.3em}}两阶段泄漏检测模型设计}{10}{section*.30}%
+\contentsline {section}{\numberline {3.1}方法基础}{10}{section*.31}%
+\contentsline {section}{\numberline {3.2}总体框架}{10}{section*.32}%
+\contentsline {section}{\numberline {3.3}输入表示与归一化}{11}{section*.33}%
+\contentsline {section}{\numberline {3.4}一维卷积特征提取网络}{11}{section*.34}%
+\contentsline {section}{\numberline {3.5}分类头与回归头设计}{12}{section*.35}%
+\contentsline {subsection}{\numberline {3.5.1}Stage2 分类模型}{12}{section*.36}%
+\contentsline {subsection}{\numberline {3.5.2}Stage1 回归模型}{12}{section*.37}%
+\contentsline {section}{\numberline {3.6}训练策略}{12}{section*.38}%
+\contentsline {section}{\numberline {3.7}正则化与过拟合抑制策略}{13}{section*.39}%
+\contentsline {subsection}{\numberline {3.7.1}早停机制}{13}{section*.40}%
+\contentsline {subsection}{\numberline {3.7.2}权重衰减}{13}{section*.41}%
+\contentsline {subsection}{\numberline {3.7.3}梯度裁剪}{13}{section*.42}%
+\contentsline {subsection}{\numberline {3.7.4}批归一化的正则化效应}{14}{section*.43}%
+\contentsline {subsection}{\numberline {3.7.5}数据层面的泛化保障}{14}{section*.44}%
+\contentsline {chapter}{\numberline {第四章\hspace {.3em}}实验设计与结果分析}{15}{section*.45}%
+\contentsline {section}{\numberline {4.1}实验环境与配置}{15}{section*.46}%
+\contentsline {section}{\numberline {4.2}评价指标}{15}{section*.47}%
+\contentsline {subsection}{\numberline {4.2.1}分类任务指标}{15}{section*.48}%
+\contentsline {subsection}{\numberline {4.2.2}回归任务指标}{16}{section*.49}%
+\contentsline {section}{\numberline {4.3}实验结果}{16}{section*.50}%
+\contentsline {subsection}{\numberline {4.3.1}Stage2 分类结果}{16}{section*.51}%
+\contentsline {subsection}{\numberline {4.3.2}Stage1 距离回归结果}{18}{section*.60}%
+\contentsline {section}{\numberline {4.4}结果分析}{21}{section*.77}%
+\contentsline {subsection}{\numberline {4.4.1}Stage2 分类结果分析}{21}{section*.78}%
+\contentsline {subsection}{\numberline {4.4.2}Stage1 回归结果分析}{22}{section*.79}%
+\contentsline {subsection}{\numberline {4.4.3}对比实验与消融实验分析}{23}{section*.80}%
+\contentsline {subsection}{\numberline {4.4.4}训练过程分析}{24}{section*.81}%
+\contentsline {chapter}{\numberline {第五章\hspace {.3em}}结论与展望}{25}{section*.82}%
+\contentsline {section}{\numberline {5.1}全文总结}{25}{section*.83}%
+\contentsline {section}{\numberline {5.2}后续工作展望}{26}{section*.84}%
+\contentsline {chapter}{参考文献}{28}{section*.87}%
 \ttl@change@i {\@ne }{chapter}{2em}{\vspace {.25\baselineskip }\sihao \song }{\thecontentslabel \qquad }{}{\titlerule *[5pt]{$\cdot $}\sihao \contentspage }\relax 
 \ttl@change@v {chapter}{}{}{}\relax 
-\contentsline {chapter}{致\hspace {1em} 谢}{30}{section*.88}%
+\contentsline {chapter}{致\hspace {1em} 谢}{29}{section*.88}%
 \contentsfinish 

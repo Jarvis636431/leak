@@ -283,7 +283,7 @@
 
 %%%%%%%%%%%%%%%%%%%    Abstract    %%%%%%%%%%%%%%%%%%%%%%%
 \def\makeabstract{
-	\titleformat{\chapter}{\centering\sanhao\hei}{\chaptername}{2em}{} %"摘要"三号黑体居中
+	\titleformat{\chapter}{\centering\erhao\song\bfseries}{\chaptername}{2em}{} %"摘要"二号宋体加粗居中
 
 %%%%% Chinese Abstract %%%%%
 	\clearpage
@@ -296,20 +296,20 @@
 	\vspace{\baselineskip}
 
 	\hangafter=1\hangindent=0pt\noindent
-	{\hei\xiaosi 关键词：} \@ckeywords
+	{\song\sihao\bfseries 关键词：} \@ckeywords
 	% \thispagestyle{empty}
 
 %%%%% English Abstract %%%%%
 	\clearpage
 	\markboth{ABSTRACT}{ABSTRACT}
 	\pdfbookmark[0]{ABSTRACT}{eabstract}
-	\chapter*{\bf{ABSTRACT}}
+	\chapter*{ABSTRACT}
 
 	\@eabstract
 	\vspace{\baselineskip}
 
 	\hangafter=1\hangindent=0pt\noindent
-	{\textbf{KEY WORDS:}} \@ekeywords
+	{\rmfamily\sihao\bfseries KEY WORDS:} \@ekeywords
 	% \thispagestyle{empty}
 }
 
