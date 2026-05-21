@@ -51,6 +51,13 @@ DEPTH_VARIANTS: list[dict[str, Any]] = [
     {"name": "depth_deep", "channels": [32, 64, 128, 256, 512], "kernel_sizes": [15, 9, 7, 5, 3], "strides": [4, 4, 4, 4, 2], "desc": "Deep: 32→64→128→256→512"},
 ]
 
+
+def _filter_variants(variants: list[dict[str, Any]], selected_names: set[str] | None) -> list[dict[str, Any]]:
+    """Filter ablation variants by their short names."""
+    if not selected_names:
+        return variants
+    return [variant for variant in variants if variant["name"] in selected_names]
+
 # ---------------------------------------------------------------------------
 # Data-loading helpers for ablation
 # ---------------------------------------------------------------------------
@@ -254,10 +261,14 @@ def _run_ablation_variant(
 # ---------------------------------------------------------------------------
 
 
-def run_window_ablation(base_config: dict, output_base: str | Path) -> list[dict[str, Any]]:
+def run_window_ablation(
+    base_config: dict,
+    output_base: str | Path,
+    selected_variants: set[str] | None = None,
+) -> list[dict[str, Any]]:
     """Ablate input signal length."""
     results: list[dict[str, Any]] = []
-    for variant in WINDOW_VARIANTS:
+    for variant in _filter_variants(WINDOW_VARIANTS, selected_variants):
         print(f"\n{'='*60}\nWindow ablation: {variant['name']} ({variant['desc']})\n{'='*60}")
         summary = _run_ablation_variant(
             base_config,
@@ -272,13 +283,17 @@ def run_window_ablation(base_config: dict, output_base: str | Path) -> list[dict
     return results
 
 
-def run_channel_ablation(base_config: dict, output_base: str | Path) -> list[dict[str, Any]]:
+def run_channel_ablation(
+    base_config: dict,
+    output_base: str | Path,
+    selected_variants: set[str] | None = None,
+) -> list[dict[str, Any]]:
     """Ablate number of input channels."""
     task = base_config["task"]
     variants = CHANNEL_VARIANTS_STAGE2 if task == "stage2" else CHANNEL_VARIANTS_STAGE1
 
     results: list[dict[str, Any]] = []
-    for variant in variants:
+    for variant in _filter_variants(variants, selected_variants):
         print(f"\n{'='*60}\nChannel ablation: {variant['name']} ({variant['desc']})\n{'='*60}")
 
         def _modify_channel_config(cfg: dict, in_channels: int = variant["in_channels"]) -> None:
@@ -298,14 +313,18 @@ def run_channel_ablation(base_config: dict, output_base: str | Path) -> list[dic
     return results
 
 
-def run_loss_ablation(base_config: dict, output_base: str | Path) -> list[dict[str, Any]]:
+def run_loss_ablation(
+    base_config: dict,
+    output_base: str | Path,
+    selected_variants: set[str] | None = None,
+) -> list[dict[str, Any]]:
     """Ablate regression loss function (stage1 only)."""
     if base_config["task"] != "stage1":
         print("Loss ablation is only meaningful for stage1 (regression). Skipping.")
         return []
 
     results: list[dict[str, Any]] = []
-    for variant in LOSS_VARIANTS:
+    for variant in _filter_variants(LOSS_VARIANTS, selected_variants):
         print(f"\n{'='*60}\nLoss ablation: {variant['name']} ({variant['desc']})\n{'='*60}")
 
         def _modify_loss_config(cfg: dict, loss_name: str = variant["loss"]) -> None:
@@ -322,10 +341,14 @@ def run_loss_ablation(base_config: dict, output_base: str | Path) -> list[dict[s
     return results
 
 
-def run_depth_ablation(base_config: dict, output_base: str | Path) -> list[dict[str, Any]]:
+def run_depth_ablation(
+    base_config: dict,
+    output_base: str | Path,
+    selected_variants: set[str] | None = None,
+) -> list[dict[str, Any]]:
     """Ablate network depth (channel configuration)."""
     results: list[dict[str, Any]] = []
-    for variant in DEPTH_VARIANTS:
+    for variant in _filter_variants(DEPTH_VARIANTS, selected_variants):
         print(f"\n{'='*60}\nDepth ablation: {variant['name']} ({variant['desc']})\n{'='*60}")
 
         def _modify_depth_config(cfg: dict, ch=variant["channels"], ks=variant["kernel_sizes"], st=variant["strides"]) -> None:
@@ -393,6 +416,16 @@ def main() -> None:
         default=["all"],
         help="Which ablation dimensions to run",
     )
+    parser.add_argument(
+        "--variants",
+        type=str,
+        nargs="+",
+        default=None,
+        help=(
+            "Optional variant short names to run, e.g. ch1_single loss_mse. "
+            "When omitted, all variants for the selected ablation dimensions are run."
+        ),
+    )
     parser.add_argument("--resume", type=str, default=None, help="Path to checkpoint to resume from (not used in ablation)")
     args = parser.parse_args()
 
@@ -403,24 +436,42 @@ def main() -> None:
     ablations = args.ablation
     if "all" in ablations:
         ablations = ["window", "channel", "loss", "depth"]
+    selected_variants = set(args.variants) if args.variants else None
 
     all_results: list[dict[str, Any]] = []
 
     if "window" in ablations:
-        results = run_window_ablation(base_config, str(output_base))
+        results = run_window_ablation(base_config, str(output_base), selected_variants)
         all_results.extend(results)
 
     if "channel" in ablations:
-        results = run_channel_ablation(base_config, str(output_base))
+        results = run_channel_ablation(base_config, str(output_base), selected_variants)
         all_results.extend(results)
 
     if "loss" in ablations:
-        results = run_loss_ablation(base_config, str(output_base))
+        results = run_loss_ablation(base_config, str(output_base), selected_variants)
         all_results.extend(results)
 
     if "depth" in ablations:
-        results = run_depth_ablation(base_config, str(output_base))
+        results = run_depth_ablation(base_config, str(output_base), selected_variants)
         all_results.extend(results)
+
+    if not all_results:
+        available = sorted(
+            {
+                variant["name"]
+                for variant in WINDOW_VARIANTS
+                + CHANNEL_VARIANTS_STAGE1
+                + CHANNEL_VARIANTS_STAGE2
+                + LOSS_VARIANTS
+                + DEPTH_VARIANTS
+            }
+        )
+        raise SystemExit(
+            "No ablation variants matched. "
+            f"Selected variants: {sorted(selected_variants or [])}. "
+            f"Available variant names: {available}"
+        )
 
     # Write combined results
     fields = REGRESSION_FIELDS if base_config["task"] == "stage1" else ABLATION_FIELDS

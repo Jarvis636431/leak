@@ -1,8 +1,6 @@
 # Experiment Tables
 
-This file collects the current paper-ready experiment tables. Stage2 has been
-updated with the current classification results; Stage1 values should be filled
-after the regression run finishes.
+This file collects the current paper-ready experiment tables.
 
 ## 1. Dataset Statistics
 
@@ -96,14 +94,14 @@ File-level confusion matrix:
   \caption{Stage1 回归任务测试结果}
   \label{tab:stage1_results_final}
   \vspace{0.5em}
-  \begin{tabular}{lccc}
+  \begin{tabular}{lcc}
     \toprule
-    评测层级 & 指标 & 训练集 & 测试集 \\
+    评测层级 & 指标 & 测试集 \\
     \midrule
-    片段级 & MAE & 0.35 & 1.90 \\
-    片段级 & RMSE & 0.50 & 2.43 \\
-    文件级 & MAE & 0.15 & 2.46 \\
-    文件级 & RMSE & 0.20 & 2.94 \\
+    片段级 & MAE & 1.90 \\
+    片段级 & RMSE & 2.43 \\
+    文件级 & MAE & 2.46 \\
+    文件级 & RMSE & 2.94 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -157,7 +155,49 @@ File-level confusion matrix:
 \end{table}
 ```
 
-## 4. Main Results Summary
+## 4. Baseline Comparisons
+
+```tex
+\begin{table}[!htbp]
+  \centering
+  \caption{Stage2 分类任务传统基线对比}
+  \label{tab:stage2_baselines_final}
+  \vspace{0.5em}
+  \begin{tabular}{lcccc}
+    \toprule
+    方法 & 片段级 Accuracy & 片段级 Macro-F1 & 文件级 Accuracy & 文件级 Macro-F1 \\
+    \midrule
+    一维 CNN & 0.9415 & 0.9180 & 0.9783 & 0.9836 \\
+    SVM & 0.9300 & 0.9046 & 1.0000 & 1.0000 \\
+    KNN & 0.9277 & 0.9155 & 0.9783 & 0.9751 \\
+    决策树 & 0.8738 & 0.8309 & 0.9565 & 0.9600 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+```
+
+```tex
+\begin{table}[!htbp]
+  \centering
+  \caption{Stage1 回归任务传统基线对比}
+  \label{tab:stage1_baselines_final}
+  \vspace{0.5em}
+  \begin{tabular}{lcccccc}
+    \toprule
+    方法 & \multicolumn{3}{c}{片段级} & \multicolumn{3}{c}{文件级} \\
+    \cmidrule(lr){2-4}\cmidrule(lr){5-7}
+     & MAE & RMSE & 误差 $\leq 1.0$ & MAE & RMSE & 误差 $\leq 1.0$ \\
+    \midrule
+    一维 CNN & 1.90 & 2.43 & 0.35 & 2.46 & 2.94 & 0.25 \\
+    SVM & 1.51 & 1.91 & 0.46 & 1.83 & 2.20 & 0.38 \\
+    KNN & 1.76 & 2.29 & 0.44 & 2.02 & 2.43 & 0.28 \\
+    决策树 & 2.44 & 2.97 & 0.34 & 2.23 & 2.58 & 0.28 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+```
+
+## 5. Main Results Summary
 
 ```tex
 \begin{table}[!htbp]
