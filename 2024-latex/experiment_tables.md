@@ -1,8 +1,8 @@
 # Experiment Tables
 
-This file intentionally contains placeholders after switching to the Internoise
-dataset. Replace these tables after the new Stage2 and Stage1 training runs
-finish.
+This file collects the current Internoise experiment tables. Stage2 has been
+updated from `outputs/stage2/internoise_stage2`; Stage1 remains pending until
+the refreshed regression run finishes.
 
 ## 1. Dataset Statistics
 
@@ -16,8 +16,8 @@ finish.
     \toprule
     任务 & 总样本数 & 训练集 & 验证集 & 测试集 \\
     \midrule
-    Stage2 分类 & 待填 & 待填 & 待填 & 待填 \\
-    Stage1 回归 & 待填 & 待填 & 待填 & 待填 \\
+    Stage2 分类 & 11704 & 7940 & 2464 & 1300 \\
+    Stage1 回归 & 3737 & 2532 & 758 & 447 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -28,17 +28,61 @@ finish.
 ```tex
 \begin{table}[!htbp]
   \centering
-  \caption{Stage2 分类任务测试结果（待更新）}
+  \caption{Stage2 分类任务测试结果}
   \label{tab:stage2_results_final}
   \vspace{0.5em}
   \begin{tabular}{lcc}
     \toprule
     评测层级 & 指标 & 数值 \\
     \midrule
-    片段级 & Accuracy & 待填 \\
-    片段级 & Macro-F1 & 待填 \\
-    文件级 & Accuracy & 待填 \\
-    文件级 & Macro-F1 & 待填 \\
+    片段级 & Accuracy & 0.9415 \\
+    片段级 & Macro-F1 & 0.9180 \\
+    文件级 & Accuracy & 0.9783 \\
+    文件级 & Macro-F1 & 0.9836 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+```
+
+Segment-level confusion matrix:
+
+```tex
+\begin{table}[!htbp]
+  \centering
+  \caption{Stage2 测试集片段级混淆矩阵}
+  \label{tab:stage2_segment_cm}
+  \vspace{0.5em}
+  \begin{tabular}{cccccc}
+    \toprule
+    真实$\backslash$预测 & 0 & 1 & 2 & 3 & 4 \\
+    \midrule
+    0 & 406 & 0 & 0 & 0 & 0 \\
+    1 & 1 & 178 & 0 & 31 & 0 \\
+    2 & 15 & 27 & 90 & 0 & 0 \\
+    3 & 2 & 0 & 0 & 274 & 0 \\
+    4 & 0 & 0 & 0 & 0 & 276 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+```
+
+File-level confusion matrix:
+
+```tex
+\begin{table}[!htbp]
+  \centering
+  \caption{Stage2 测试集文件级混淆矩阵}
+  \label{tab:stage2_file_cm}
+  \vspace{0.5em}
+  \begin{tabular}{cccccc}
+    \toprule
+    真实$\backslash$预测 & 0 & 1 & 2 & 3 & 4 \\
+    \midrule
+    0 & 14 & 0 & 0 & 0 & 0 \\
+    1 & 0 & 9 & 0 & 0 & 0 \\
+    2 & 1 & 0 & 10 & 0 & 0 \\
+    3 & 0 & 0 & 0 & 6 & 0 \\
+    4 & 0 & 0 & 0 & 0 & 6 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -76,7 +120,7 @@ finish.
     \toprule
     任务 & 测试指标 1 & 测试指标 2 & 备注 \\
     \midrule
-    Stage2 分类 & 待填 & 待填 & 五分类 \\
+    Stage2 分类 & Accuracy = 0.9415 & Macro-F1 = 0.9180 & 文件级 Accuracy = 0.9783 \\
     Stage1 回归 & 待填 & 待填 & 双通道距离估计 \\
     \bottomrule
   \end{tabular}

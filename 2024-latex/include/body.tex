@@ -102,9 +102,11 @@ y_t = \sum_{k=0}^{K-1} w_k \cdot x_{t + k}
 
 \section{原始数据组织方式}
 
-本项目原始数据以 CSV 文件形式存储，并按照是否泄漏划分为 \texttt{raw/leak} 与 \texttt{raw/normal} 两类目录。每个文件对应一组实验采样记录，文件名采用 \texttt{ABC} 编号形式，例如 \texttt{ABC91.csv}。数据样本包含左右两个传感通道，分别对应后续建模中使用的左通道信号与右通道信号。数据处理脚本统一读取原始文件，跳过首行后将信号转为数值矩阵。
+本项目原始数据以 CSV 文件形式存储，并按照是否泄漏划分为泄漏样本与正常样本两类。每个文件对应一组实验采样记录，文件名采用 \texttt{ABC} 编号形式，例如 \texttt{ABC91.csv}。数据样本包含左右两个传感通道，分别对应后续建模中使用的左通道信号与右通道信号。数据处理脚本统一读取原始文件，跳过首行后将信号转为数值矩阵。
 
 这种数据组织方式具有两个优点。其一，原始信号与实验编号一一对应，便于依据编号映射标签；其二，双通道结构保留了泄漏传播在不同传感位置上的响应差异，为距离估计提供了数据基础。此外，CSV 格式便于直接查看和调试，降低了数据处理流程的维护成本。
+
+从实验复现角度看，文件级组织还可以避免数据划分中的潜在信息泄漏。如果直接以切分后的片段为单位随机划分训练集和测试集，同一原始文件中相邻片段可能同时出现在不同数据子集中，导致训练集与测试集之间存在较强相似性，进而高估模型泛化能力。因此，本文在数据划分时以原始文件或文件组为基本单位，使同一原始实验记录生成的全部片段只属于一个数据子集。该策略能够更接近实际应用场景：模型在测试阶段面对的是未参与训练的完整实验记录，而不是同一记录中被切分出的相邻片段。
 
 \section{标签映射与任务拆分}
 
@@ -133,24 +135,26 @@ L = 25600 \times 5 = 128000
 
 \section{数据集统计}
 
-切换到 Internoise 新数据集后，本文所使用的数据规模将根据 \texttt{artifacts/internoise\_5sdata} 中的清单重新统计。当前表格仅作为论文排版占位，待 Stage2 与 Stage1 新训练结果完成后统一更新。
+本文所使用的数据规模根据生成后的训练清单统计，结果如表\ref{tab:dataset_stats}所示。
 
 \begin{table}[!htbp]
   \centering
-  \caption{Internoise 数据集统计结果（待更新）}
+  \caption{数据集统计结果}
   \label{tab:dataset_stats}
   \vspace{0.5em}
   \begin{tabular}{lcc}
     \toprule
     任务 & 样本数量 & 监督目标 \\
     \midrule
-    Stage2 分类 & 待填 & 五分类标签 \\
-    Stage1 回归 & 待填 & 泄漏距离 \\
+    Stage2 分类 & 11704 & 五分类标签 \\
+    Stage1 回归 & 3737 & 泄漏距离 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-新数据集的类别分布、距离标签分布和训练/验证/测试划分将在新实验完成后补充。后续分析将重点关注五分类任务中的类别不均衡问题，以及回归任务在不同距离档位上的误差差异。
+其中，\texttt{Stage2} 任务按训练集、验证集和测试集划分后分别包含 7940、2464 和 1300 条单通道样本；\texttt{Stage1} 任务分别包含 2532、758 和 447 对双通道样本。分类任务由五个类别构成，包含正常状态与多种泄漏形态。回归任务只使用泄漏样本，因为正常样本不存在泄漏距离这一物理量，不适合作为距离回归监督信号。
+
+从样本构成上看，分类任务的样本数量明显多于回归任务。这是因为分类阶段将左右通道分别作为独立单通道样本使用，而回归阶段需要将同一时间窗口下的左右通道配对为一个双通道样本；同时，正常样本只参与分类任务，不参与距离回归任务。这样的任务拆分使分类模型能够充分利用正常与泄漏样本之间的差异，而回归模型则集中学习泄漏样本内部的双通道传播差异，有助于降低不同监督目标之间的干扰。
 
 \section{相关损失函数与优化理论}
 
@@ -350,25 +354,25 @@ Acc_{\tau} = \frac{1}{N}\sum_{i=1}^{N}\mathbf{1}(|\hat{d}_i-d_i|\leq \tau)
 
 \section{实验结果}
 
-本节原有实验结果已随数据集切换清理。当前项目已改用 Internoise 数据集，并将重新基于 \texttt{outputs/stage2/internoise\_stage2} 与 \texttt{outputs/stage1/internoise\_stage1} 中的新训练结果生成表格、曲线和混淆矩阵。以下内容仅作为论文结构占位，避免继续引用旧数据集上的指标。
+当前项目已改用 Internoise 数据集，并基于 \texttt{outputs/stage2/internoise\_stage2} 中的训练结果完成 \texttt{Stage2} 分类任务分析。\texttt{Stage1} 回归任务仍在重新训练，相关结果暂以占位形式保留，待训练完成后统一补充。
 
 \subsection{Stage2 分类结果}
 
-\texttt{Stage2} 任务当前为五分类任务。待新训练完成后，将在此处报告片段级 Accuracy、片段级 Macro-F1、文件级 Accuracy、文件级 Macro-F1，并结合五分类混淆矩阵分析类别间混淆关系。
+\texttt{Stage2} 任务当前为五分类任务。模型在第 20 轮触发早停，最佳验证集准确率为 0.9968。测试集结果如表\ref{tab:stage2_results}所示：片段级 Accuracy 为 0.9415，片段级 Macro-F1 为 0.9180；将同一原始文件下的多个片段按平均 logits 聚合后，文件级 Accuracy 提升至 0.9783，文件级 Macro-F1 为 0.9836。
 
 \begin{table}[!htbp]
   \centering
-  \caption{Stage2 分类任务测试结果（待更新）}
+  \caption{Stage2 分类任务测试结果}
   \label{tab:stage2_results}
   \vspace{0.5em}
   \begin{tabular}{lcc}
     \toprule
     评测层级 & 指标 & 数值 \\
     \midrule
-    片段级 & Accuracy & 待填 \\
-    片段级 & Macro-F1 & 待填 \\
-    文件级 & Accuracy & 待填 \\
-    文件级 & Macro-F1 & 待填 \\
+    片段级 & Accuracy & 0.9415 \\
+    片段级 & Macro-F1 & 0.9180 \\
+    文件级 & Accuracy & 0.9783 \\
+    文件级 & Macro-F1 & 0.9836 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -384,8 +388,25 @@ Acc_{\tau} = \frac{1}{N}\sum_{i=1}^{N}\mathbf{1}(|\hat{d}_i-d_i|\leq \tau)
     \centering
     \includegraphics[width=\textwidth]{figures/experiments/stage2_file_confusion_matrix.png}
   \end{minipage}
-  \caption{Stage2 分类任务混淆矩阵占位图（左：片段级；右：文件级）}
+  \caption{Stage2 分类任务混淆矩阵（左：片段级；右：文件级）}
   \label{fig:stage2_confusion_matrix}
+\end{figure}
+
+从混淆矩阵可以看出，类别 0、类别 3 和类别 4 的识别较为稳定，其中类别 4 在测试集中全部被正确识别。主要误差集中在类别 1 与类别 3、类别 2 与类别 0/1 之间：片段级测试中，类别 1 有 31 个片段被误判为类别 3，类别 2 有 15 个片段被误判为类别 0、27 个片段被误判为类别 1。文件级聚合后误差明显减少，46 个测试文件中仅 1 个类别 2 文件被判为类别 0，说明多片段聚合能够有效削弱单个片段的预测波动。
+
+\begin{figure}[!htbp]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/experiments/stage2_curves/loss_curves.png}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.48\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{figures/experiments/stage2_curves/accuracy_curves.png}
+  \end{minipage}
+  \caption{Stage2 分类任务训练过程曲线（左：损失曲线；右：准确率曲线）}
+  \label{fig:stage2_training_curves}
 \end{figure}
 
 \subsection{Stage1 距离回归结果}
@@ -464,7 +485,7 @@ Acc_{\tau} = \frac{1}{N}\sum_{i=1}^{N}\mathbf{1}(|\hat{d}_i-d_i|\leq \tau)
     \toprule
     任务 & 测试指标 1 & 测试指标 2 & 备注 \\
     \midrule
-    Stage2 分类 & 待填 & 待填 & 五分类 \\
+    Stage2 分类 & Accuracy = 0.9415 & Macro-F1 = 0.9180 & 文件级 Accuracy = 0.9783 \\
     Stage1 回归 & 待填 & 待填 & 双通道距离估计 \\
     \bottomrule
   \end{tabular}
@@ -472,7 +493,7 @@ Acc_{\tau} = \frac{1}{N}\sum_{i=1}^{N}\mathbf{1}(|\hat{d}_i-d_i|\leq \tau)
 
 \section{结果分析}
 
-本节将在新实验结果生成后补充。计划从三个层面展开分析：第一，结合 Stage2 五分类混淆矩阵判断正常类与各泄漏形态之间的可分性；第二，结合 Stage1 的片段级与文件级误差判断多片段聚合是否提升定位稳定性；第三，按距离档位拆分误差，分析模型是否存在系统性高估或低估。
+当前 \texttt{Stage2} 实验表明，一维卷积模型能够在五分类设置下取得较高的文件级识别性能。片段级指标低于文件级指标，说明单个 5 秒片段仍可能受到局部噪声、信号过渡状态或类别间波形相似性的影响；而文件级聚合能够利用同一原始文件中的多片段信息，提升最终判别稳定性。后续 \texttt{Stage1} 训练完成后，将进一步结合片段级与文件级误差判断多片段聚合是否同样能够提升距离回归稳定性，并按距离档位拆分误差，分析模型是否存在系统性高估或低估。
 
 \chapter{结论与展望}
 
@@ -484,9 +505,9 @@ Acc_{\tau} = \frac{1}{N}\sum_{i=1}^{N}\mathbf{1}(|\hat{d}_i-d_i|\leq \tau)
 
 第二，设计了两阶段泄漏检测框架，将复杂的泄漏检测与定位问题拆分为“先分类、后定位”的子任务序列。Stage2 分类任务以单通道分段信号为输入，采用一维卷积神经网络实现五分类识别；Stage1 回归任务以左右双通道信号对为输入，采用结构相同的卷积网络实现泄漏距离估计。
 
-第三，搭建了统一的训练框架与多维度评测体系。训练框架通过配置文件区分任务类型、数据集和网络结构，支持分类与回归任务的统一调度与灵活扩展。在评价指标方面，分类任务将报告片段级与文件级准确率、macro-F1 和混淆矩阵；回归任务将报告 MAE、RMSE、误差方向、容差命中率、按距离档位拆分误差和文件级聚合误差。
+第三，搭建了统一的训练框架与多维度评测体系。训练框架通过配置文件区分任务类型、数据集和网络结构，支持分类与回归任务的统一调度与灵活扩展。在评价指标方面，分类任务报告片段级与文件级准确率、macro-F1 和混淆矩阵；回归任务将报告 MAE、RMSE、误差方向、容差命中率、按距离档位拆分误差和文件级聚合误差。
 
-目前旧数据集上的实验结果已经清理，最终结论中的定量指标将在 Internoise 新数据集训练完成后补充。
+目前旧数据集上的实验结果已经清理，\texttt{Stage2} 五分类任务在 Internoise 测试集上取得片段级 Accuracy 0.9415、Macro-F1 0.9180，文件级 Accuracy 0.9783、Macro-F1 0.9836。\texttt{Stage1} 回归任务的定量指标将在新训练完成后补充。
 
 \section{后续工作展望}
 

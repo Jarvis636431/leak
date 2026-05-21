@@ -1,0 +1,185 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\citation{li2023pipeline}
+\citation{sharma2022pipeline}
+\citation{kiymik2005FT}
+\@writefile{toc}{\contentsline {chapter}{\numberline {第一章\hspace  {.3em}}绪论}{1}{section*.7}\protected@file@percent }
+\@writefile{lof}{\addvspace {10.0pt}}
+\@writefile{lot}{\addvspace {10.0pt}}
+\@writefile{loa}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {1.1}研究背景与意义}{1}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {1.2}国内外研究现状}{1}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.1}传统管道泄漏检测方法}{1}{section*.10}\protected@file@percent }
+\citation{chen2020svm}
+\citation{zhou2016MLbook}
+\citation{wang2022deep}
+\citation{goodfellow2016deep}
+\citation{kiranyaz2021convolutional}
+\citation{wang2022deep}
+\citation{zhang2019cnn}
+\citation{hou2022multiscale}
+\citation{nguyen2021attention}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.2}基于机器学习的检测方法}{2}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.3}基于深度学习的时序信号处理方法}{2}{section*.12}\protected@file@percent }
+\citation{goodfellow2016deep}
+\citation{ioffe2015batch}
+\citation{ioffe2015batch}
+\citation{hendrycks2016gelu}
+\citation{hendrycks2016gelu}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.4}深度学习在时序信号处理中的基础理论}{3}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}研究问题与本文工作}{3}{section*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {1.4}论文结构安排}{4}{section*.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {第二章\hspace  {.3em}}管道泄漏探测原理与数据集构建}{5}{section*.16}\protected@file@percent }
+\@writefile{lof}{\addvspace {10.0pt}}
+\@writefile{lot}{\addvspace {10.0pt}}
+\@writefile{loa}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}管道泄漏探测基本原理}{5}{section*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}泄漏声信号形成机制}{5}{section*.18}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}数据特征分析与建模需求}{6}{section*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}原始数据组织方式}{6}{section*.20}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.5}标签映射与任务拆分}{6}{section*.21}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.6}分段策略与样本生成}{7}{section*.22}\protected@file@percent }
+\citation{girshick2015fast}
+\@writefile{toc}{\contentsline {section}{\numberline {2.7}数据集统计}{8}{section*.23}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2-1}{\ignorespaces Internoise 数据集统计结果}}{8}{section*.25}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{tab:dataset_stats}{{2-1}{8}{Internoise 数据集统计结果}{section*.25}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.8}相关损失函数与优化理论}{8}{section*.26}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.1}交叉熵损失与分类任务优化}{8}{section*.27}\protected@file@percent }
+\citation{loshchilov2019decoupled}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.2}Smooth L1 损失与距离回归任务优化}{9}{section*.28}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8.3}AdamW 优化器与余弦退火调度}{9}{section*.29}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {第三章\hspace  {.3em}}两阶段泄漏检测模型设计}{10}{section*.30}\protected@file@percent }
+\@writefile{lof}{\addvspace {10.0pt}}
+\@writefile{lot}{\addvspace {10.0pt}}
+\@writefile{loa}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}方法基础}{10}{section*.31}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}总体框架}{10}{section*.32}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}输入表示与归一化}{11}{section*.33}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}一维卷积特征提取网络}{11}{section*.34}\protected@file@percent }
+\citation{loshchilov2019decoupled}
+\@writefile{toc}{\contentsline {section}{\numberline {3.5}分类头与回归头设计}{12}{section*.35}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}Stage2 分类模型}{12}{section*.36}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}Stage1 回归模型}{12}{section*.37}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.6}训练策略}{12}{section*.38}\protected@file@percent }
+\citation{loshchilov2019decoupled}
+\citation{ioffe2015batch}
+\@writefile{toc}{\contentsline {section}{\numberline {3.7}正则化与过拟合抑制策略}{13}{section*.39}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7.1}早停机制}{13}{section*.40}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7.2}权重衰减}{13}{section*.41}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7.3}梯度裁剪}{13}{section*.42}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7.4}批归一化的正则化效应}{14}{section*.43}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7.5}数据层面的泛化保障}{14}{section*.44}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {第四章\hspace  {.3em}}实验设计与结果分析}{15}{section*.45}\protected@file@percent }
+\@writefile{lof}{\addvspace {10.0pt}}
+\@writefile{lot}{\addvspace {10.0pt}}
+\@writefile{loa}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}实验环境与配置}{15}{section*.46}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}评价指标}{15}{section*.47}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}分类任务指标}{15}{section*.48}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}回归任务指标}{15}{section*.49}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}实验结果}{16}{section*.50}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Stage2 分类结果}{16}{section*.51}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4-1}{\ignorespaces Stage2 分类任务测试结果}}{17}{section*.53}\protected@file@percent }
+\newlabel{tab:stage2_results}{{4-1}{17}{Stage2 分类任务测试结果}{section*.53}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4-1}{\ignorespaces Stage2 分类任务混淆矩阵（左：片段级；右：文件级）}}{17}{section*.55}\protected@file@percent }
+\newlabel{fig:stage2_confusion_matrix}{{4-1}{17}{Stage2 分类任务混淆矩阵（左：片段级；右：文件级）}{section*.55}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4-2}{\ignorespaces Stage2 分类任务训练过程曲线（左：损失曲线；右：准确率曲线）}}{17}{section*.57}\protected@file@percent }
+\newlabel{fig:stage2_training_curves}{{4-2}{17}{Stage2 分类任务训练过程曲线（左：损失曲线；右：准确率曲线）}{section*.57}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Stage1 距离回归结果}{18}{section*.58}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4-2}{\ignorespaces Stage1 回归任务结果（待更新）}}{18}{section*.60}\protected@file@percent }
+\newlabel{tab:stage1_results}{{4-2}{18}{Stage1 回归任务结果（待更新）}{section*.60}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4-3}{\ignorespaces Stage1 回归任务物理误差分析（待更新）}}{18}{section*.62}\protected@file@percent }
+\newlabel{tab:stage1_physical_error}{{4-3}{18}{Stage1 回归任务物理误差分析（待更新）}{section*.62}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4-3}{\ignorespaces Stage1 回归任务误差可视化占位图（左：预测值与真实值；右：不同距离档位的绝对误差分布）}}{18}{section*.64}\protected@file@percent }
+\newlabel{fig:stage1_error_visualization}{{4-3}{18}{Stage1 回归任务误差可视化占位图（左：预测值与真实值；右：不同距离档位的绝对误差分布）}{section*.64}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}结果分析}{18}{section*.69}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4-4}{\ignorespaces Stage1 回归任务训练过程曲线占位图（左：损失曲线；右：MAE 曲线）}}{19}{section*.66}\protected@file@percent }
+\newlabel{fig:stage1_training_curves}{{4-4}{19}{Stage1 回归任务训练过程曲线占位图（左：损失曲线；右：MAE 曲线）}{section*.66}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4-4}{\ignorespaces 两阶段任务主要实验结果汇总（待更新）}}{19}{section*.68}\protected@file@percent }
+\newlabel{tab:main_results}{{4-4}{19}{两阶段任务主要实验结果汇总（待更新）}{section*.68}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {第五章\hspace  {.3em}}结论与展望}{20}{section*.70}\protected@file@percent }
+\@writefile{lof}{\addvspace {10.0pt}}
+\@writefile{lot}{\addvspace {10.0pt}}
+\@writefile{loa}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}全文总结}{20}{section*.71}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}后续工作展望}{20}{section*.72}\protected@file@percent }
+\@setckpt{include/body}{
+\setcounter{page}{22}
+\setcounter{equation}{0}
+\setcounter{enumi}{4}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{0}
+\setcounter{mpfootnote}{0}
+\setcounter{part}{0}
+\setcounter{chapter}{5}
+\setcounter{section}{2}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\setcounter{parentequation}{0}
+\setcounter{nlinenum}{0}
+\setcounter{LT@tables}{0}
+\setcounter{LT@chunks}{0}
+\setcounter{newflo@tctr}{4}
+\setcounter{caption@flags}{2}
+\setcounter{continuedfloat}{0}
+\setcounter{KVtest}{0}
+\setcounter{subfigure}{0}
+\setcounter{subfigure@save}{0}
+\setcounter{lofdepth}{1}
+\setcounter{subtable}{0}
+\setcounter{subtable@save}{0}
+\setcounter{lotdepth}{1}
+\setcounter{NAT@ctr}{0}
+\setcounter{endNonectr}{20}
+\setcounter{currNonectr}{0}
+\setcounter{lstnumber}{1}
+\setcounter{AlgoLine}{0}
+\setcounter{algocfline}{0}
+\setcounter{algocfproc}{0}
+\setcounter{algocf}{0}
+\setcounter{AM@survey}{0}
+\setcounter{section@level}{0}
+\setcounter{Item}{19}
+\setcounter{Hfootnote}{0}
+\setcounter{Hy@AnnotLevel}{0}
+\setcounter{bookmark@seq@number}{52}
+\setcounter{lstlisting}{0}
+\setcounter{pubctr}{0}
+\setcounter{currtheoremctr}{0}
+\setcounter{endtheoremctr}{0}
+\setcounter{theorem}{0}
+\setcounter{currlemmactr}{0}
+\setcounter{endlemmactr}{0}
+\setcounter{lemma}{0}
+\setcounter{curraxiomctr}{0}
+\setcounter{endaxiomctr}{0}
+\setcounter{axiom}{0}
+\setcounter{currpropositionctr}{0}
+\setcounter{endpropositionctr}{0}
+\setcounter{proposition}{0}
+\setcounter{currpropctr}{0}
+\setcounter{endpropctr}{0}
+\setcounter{prop}{0}
+\setcounter{currcorollaryctr}{0}
+\setcounter{endcorollaryctr}{0}
+\setcounter{corollary}{0}
+\setcounter{currdefinitionctr}{0}
+\setcounter{enddefinitionctr}{0}
+\setcounter{definition}{0}
+\setcounter{currconjecturectr}{0}
+\setcounter{endconjecturectr}{0}
+\setcounter{conjecture}{0}
+\setcounter{currexamplectr}{0}
+\setcounter{endexamplectr}{0}
+\setcounter{example}{0}
+\setcounter{currremarkctr}{0}
+\setcounter{endremarkctr}{0}
+\setcounter{remark}{0}
+}
