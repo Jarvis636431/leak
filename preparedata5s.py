@@ -260,11 +260,7 @@ def process_item(item, split_name):
 
         r1 = None
         if is_leak:
-            l1 = os.path.join(STAGE1_DIR, split_name, f"{seg}_left.csv")
-            r1 = os.path.join(STAGE1_DIR, split_name, f"{seg}_right.csv")
-            pd.DataFrame(l).to_csv(l1, index=False, header=False)
-            pd.DataFrame(r).to_csv(r1, index=False, header=False)
-            r1 = {"path_left": l1, "path_right": r1, "distance": dist, "split": split_name}
+            r1 = {"path_left": l2, "path_right": r2, "distance": dist, "split": split_name}
 
         if split_name == "train":
             s2_train.append(r2l)
