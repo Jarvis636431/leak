@@ -197,7 +197,28 @@ File-level confusion matrix:
 \end{table}
 ```
 
-## 5. Main Results Summary
+## 5. Ablation Results
+
+```tex
+\begin{table}[!htbp]
+  \centering
+  \caption{Stage1 回归任务通道消融实验}
+  \label{tab:stage1_channel_ablation_final}
+  \vspace{0.5em}
+  \begin{tabular}{lcccccc}
+    \toprule
+    设置 & \multicolumn{3}{c}{片段级} & \multicolumn{3}{c}{文件级} \\
+    \cmidrule(lr){2-4}\cmidrule(lr){5-7}
+     & MAE & RMSE & 误差 $\leq 1.0$ & MAE & RMSE & 误差 $\leq 1.0$ \\
+    \midrule
+    双通道输入（默认） & 1.90 & 2.43 & 0.35 & 2.46 & 2.94 & 0.25 \\
+    单通道输入 & 3.88 & 4.75 & 0.17 & 3.17 & 3.95 & 0.16 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+```
+
+## 6. Main Results Summary
 
 ```tex
 \begin{table}[!htbp]
