@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(latexmk -xelatex -interaction=nonstopmode main.tex)"
+      "Bash(latexmk -xelatex -interaction=nonstopmode main.tex)",
+      "Bash(chmod +x /Users/jarvis/Documents/GitHub/leak/scripts/train_conformer.sh)"
     ]
   }
 }
