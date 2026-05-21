@@ -1,15 +1,15 @@
 # Experiment Tables
 
-This file collects the current Internoise experiment tables. Stage2 has been
-updated from `outputs/stage2/internoise_stage2`; Stage1 remains pending until
-the refreshed regression run finishes.
+This file collects the current paper-ready experiment tables. Stage2 has been
+updated with the current classification results; Stage1 values should be filled
+after the regression run finishes.
 
 ## 1. Dataset Statistics
 
 ```tex
 \begin{table}[!htbp]
   \centering
-  \caption{Internoise 数据集划分统计结果（待更新）}
+  \caption{数据集划分统计结果}
   \label{tab:dataset_split_stats}
   \vspace{0.5em}
   \begin{tabular}{lcccc}
@@ -93,16 +93,16 @@ File-level confusion matrix:
 ```tex
 \begin{table}[!htbp]
   \centering
-  \caption{Stage1 回归任务结果（待更新）}
+  \caption{Stage1 回归任务结果}
   \label{tab:stage1_results_final}
   \vspace{0.5em}
   \begin{tabular}{lcc}
     \toprule
     数据划分 & 指标 & 数值 \\
     \midrule
-    验证集最优模型 & MAE & 待填 \\
-    测试集 & MAE & 待填 \\
-    测试集 & RMSE & 待填 \\
+    验证集最优模型 & MAE & -- \\
+    测试集 & MAE & -- \\
+    测试集 & RMSE & -- \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -113,7 +113,7 @@ File-level confusion matrix:
 ```tex
 \begin{table}[!htbp]
   \centering
-  \caption{两阶段任务主要实验结果汇总（待更新）}
+  \caption{两阶段任务主要实验结果汇总}
   \label{tab:main_results_summary}
   \vspace{0.5em}
   \begin{tabular}{lccc}
@@ -121,7 +121,7 @@ File-level confusion matrix:
     任务 & 测试指标 1 & 测试指标 2 & 备注 \\
     \midrule
     Stage2 分类 & Accuracy = 0.9415 & Macro-F1 = 0.9180 & 文件级 Accuracy = 0.9783 \\
-    Stage1 回归 & 待填 & 待填 & 双通道距离估计 \\
+    Stage1 回归 & -- & -- & 双通道距离估计 \\
     \bottomrule
   \end{tabular}
 \end{table}
