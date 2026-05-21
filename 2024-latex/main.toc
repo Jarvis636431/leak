@@ -1,8 +1,8 @@
-\ttl@change@i {\@ne }{chapter}{2em}{\vspace {.25\baselineskip }\sihao \song }{\hei \thecontentslabel \hspace {14pt}\song }{}{\titlerule *[5pt]{$\cdot $}\sihao \contentspage }\relax 
+\ttl@change@i {\@ne }{chapter}{2em}{\vspace {.25\baselineskip }\defaultfont \song }{\hei \thecontentslabel \hspace {14pt}\song }{}{\titlerule *[5pt]{$\cdot $}\contentspage }\relax 
 \ttl@change@v {chapter}{}{}{}\relax 
-\ttl@change@i {\@ne }{section}{4em}{\vspace {.25\baselineskip }\sihao \song }{\hei \thecontentslabel \hspace {19pt}\song }{}{\titlerule *[5pt]{$\cdot $}\sihao \contentspage }\relax 
+\ttl@change@i {\@ne }{section}{4em}{\vspace {.25\baselineskip }\defaultfont \song }{\hei \thecontentslabel \hspace {19pt}\song }{}{\titlerule *[5pt]{$\cdot $}\contentspage }\relax 
 \ttl@change@v {section}{}{}{}\relax 
-\ttl@change@i {\@ne }{subsection}{6em}{\vspace {.25\baselineskip }\sihao \song }{\hei \thecontentslabel \hspace {19pt}\song }{}{\titlerule *[5pt]{$\cdot $}\sihao \contentspage }\relax 
+\ttl@change@i {\@ne }{subsection}{6em}{\vspace {.25\baselineskip }\defaultfont \song }{\hei \thecontentslabel \hspace {19pt}\song }{}{\titlerule *[5pt]{$\cdot $}\contentspage }\relax 
 \ttl@change@v {subsection}{}{}{}\relax 
 \contentsline {chapter}{\numberline {第一章\hspace {.3em}}绪论}{1}{section*.7}%
 \contentsline {section}{\numberline {1.1}研究背景与意义}{1}{section*.8}%
@@ -10,7 +10,7 @@
 \contentsline {subsection}{\numberline {1.2.1}传统管道泄漏检测方法}{1}{section*.10}%
 \contentsline {subsection}{\numberline {1.2.2}基于机器学习的检测方法}{2}{section*.11}%
 \contentsline {subsection}{\numberline {1.2.3}基于深度学习的时序信号处理方法}{2}{section*.12}%
-\contentsline {subsection}{\numberline {1.2.4}深度学习在时序信号处理中的基础理论}{3}{section*.13}%
+\contentsline {subsection}{\numberline {1.2.4}深度学习在时序信号处理中的基础理论}{2}{section*.13}%
 \contentsline {section}{\numberline {1.3}研究问题与本文工作}{3}{section*.14}%
 \contentsline {section}{\numberline {1.4}论文结构安排}{4}{section*.15}%
 \contentsline {chapter}{\numberline {第二章\hspace {.3em}}管道泄漏探测原理与数据集构建}{5}{section*.16}%
@@ -57,7 +57,5 @@
 \contentsline {section}{\numberline {5.1}全文总结}{25}{section*.83}%
 \contentsline {section}{\numberline {5.2}后续工作展望}{26}{section*.84}%
 \contentsline {chapter}{参考文献}{29}{section*.87}%
-\ttl@change@i {\@ne }{chapter}{2em}{\vspace {.25\baselineskip }\sihao \song }{\thecontentslabel \qquad }{}{\titlerule *[5pt]{$\cdot $}\sihao \contentspage }\relax 
-\ttl@change@v {chapter}{}{}{}\relax 
 \contentsline {chapter}{致\hspace {1em} 谢}{30}{section*.88}%
 \contentsfinish 

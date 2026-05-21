@@ -55,13 +55,13 @@
 
 \makeatletter
 \renewcommand\normalsize{
-  \@setfontsize\normalsize{12pt}{12pt} % 小四对应 12 pt
+  \@setfontsize\normalsize{12pt}{20pt} % 正文小四，固定 20 pt 行距
   \setlength\abovedisplayskip{4pt}
   \setlength\abovedisplayshortskip{4pt}
   \setlength\belowdisplayskip{\abovedisplayskip}
   \setlength\belowdisplayshortskip{\abovedisplayshortskip}
   \let\@listi\@listI}
-\def\defaultfont{\renewcommand{\baselinestretch}{1.63}\normalsize\selectfont} % 设置行距
+\def\defaultfont{\renewcommand{\baselinestretch}{1}\normalsize\selectfont} % 正文固定 20 pt 行距
 
 \renewcommand{\CJKglue}{\hskip -0.1 pt plus 0.08\baselineskip} % 控制字间距，使每行 34 个汉字
 \makeatother
@@ -69,19 +69,19 @@
 %%%%%%%%%%%%% Contents %%%%%%%%%%%%%%%%%
 \renewcommand{\contentsname}{目\qquad 录}
 \setcounter{tocdepth}{2} % 控制目录深度
-\titlecontents{chapter}[2em]{\vspace{.25\baselineskip}\sihao\song}
+\titlecontents{chapter}[2em]{\vspace{.25\baselineskip}\defaultfont\song}
              {\hei\thecontentslabel\hspace{14pt}\song}{}
-             {\titlerule*[5pt]{$\cdot$}\sihao\contentspage}
-\titlecontents{section}[4em]{\vspace{.25\baselineskip}\sihao\song}
+             {\titlerule*[5pt]{$\cdot$}\contentspage}
+\titlecontents{section}[4em]{\vspace{.25\baselineskip}\defaultfont\song}
              {\hei\thecontentslabel\hspace{19pt}\song}{}
-             {\titlerule*[5pt]{$\cdot$}\sihao\contentspage}
-\titlecontents{subsection}[6em]{\vspace{.25\baselineskip}\sihao\song}
+             {\titlerule*[5pt]{$\cdot$}\contentspage}
+\titlecontents{subsection}[6em]{\vspace{.25\baselineskip}\defaultfont\song}
              {\hei\thecontentslabel\hspace{19pt}\song}{}
-             {\titlerule*[5pt]{$\cdot$}\sihao\contentspage}
+             {\titlerule*[5pt]{$\cdot$}\contentspage}
 
 %%%%%%%%%% Chapter and Section %%%%%%%%%%%%%
 \setcounter{secnumdepth}{4}
-\setlength{\parindent}{1em}
+\setlength{\parindent}{2em}
 \renewcommand{\chaptername}{\prechaptername\CJKnumber{\thechapter}\postchaptername}
 
 \titleformat{\chapter}{\centering\xiaosan\hei}{\chaptername}{1em}{}
@@ -179,14 +179,14 @@
 
 \makeatletter
 \renewenvironment{thebibliography}[1]{
-   \xiaosi
+   \defaultfont
    \list{\@biblabel{\@arabic\c@enumiv}}
         {\renewcommand{\makelabel}[1]{##1\hfill}
          \settowidth\labelwidth{0 cm}
          \setlength{\labelsep}{0pt}
          \setlength{\itemindent}{0pt}
          \setlength{\leftmargin}{\labelwidth+\labelsep}
-         \addtolength{\itemsep}{-0.7em}
+         \setlength{\itemsep}{0pt}
          \usecounter{enumiv}
          \let\p@enumiv\@empty
          \renewcommand\theenumiv{\@arabic\c@enumiv}}
@@ -300,11 +300,13 @@
 	% \thispagestyle{empty}
 
 %%%%% English Abstract %%%%%
+	\titleformat{\chapter}{\centering\erhao\rmfamily\bfseries}{\chaptername}{2em}{} %"ABSTRACT"二号Times New Roman加粗居中
 	\clearpage
 	\markboth{ABSTRACT}{ABSTRACT}
 	\pdfbookmark[0]{ABSTRACT}{eabstract}
 	\chapter*{ABSTRACT}
 
+	\defaultfont
 	\@eabstract
 	\vspace{\baselineskip}
 
