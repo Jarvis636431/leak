@@ -51,6 +51,18 @@ A CNN-based pipeline leak detection method using acoustic signals~[C].
 In IEEE International Conference on Acoustics, Speech and Signal Processing,
   2019:  2765--2769.
 
+\bibitem{hou2022multiscale}
+Hu~X, Han~Y, Fan~J, et~al.
+Novel leakage detection and water loss management of urban water supply network
+  using multiscale neural networks~[J].
+Journal of Cleaner Production, 2021, 278:  123611.
+
+\bibitem{nguyen2021attention}
+Zhang~X, Shi~J-H, Yang~M, et~al.
+Real-time pipeline leak detection and localization using an attention-based
+  LSTM approach~[J].
+Process Safety and Environmental Protection, 2023, 174:  460--472.
+
 \bibitem{ioffe2015batch}
 Ioffe~S, Szegedy~C.
 Batch normalization: Accelerating deep network training by reducing internal
@@ -61,6 +73,12 @@ In International Conference on Machine Learning, 2015:  448--456.
 Hendrycks~D, Gimpel~K.
 Gaussian error linear units (GELUs)~[J].
 arXiv preprint arXiv:1606.08415, 2016.
+
+\bibitem{girshick2015fast}
+Girshick~R.
+Fast R-CNN~[C].
+In Proceedings of the IEEE International Conference on Computer Vision, 2015:
+  1440--1448.
 
 \bibitem{loshchilov2019decoupled}
 Loshchilov~I, Hutter~F.

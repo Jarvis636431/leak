@@ -9,9 +9,6 @@ A level-1 auxiliary file: appendix/acknowledgements.aux
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Database file #1: references/ref.bib
-Warning--I didn't find a database entry for "hou2022multiscale"
-Warning--I didn't find a database entry for "nguyen2021attention"
-Warning--I didn't find a database entry for "girshick2015fast"
 -- BUPTThesis.bst version 0.2 (2009/01/25) by Yu Zhang.
 -- http://code.google.com/p/buptthesis/
 -- See the "userguide.pdf" manual for usage information.
@@ -23,51 +20,53 @@ Warning--empty editor in zhang2019cnn
 Warning--The editor in ioffe2015batch is missing.
 Warning--empty editor in ioffe2015batch
 Warning--empty pages in hendrycks2016gelu
+Warning--The editor in girshick2015fast is missing.
+Warning--empty editor in girshick2015fast
 Warning--The editor in loshchilov2019decoupled is missing.
 Warning--empty editor in loshchilov2019decoupled
 Warning--empty pages in loshchilov2019decoupled
 Warning--empty pages in goodfellow2014generative
 
 Done.
-You've used 14 entries,
+You've used 17 entries,
             4577 wiz_defined-function locations,
-            1098 strings with 9807 characters,
-and the built_in function-call counts, 8824 in all, are:
-= -- 991
-> -- 140
-< -- 10
-+ -- 84
-- -- 48
-* -- 709
-:= -- 974
-add.period$ -- 42
-call.type$ -- 14
+            1111 strings with 10359 characters,
+and the built_in function-call counts, 10675 in all, are:
+= -- 1206
+> -- 170
+< -- 13
++ -- 102
+- -- 57
+* -- 838
+:= -- 1173
+add.period$ -- 51
+call.type$ -- 17
 change.case$ -- 0
 chr.to.int$ -- 0
-cite$ -- 26
-duplicate$ -- 586
-empty$ -- 946
-format.name$ -- 42
-if$ -- 2170
+cite$ -- 31
+duplicate$ -- 705
+empty$ -- 1138
+format.name$ -- 51
+if$ -- 2642
 int.to.chr$ -- 0
-int.to.str$ -- 14
+int.to.str$ -- 17
 missing$ -- 0
-newline$ -- 74
-num.names$ -- 14
-pop$ -- 58
+newline$ -- 89
+num.names$ -- 17
+pop$ -- 71
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 269
+skip$ -- 344
 stack$ -- 0
-substring$ -- 1022
-swap$ -- 180
-text.length$ -- 16
+substring$ -- 1214
+swap$ -- 231
+text.length$ -- 19
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 159
-warning$ -- 12
-while$ -- 77
-width$ -- 16
-write$ -- 123
-(There were 15 warnings)
+type$ -- 194
+warning$ -- 14
+while$ -- 94
+width$ -- 19
+write$ -- 150
+(There were 14 warnings)
