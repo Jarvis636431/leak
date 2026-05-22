@@ -22,43 +22,43 @@ Warning--empty editor in loshchilov2019decoupled
 Done.
 You've used 15 entries,
             4577 wiz_defined-function locations,
-            1102 strings with 10347 characters,
-and the built_in function-call counts, 9590 in all, are:
-= -- 1115
-> -- 141
+            1103 strings with 10343 characters,
+and the built_in function-call counts, 9254 in all, are:
+= -- 1074
+> -- 144
 < -- 13
-+ -- 84
-- -- 45
-* -- 735
-:= -- 1041
++ -- 86
+- -- 46
+* -- 707
+:= -- 1009
 add.period$ -- 45
 call.type$ -- 15
 change.case$ -- 0
 chr.to.int$ -- 0
 cite$ -- 21
-duplicate$ -- 654
-empty$ -- 1006
-format.name$ -- 42
-if$ -- 2370
+duplicate$ -- 618
+empty$ -- 971
+format.name$ -- 43
+if$ -- 2292
 int.to.chr$ -- 0
 int.to.str$ -- 15
 missing$ -- 0
 newline$ -- 79
 num.names$ -- 15
-pop$ -- 69
+pop$ -- 66
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 320
+skip$ -- 313
 stack$ -- 0
-substring$ -- 1107
-swap$ -- 216
+substring$ -- 1027
+swap$ -- 212
 text.length$ -- 16
 text.prefix$ -- 0
 top$ -- 5
 type$ -- 173
 warning$ -- 6
-while$ -- 88
+while$ -- 89
 width$ -- 17
 write$ -- 134
 (There were 6 warnings)

@@ -13,7 +13,7 @@ Recent advances in pipeline monitoring and oil leakage detection technologies:
 Sensors, 2019, 19~(11):  2548.
 
 \bibitem{kiymik2005FT}
-K{\i}ym{\i}k~M~K, G{\"u}ler~{\I}, Dizib{\"u}y{\"u}k~A, et~al.
+Kiymik~M~K, Guler~I, Dizibuyuk~A, et~al.
 Comparison of {STFT} and wavelet transform methods in determining epileptic
   seizure activity in {EEG} signals for real-time application~[J].
 Computers in Biology and Medicine, 2005, 35~(7):  603--616.
@@ -45,10 +45,10 @@ Kiranyaz~S, Avci~O, Abdeljaber~O, et~al.
 Mechanical Systems and Signal Processing, 2021, 151:  107398.
 
 \bibitem{zhang2019cnn}
-Chan~T~W, Chin~C~S, Zhong~X.
-Review of current technologies and proposed intelligent methodologies for water
-  distributed network leakage detection~[J].
-IEEE Access, 2018, 6:  78846--78867.
+An~Y, Ma~X, Wang~X, et~al.
+Gas pipeline event classification based on one-dimensional convolutional neural
+  network~[J].
+Structural Health Monitoring, 2022, 21~(3):  826--834.
 
 \bibitem{hou2022multiscale}
 Hu~X, Han~Y, Fan~J, et~al.
