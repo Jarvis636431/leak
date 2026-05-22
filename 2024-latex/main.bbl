@@ -2,54 +2,53 @@
 \begin{thebibliography}{10}
 
 \bibitem{li2023pipeline}
-Li~J, Zheng~Q, Li~Z, et~al.
-Pipeline leak detection: A comprehensive review of methods and
-  technologies~[J].
-Measurement, 2023, 198:  111--125.
+Murvay~P-S, Silea~I.
+A survey on gas leak detection and localization techniques~[J].
+Journal of Loss Prevention in the Process Industries, 2012, 25~(6):  966--973.
 
 \bibitem{sharma2022pipeline}
-Sharma~A, Kumar~V, Gupta~R.
-Pipeline leak localization using acoustic emission and machine learning: A
-  review~[J].
-Process Safety and Environmental Protection, 2022, 158:  531--548.
+Adegboye~M~A, Fung~W-K, Karnik~A.
+Recent advances in pipeline monitoring and oil leakage detection technologies:
+  Principles and approaches~[J].
+Sensors, 2019, 19~(11):  2548.
 
 \bibitem{kiymik2005FT}
-K{\i}ym{\i}k~M~K, G{\"u}ler~I, Dizib{\"u}y{\"u}k~A, et~al.
-Comparison of STFT and wavelet transform methods in determining epileptic
-  seizure activity in EEG signals for real-time application~[J].
-Computers in biology and medicine, 2005, 35~(7):  603--616.
+K{\i}ym{\i}k~M~K, G{\"u}ler~{\I}, Dizib{\"u}y{\"u}k~A, et~al.
+Comparison of {STFT} and wavelet transform methods in determining epileptic
+  seizure activity in {EEG} signals for real-time application~[J].
+Computers in Biology and Medicine, 2005, 35~(7):  603--616.
 
 \bibitem{chen2020svm}
-Chen~X, Wang~J, Liu~Y.
-SVM-based pipeline leak detection with feature extraction from acoustic
-  signals~[J].
-IEEE Sensors Journal, 2020, 20~(16):  9450--9461.
+Banjara~N~K, Sasmal~S, Voggu~S.
+Machine learning supported acoustic emission technique for leakage detection in
+  pipelines~[J].
+International Journal of Pressure Vessels and Piping, 2020, 188:  104243.
 
 \bibitem{zhou2016MLbook}
 周志华.
 机器学习~[M].
-北京:清华大学出版社,2016: 181--185.
+北京:清华大学出版社,2016.
 
 \bibitem{wang2022deep}
-Wang~Z, Oates~T, et~al.
-Deep learning for time series signal analysis: A survey~[J].
-Information Fusion, 2022, 77:  145--167.
+Fawaz~H~I, Forestier~G, Weber~J, et~al.
+Deep learning for time series classification: a review~[J].
+Data Mining and Knowledge Discovery, 2019, 33~(4):  917--963.
 
 \bibitem{goodfellow2016deep}
 Goodfellow~I, Bengio~Y, Courville~A.
-Deep learning~[M].
-MIT Press, 2016.
+Deep Learning~[M].
+Cambridge: MIT Press, 2016.
 
 \bibitem{kiranyaz2021convolutional}
 Kiranyaz~S, Avci~O, Abdeljaber~O, et~al.
 1D convolutional neural networks and applications: A survey~[J].
-Mechanical Systems and Signal Processing, 2021, 151:  107--128.
+Mechanical Systems and Signal Processing, 2021, 151:  107398.
 
 \bibitem{zhang2019cnn}
-Zhang~Y, Chen~S, Li~W.
-A CNN-based pipeline leak detection method using acoustic signals~[C].
-In IEEE International Conference on Acoustics, Speech and Signal Processing,
-  2019:  2765--2769.
+Chan~T~W, Chin~C~S, Zhong~X.
+Review of current technologies and proposed intelligent methodologies for water
+  distributed network leakage detection~[J].
+IEEE Access, 2018, 6:  78846--78867.
 
 \bibitem{hou2022multiscale}
 Hu~X, Han~Y, Fan~J, et~al.
@@ -60,39 +59,30 @@ Journal of Cleaner Production, 2021, 278:  123611.
 \bibitem{nguyen2021attention}
 Zhang~X, Shi~J-H, Yang~M, et~al.
 Real-time pipeline leak detection and localization using an attention-based
-  LSTM approach~[J].
+  {LSTM} approach~[J].
 Process Safety and Environmental Protection, 2023, 174:  460--472.
 
 \bibitem{ioffe2015batch}
 Ioffe~S, Szegedy~C.
 Batch normalization: Accelerating deep network training by reducing internal
   covariate shift~[C].
-In International Conference on Machine Learning, 2015:  448--456.
+In Proceedings of the 32nd International Conference on Machine Learning, 2015:
+  448--456.
 
 \bibitem{hendrycks2016gelu}
 Hendrycks~D, Gimpel~K.
-Gaussian error linear units (GELUs)~[J].
-arXiv preprint arXiv:1606.08415, 2016.
+Gaussian error linear units ({GELUs})~[J].
+arXiv preprint arXiv:1606.08415, 2016:  1--9.
 
 \bibitem{girshick2015fast}
 Girshick~R.
-Fast R-CNN~[C].
+Fast {R-CNN}~[C].
 In Proceedings of the IEEE International Conference on Computer Vision, 2015:
   1440--1448.
 
 \bibitem{loshchilov2019decoupled}
 Loshchilov~I, Hutter~F.
 Decoupled weight decay regularization~[C].
-In International Conference on Learning Representations, 2019.
-
-\bibitem{RJXB202110009}
-李晟洁,李翔,张越,等.
-基于Wi-Fi信道状态信息的行走识别与行走参数估计~[J].
-软件学报,2021,32~(10): 3122--3138.
-
-\bibitem{goodfellow2014generative}
-Goodfellow~I, Pouget-Abadie~J, Mirza~M, et~al.
-Generative adversarial nets~[J].
-Advances in Neural Information Processing Systems, 2014, 27.
+In International Conference on Learning Representations, 2019:  1--18.
 
 \end{thebibliography}
