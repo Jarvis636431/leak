@@ -218,7 +218,29 @@ File-level confusion matrix:
 \end{table}
 ```
 
-## 6. Main Results Summary
+## 6. CNN vs. Conformer Comparison
+
+```tex
+\begin{table}[!htbp]
+  \centering
+  \caption{一维 CNN 与 Conformer 结构对比}
+  \label{tab:cnn_conformer_comparison_final}
+  \vspace{0.5em}
+  \wuhao
+  \begin{tabular}{llcccc}
+    \toprule
+    任务 & 模型 & 片段主指标 & 片段辅指标 & 文件主指标 & 文件辅指标 \\
+    \midrule
+    Stage2 分类 & 一维 CNN & Acc 0.9415 & Macro-F1 0.9180 & Acc 0.9783 & Macro-F1 0.9836 \\
+    Stage2 分类 & Conformer & Acc 0.9900 & Macro-F1 0.9883 & Acc 1.0000 & Macro-F1 1.0000 \\
+    Stage1 回归 & 一维 CNN & MAE 1.90 & RMSE 2.43 & MAE 2.46 & RMSE 2.94 \\
+    Stage1 回归 & Conformer & MAE 1.95 & RMSE 2.63 & MAE 2.51 & RMSE 3.10 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+```
+
+## 7. Main Results Summary
 
 ```tex
 \begin{table}[!htbp]
