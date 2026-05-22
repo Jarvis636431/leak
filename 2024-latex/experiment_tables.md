@@ -226,6 +226,7 @@ File-level confusion matrix:
   \caption{一维 CNN 与 Conformer 结构对比}
   \label{tab:cnn_conformer_comparison_final}
   \vspace{0.5em}
+  \setlength{\tabcolsep}{3pt}
   \wuhao
   \begin{tabular}{llcccc}
     \toprule
