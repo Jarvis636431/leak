@@ -12,6 +12,64 @@ Recent advances in pipeline monitoring and oil leakage detection technologies:
   Principles and approaches~[J].
 Sensors, 2019, 19~(11):  2548.
 
+\bibitem{billmann1987leak}
+Billmann~L, Isermann~R.
+Leak detection methods for pipelines~[J].
+Automatica, 1987, 23~(3):  381--385.
+
+\bibitem{verde2001multi}
+Verde~C.
+Multi-leak detection and isolation in fluid pipelines~[J].
+Control Engineering Practice, 2001, 9~(6):  673--682.
+
+\bibitem{geiger2006principles}
+Geiger~G.
+Principles of leak detection~[J].
+Pipeline Technology Journal, 2006, 1:  34--43.
+
+\bibitem{cody2004acoustic}
+Muggleton~J~M, Brennan~M~J, Pinnington~R~J.
+Wavenumber prediction of waves in buried pipes for water leak detection~[J].
+Journal of Sound and Vibration, 2002, 249~(5):  939--954.
+
+\bibitem{gao2005leak}
+Gao~Y, Brennan~M~J, Joseph~P~F.
+A comparison of time delay estimators for the detection of leak noise signals
+  in plastic water distribution pipes~[J].
+Journal of Sound and Vibration, 2006, 292~(3-5):  552--570.
+
+\bibitem{colombo2009transient}
+Colombo~A~F, Lee~P, Karney~B~W.
+A selective literature review of transient-based leak detection methods~[J].
+Journal of Hydro-environment Research, 2009, 2~(4):  212--227.
+
+\bibitem{tijsseling1996fluid}
+Tijsseling~A~S.
+Fluid-structure interaction in liquid-filled pipe systems: a review~[J].
+Journal of Fluids and Structures, 1996, 10~(2):  109--146.
+
+\bibitem{cooley1965fft}
+Cooley~J~W, Tukey~J~W.
+An algorithm for the machine calculation of complex Fourier series~[J].
+Mathematics of Computation, 1965, 19~(90):  297--301.
+
+\bibitem{welch1967psd}
+Welch~P.
+The use of fast Fourier transform for the estimation of power spectra~[J].
+IEEE Transactions on Audio and Electroacoustics, 1967, 15~(2):  70--73.
+
+\bibitem{oppenheim2010dsp}
+Oppenheim~A~V, Schafer~R~W.
+Discrete-Time Signal Processing~[M].
+Upper Saddle River: Pearson, 2010.
+
+\bibitem{mallat1989wavelet}
+Mallat~S~G.
+A theory for multiresolution signal decomposition: the wavelet
+  representation~[J].
+IEEE Transactions on Pattern Analysis and Machine Intelligence, 1989, 11~(7):
+  674--693.
+
 \bibitem{kiymik2005FT}
 Kiymik~M~K, Guler~I, Dizibuyuk~A, et~al.
 Comparison of {STFT} and wavelet transform methods in determining epileptic
@@ -29,6 +87,31 @@ International Journal of Pressure Vessels and Piping, 2020, 188:  104243.
 机器学习~[M].
 北京:清华大学出版社,2016.
 
+\bibitem{cortes1995svm}
+Cortes~C, Vapnik~V.
+Support-vector networks~[J].
+Machine Learning, 1995, 20~(3):  273--297.
+
+\bibitem{cover1967knn}
+Cover~T, Hart~P.
+Nearest neighbor pattern classification~[J].
+IEEE Transactions on Information Theory, 1967, 13~(1):  21--27.
+
+\bibitem{breiman1984cart}
+Breiman~L, Friedman~J, Stone~C~J, et~al.
+Classification and Regression Trees~[M].
+Belmont: Wadsworth, 1984.
+
+\bibitem{breiman2001random}
+Breiman~L.
+Random forests~[J].
+Machine Learning, 2001, 45~(1):  5--32.
+
+\bibitem{bishop2006prml}
+Bishop~C~M.
+Pattern Recognition and Machine Learning~[M].
+New York: Springer, 2006.
+
 \bibitem{wang2022deep}
 Fawaz~H~I, Forestier~G, Weber~J, et~al.
 Deep learning for time series classification: a review~[J].
@@ -43,6 +126,33 @@ Cambridge: MIT Press, 2016.
 Kiranyaz~S, Avci~O, Abdeljaber~O, et~al.
 1D convolutional neural networks and applications: A survey~[J].
 Mechanical Systems and Signal Processing, 2021, 151:  107398.
+
+\bibitem{lecun1998mnist}
+LeCun~Y, Bottou~L, Bengio~Y, et~al.
+Gradient-based learning applied to document recognition~[C].
+In Proceedings of the IEEE, 1998:  2278--2324.
+
+\bibitem{he2016resnet}
+He~K, Zhang~X, Ren~S, et~al.
+Deep residual learning for image recognition~[C].
+In Proceedings of the IEEE Conference on Computer Vision and Pattern
+  Recognition, 2016:  770--778.
+
+\bibitem{hochreiter1997lstm}
+Hochreiter~S, Schmidhuber~J.
+Long short-term memory~[J].
+Neural Computation, 1997, 9~(8):  1735--1780.
+
+\bibitem{bai2018tcn}
+Bai~S, Kolter~J~Z, Koltun~V.
+An empirical evaluation of generic convolutional and recurrent networks for
+  sequence modeling~[J].
+arXiv preprint arXiv:1803.01271, 2018:  1--14.
+
+\bibitem{oord2016wavenet}
+van~den Oord~A, Dieleman~S, Zen~H, et~al.
+WaveNet: A generative model for raw audio~[J].
+arXiv preprint arXiv:1609.03499, 2016:  1--15.
 
 \bibitem{zhang2019cnn}
 An~Y, Ma~X, Wang~X, et~al.
@@ -61,6 +171,16 @@ Zhang~X, Shi~J-H, Yang~M, et~al.
 Real-time pipeline leak detection and localization using an attention-based
   {LSTM} approach~[J].
 Process Safety and Environmental Protection, 2023, 174:  460--472.
+
+\bibitem{vaswani2017attention}
+Vaswani~A, Shazeer~N, Parmar~N, et~al.
+Attention is all you need~[C].
+In Advances in Neural Information Processing Systems, 2017:  5998--6008.
+
+\bibitem{gulati2020conformer}
+Gulati~A, Qin~J, Chiu~C-C, et~al.
+Conformer: Convolution-augmented transformer for speech recognition~[C].
+In Proceedings of Interspeech, 2020:  5036--5040.
 
 \bibitem{ioffe2015batch}
 Ioffe~S, Szegedy~C.
@@ -84,5 +204,30 @@ In Proceedings of the IEEE International Conference on Computer Vision, 2015:
 Loshchilov~I, Hutter~F.
 Decoupled weight decay regularization~[C].
 In International Conference on Learning Representations, 2019:  1--18.
+
+\bibitem{paszke2019pytorch}
+Paszke~A, Gross~S, Massa~F, et~al.
+PyTorch: An imperative style, high-performance deep learning library~[C].
+In Advances in Neural Information Processing Systems, 2019:  8024--8035.
+
+\bibitem{pedregosa2011sklearn}
+Pedregosa~F, Varoquaux~G, Gramfort~A, et~al.
+Scikit-learn: Machine learning in Python~[J].
+Journal of Machine Learning Research, 2011, 12:  2825--2830.
+
+\bibitem{kingma2015adam}
+Kingma~D~P, Ba~J.
+Adam: A method for stochastic optimization~[C].
+In International Conference on Learning Representations, 2015:  1--15.
+
+\bibitem{srivastava2014dropout}
+Srivastava~N, Hinton~G, Krizhevsky~A, et~al.
+Dropout: a simple way to prevent neural networks from overfitting~[J].
+Journal of Machine Learning Research, 2014, 15:  1929--1958.
+
+\bibitem{ba2016layernorm}
+Ba~J~L, Kiros~J~R, Hinton~G~E.
+Layer normalization~[C].
+In NIPS Deep Learning Symposium, 2016:  1--14.
 
 \end{thebibliography}
