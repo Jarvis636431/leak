@@ -182,6 +182,16 @@ Gulati~A, Qin~J, Chiu~C-C, et~al.
 Conformer: Convolution-augmented transformer for speech recognition~[C].
 In Proceedings of Interspeech, 2020:  5036--5040.
 
+\bibitem{paszke2019pytorch}
+Paszke~A, Gross~S, Massa~F, et~al.
+PyTorch: An imperative style, high-performance deep learning library~[C].
+In Advances in Neural Information Processing Systems, 2019:  8024--8035.
+
+\bibitem{pedregosa2011sklearn}
+Pedregosa~F, Varoquaux~G, Gramfort~A, et~al.
+Scikit-learn: Machine learning in Python~[J].
+Journal of Machine Learning Research, 2011, 12:  2825--2830.
+
 \bibitem{ioffe2015batch}
 Ioffe~S, Szegedy~C.
 Batch normalization: Accelerating deep network training by reducing internal
@@ -204,16 +214,6 @@ In Proceedings of the IEEE International Conference on Computer Vision, 2015:
 Loshchilov~I, Hutter~F.
 Decoupled weight decay regularization~[C].
 In International Conference on Learning Representations, 2019:  1--18.
-
-\bibitem{paszke2019pytorch}
-Paszke~A, Gross~S, Massa~F, et~al.
-PyTorch: An imperative style, high-performance deep learning library~[C].
-In Advances in Neural Information Processing Systems, 2019:  8024--8035.
-
-\bibitem{pedregosa2011sklearn}
-Pedregosa~F, Varoquaux~G, Gramfort~A, et~al.
-Scikit-learn: Machine learning in Python~[J].
-Journal of Machine Learning Research, 2011, 12:  2825--2830.
 
 \bibitem{kingma2015adam}
 Kingma~D~P, Ba~J.
