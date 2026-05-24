@@ -1,0 +1,331 @@
+% 外文资料和中文译文正文部分
+% 文献：Murvay P.-S., Silea I. A survey on gas leak detection and localization techniques.
+% Source PDF: survey_gas_leak_detection_localization_techniques.pdf
+
+\chapter*{外文资料}
+\addcontentsline{toc}{chapter}{外文资料}
+
+\noindent\textbf{A Survey on Gas Leak Detection and Localization Techniques}
+
+\noindent Pal-Stefan Murvay, Ioan Silea
+
+\noindent Department of Automatics and Applied Informatics, Faculty of Automatics and Computers, ``Politehnica'' University of Timisoara, Romania
+
+\noindent Preprint version of the article accepted in \textit{Journal of Loss Prevention in the Process Industries}.
+
+\section*{Abstract}
+
+Gas leaks can cause major incidents resulting in both human injuries and financial losses. To avoid such situations, a considerable amount of effort has been devoted to the development of reliable techniques for detecting gas leakage. As knowing about the existence of a leak is not always enough to launch a corrective action, some of the leak detection techniques were designed to allow the possibility of locating the leak. The main purpose of this paper is to identify the state-of-the-art in leak detection and localization methods. Additionally we evaluate the capabilities of these techniques in order to identify the advantages and disadvantages of using each leak detection solution.
+
+\noindent\textbf{Keywords:} gas leak, leak detection, leak localization, pipeline
+
+\section*{1. Introduction}
+
+The worldwide natural gas transport and distribution network is a complex and continuously expanding one. According to the study presented in TRB, pipelines, as a means of transport, are the safest but this does not mean they are risk-free. Therefore, assuring the reliability of the gas pipeline infrastructure has become a critical need for the energy sector. The main threat considered, when looking for means of providing the reliability of the pipeline network, is the occurrence of leaks.
+
+Regardless of their size, pipeline leaks are a major concern due to the considerable effects that they might have. These effects extend beyond the costs involved by downtime and repair expenses, and can include human injuries as well as environmental disasters. The main causes of gas pipeline accidents are external interference, corrosion, construction defects, material failure and ground movement.
+
+To counteract the disastrous effects of gas leaks, considerable effort has been invested, during the last decades, in designing gas leak detection techniques. However, revealing the presence of a gas leak is not sufficient in order to define an efficient counteracting measure. Before deciding on a set of corrective actions, other information has to be known such as the location of the leak and its size. These subjects were also in the focus of research done in the field of pipeline reliability assurance.
+
+The occurrence of gas leak-related incidents was studied by several organizations which published statistics on the reported incidents. One of these studies, made on sub-sea pipeline systems, states that between 1996 and 2006 a number of 80 pipeline rupture incidents were reported in the Gulf of Mexico and Pacific areas. Based on data gathered in this report, the calculated probability of a catastrophic incident for the specified area is 0.43 incidents per year. Another survey, which focuses on the risks of pipeline transportation, covers incidents that occurred in Europe and on the American continent and presents the main causes of pipeline failure. This evidence indicates that the risk of incidents caused by gas leaks is substantial despite the great variety of leak detection methods available and serves as motivation of this work.
+
+The main purpose of this paper is to identify the state-of-the-art in gas leak detection techniques and to present localizing capabilities, as well as other important features, for each of the studied methods. This is achieved by performing an extensive survey of the literature in the field, covering results from academia as well as industry reports.
+
+A number of reviews on the subject of gas leak detection techniques were done in the past either as part of research papers and technical reports on a certain leak detection method and other gas related subjects, or as a result of research dedicated to this specific purpose. Although they provide a good overview on existent leak detection techniques, these surveys are either succinct, omitting several leak detection methods or, in some cases, not of a recent date.
+
+In order to decide which leak detection technique is more suitable for a given setting, a comparative performance analysis is necessary. For this reason the studied methods are compared by a set of common features using performance reports from literature. As a conclusion, and apparently future trend, a hybrid approach combining different detection methods to achieve the required system performance would be the best choice.
+
+\section*{2. Classifying Leak Detection Technologies}
+
+For the purpose of this survey, available leak detection techniques are first classified. Several criteria are considered for classification, some of which are the amount of human intervention needed, the physical quantity measured and the technical nature of the methods.
+
+If the degree of intervention needed from a human by each detection method is chosen to classify these methods, three categories can be distinguished. Automated detection refers to complete monitoring systems that can report the detection of a gas leak without the need of a human operator once they are installed, such as fiber optic or cable sensors. Semi-automated detection refers to solutions that need a certain amount of input or help in performing some tasks, such as statistical or digital signal processing methods. Manual detection refers to systems and devices that can only be directly operated by a person, such as thermal imagers or LIDAR devices.
+
+Most detection techniques rely on the measurement of a certain physical quantity or on the manifestation of a certain physical phenomenon. This can be used as a rule for classification, since several commonly used physical parameters and phenomena exist: acoustics, flow rate, pressure, gas sampling, optics and sometimes a mix of these. Some authors consider the technology as fitting into two great categories: direct and indirect or inferential methods. Direct detection is made by patrolling along pipelines using either visual inspection or handheld devices for measuring gas emanations. Indirect or inferential methods detect leaks by measuring the change of certain pipe parameters such as flow rate and pressure.
+
+The most common way of classifying leak detection methods is based on their technical nature. Two main categories of methods can thus be distinguished: hardware based methods and software based methods. These two categories are sometimes mentioned as externally or internally based leak detection systems. Although not often presented in recent literature as a separate category, there is a third class that covers the so-called biological methods. In this paper these methods are referred to as non-technical.
+
+Non-technical leak detection methods are the ones that do not make use of any device and rely only on the natural senses, namely hearing, smelling and seeing, of humans and animals. Hardware based methods rely mainly on the usage of special sensing devices in the detection of gas leaks. Depending on the type of sensors and equipment used for detection, these hardware methods can be further classified as acoustic, optical, cable sensor, soil monitoring, ultrasonic flow meters and vapor sampling. Software based methods have software programs at their core. The implemented algorithms continuously monitor the state of pressure, temperature, flow rate or other pipeline parameters and can infer, based on the evolution of these quantities, if a leak has occurred.
+
+\section*{3. Non-technical Methods}
+
+These methods involve personnel patrolling along pipelines looking for visual effects of a gas leak, smelling substances that might be released through a leak or listening to specific sounds that can be made by gas as it leaks out. Sometimes trained dogs are used as they are more sensitive to the smell of certain gases. The sensitivity of dogs, depending on the target compound, has been found to be in the parts-per-billion to parts-per-trillion range in laboratory conditions. However, using canines to detect leaks has the disadvantage that they cannot be effective for long periods of continuous searching. Additionally, the accuracy of this approach can be affected by fatigue and by the interpretation given by the handler to the canine response.
+
+Soap bubble screening, which is a low-cost method for locating smaller leaks, can also be included in this category. It involves spraying a soap solution on different components of the pipeline or on suspicious surfaces on the pipe. Usually soap screening is mainly applied to valves and piping joints as these are gas leak prone places. This method is rapid and has a small cost, thus it can be helpful as a part of routine inspection procedures.
+
+The use of this type of method has the advantage that it requires no special equipment and that it results in the immediate localization of the leak upon detection. Unfortunately there are also downsides. For instance, the detection time depends on the frequency of inspections, which is usually reduced. The detection of a leak greatly depends on the experience and meticulousness of the employed personnel. Another disadvantage is that this method can only be applied to pipelines that are accessible to personnel, ruling out its application in the case of buried pipes.
+
+\section*{4. Hardware Based Methods}
+
+\subsection*{4.1 Acoustic Methods}
+
+Escaping gas generates an acoustic signal as it flows through a breach in the pipe. Thus, this signal can be used to determine that a leak has occurred. To record the internal pipeline noise, acoustic sensors have to be used. They can be integrated in handheld detection devices employed by personnel patrolling the pipeline or in intelligent pigs that travel through the pipeline inspecting it. Continuous monitoring is also done by installing acoustic sensors outside the pipeline at a certain distance from one another. The distance between two acoustical sensors has to be adapted based on the sensitivity of the acoustic sensor and allocated budget. Placing sensors too far from each other will increase the risk of undetected leaks while installing them too close will lead to an increased system cost.
+
+Acoustic leak detection techniques have been studied since the 1930s. Some methods involve the measurement of two acoustic signals on each end of a pipe segment. Based on these measurements, the leak can be detected using time-frequency techniques or low frequency impulse methods. More recent experimental studies have focused on distinguishing between signals made by leaks and background noises using time-frequency analysis and adapting the leak location formula to increase accuracy.
+
+The advantages of using this technique include the feasibility of continuous operation and automation. Acoustic methods can also help in determining the location of the leak and estimating its size. This technique can be used on new as well as on existing pipelines. When in continuous monitoring mode, the system can respond in real time. As a disadvantage, high background or flow noise conditions may mask the actual leak signal, for example noise from vehicles passing by, valves or pumps. As a financial downside, the cost of installing numerous sensors needed for long pipelines is high.
+
+\subsection*{4.2 Optical Methods}
+
+Optical methods used for leak detection can be divided into two categories: passive and active. Active methods require illuminating the scanned area using a radiation source while passive methods do not require a source and rely only on background radiation or the radiation emitted by the gas.
+
+Some general benefits of using optical methods are their portability, remote detection and leak locating capabilities. A common approach is to survey natural gas pipeline networks using aircraft-mounted optical devices for leak detection. The resulting map offers an overview of the entire network and reveals the locations of existing leaks faster than they would be found by a ground patrol with hand-held devices.
+
+Active methods monitor the absorption or scattering of the emitted radiation caused by natural gas molecules. If significant absorption or scattering is detected above a pipeline, then a leak is presumed to exist. Several active methods for optical detection of natural gas leaks have been studied, such as LIDAR systems, diode laser absorption, millimeter wave radar systems, backscatter imaging, broadband absorption and optical fiber.
+
+LIDAR systems use a pulsed laser to illuminate the scene and a detector to monitor the absorption of the laser energy along the length of a path. This is a sensitive technique that can be used for remote monitoring. However, the high price of pulsed lasers and short system lifetime are disadvantages. Diode laser absorption is similar in technology to LIDAR systems but uses diode lasers instead of expensive pulsed lasers. This method is suitable for close-range handheld detectors and high-altitude aerial detection, but one disadvantage is the possibility of false alarms.
+
+Millimeter wave radar systems are based on the radar signature of the area above gas pipelines. Since gases such as methane are lighter than air, the difference in density can produce a specific radar signature that can be evaluated in order to detect potential leaks. Backscatter imaging uses a carbon dioxide laser for illuminating the scene. As natural gas scatters the laser light, the scattering signature is captured using an infrared camera. Broadband absorption systems use low-cost lamps as the radiation source and multiple wavelengths to reduce the probability of false alarms.
+
+Optical fiber can be used to monitor a series of physical and chemical properties. Changes in temperature as a result of gas escaping from the pipe can be signaled by a sensing fiber optic cable located in close proximity to the pipe. The optical properties of fiber optic cables are affected by the presence of hydrocarbons, providing another means of detecting gas leaks. The leak location and leaked gas concentration can also be detected using fiber optic sensing. One significant advantage of fiber optic sensing is immunity to electromagnetic interference. Disadvantages include high cost, long-term stability of chemical coatings and difficulty of applying the method to already existing buried pipeline systems.
+
+Passive optical methods do not require a radiation source, which can reduce cost. However, this lack has to be compensated by more performant detectors and imagers, which are expensive. Passive systems include thermal imaging, multispectral imaging and gas filter correlation radiometry. Thermal imaging utilizes temperature differences between leaked gas and the surrounding environment to detect leaks. Multispectral imaging can be used in absorption or emission mode. Gas filter correlation radiometry uses a sample of the target gas as a spectral filter and measures radiant fluxes from two paths to decide if a gas leak is present.
+
+\subsection*{4.3 Cable Sensor}
+
+Optical fiber cables are not the only cable detection technique available. Electrical cable sensors have also been used for gas leak detection. The cables are built using materials that react when in contact with certain substances. This reaction changes cable properties such as resistance or capacitance, which can be monitored to sense the appearance of a leak. Some sensing cables have been reported to detect and locate leaks with an accuracy of about 20 meters.
+
+Some cables contain two circuit loops, one connected to a power supply and the other to an alarm. When the two circuits come into contact, the alarm is signaled. The short circuit can be produced by several mechanisms depending on the cable used. This leak detection technique gives a reasonably fast response and is more sensitive than some computational methods. However, the costs of implementing such a system are quite high. Other notable disadvantages are the difficulty of retrofitting it to existing pipelines and the inability to estimate leak size.
+
+\subsection*{4.4 Soil Monitoring}
+
+Soil monitoring involves inoculating the gas pipeline with an amount of tracer compound. This tracer chemical, a non-hazardous and highly volatile gas, will exit the pipe at the exact place of the leak if a leak has occurred. To detect a leak, instrumentation is used to monitor the surface above the pipeline by dragging devices along it or through probes installed in the soil near the pipelines. The samples collected are then analyzed using a gas chromatograph.
+
+The very low false alarm rate and high sensitivity are advantages of using soil monitoring for leak detection. The method is quite expensive because trace chemicals have to be continuously added to the pipe during the detection process. Another disadvantage is that it cannot be used for exposed pipelines.
+
+\subsection*{4.5 Vapor Sampling}
+
+Leaks can also be detected by sampling hydrocarbon vapors in the vicinity of the pipeline. This can be done either through a vapor monitoring system involving a sensor tube buried along the pipeline or by using mobile detectors carried by personnel or mounted on remotely operated vehicles.
+
+The remote monitoring system uses a sensor tube buried in parallel to the pipeline. The tube is permeable to the target gas, so in the event of a leak some of the escaped gas will diffuse into the tube. A pump is used to periodically push the content of the tube past a monitoring unit. Sensors in the detector unit detect the gas concentration at a certain point in the examined air column. To determine the location of the leak, a test gas is injected in the tube before each pumping action. The travel time of the gas from a leak spot, relative to the overall travel time, is used to find the location of the leak. This method has a slower response time than other monitoring methods and is typically used for short pipelines.
+
+Handheld or vehicle-mounted gas sampling detectors are built using a variety of sensors. This approach can give better results than non-technical detection, especially for very small leaks, but its success greatly depends on the frequency of patrols.
+
+\subsection*{4.6 Ultrasonic Flow Meters}
+
+Systems based on ultrasonic flow meters can also be used for gas leak detection. Such systems consider that the pipeline is comprised of a series of segments. Each segment is bounded by two site stations which consist of a clamp-on flow meter, a temperature sensor and a processing unit. Each station measures or computes volumetric flow rates, gas and ambient air temperature, sonic propagation velocity and diagnostic conditions. All data obtained at site stations are collected by a master station which computes volume balance by comparing the difference in the gas volume entering and leaving each pipeline segment. Short integration periods show large leaks very quickly while longer integration periods detect smaller leaks.
+
+This technology can locate the leak with an accuracy of about 150 meters. Another advantage is offered by the non-intrusive character of the electronic devices utilized. On the downside, retrofitting to buried pipelines would be difficult.
+
+\section*{5. Software Based Methods}
+
+\subsection*{5.1 Mass/Volume Balance}
+
+The mass or volume balance leak detection technique is based on the principle of mass conservation. An imbalance between the input and output gas mass or volume can reveal the existence of a leak. The volume of gas exiting a section of the pipeline is subtracted from the volume of gas entering this section and if the difference is above a certain threshold, a leak alarm is given. The mass or volume can be computed using readings of commonly used process variables: flow rate, pressure and temperature.
+
+The performance of this method mainly depends on the size of the leak, how frequently the balance is calculated and the accuracy of measuring instruments. It can be easily installed in existing pipelines as it relies on instrumentation that is available on all pipelines and is easy to learn and use. The relatively low cost is another advantage. Balancing techniques are however limited in leak detection during transient, shut-in and slack line conditions. If small leaks occur, it takes a long time to detect them. This method cannot be used for locating the leak and is prone to false alarms during transient states unless thresholds are adapted.
+
+\subsection*{5.2 Real Time Transient Modeling}
+
+Some leak detection techniques work on pipe flow models built using equations such as conservation of mass, conservation of momentum, conservation of energy and the equation of state for the fluid. The difference between the measured value and the predicted value of the flow is used to determine the presence of leaks. Flow, pressure and temperature measurements are required by this technique. Noise levels and transient events are continuously monitored in order to minimize false alarms.
+
+This method can detect small leaks but has the disadvantage of being very expensive as it requires extensive instrumentation for collecting data in real time. The models employed are complex and require a trained user.
+
+\subsection*{5.3 Negative Pressure Wave}
+
+A leak occurring in a pipeline is associated with a sudden pressure drop at the location of the leak, which is propagated as a wave both upstream and downstream. This wave is called a rarefaction or negative pressure wave and can be recorded using pressure transducers installed at both ends of each pipe segment. The leak detection algorithm has to interpret the readings obtained from the pressure transducers and decide if a leak is present.
+
+The location of the leak can be identified using the time difference between the moments at which the two pressure transducers from the pipe ends sense the negative pressure wave. If the leak is closer to one end of the pipe, then the transducer from this end will be the first to receive the pulse and the amount of time needed to receive the pulse at the other end can be used to detect the leak location with good precision. Negative pressure wave based leak detection systems can also estimate the size of the leak.
+
+Another way of using pressure waves to detect leaks is to purposely generate transient pressure waves by closing and opening valves periodically. If a leak is present, these pressure waves are partially reflected, allowing for the detection and location of the leak. Still, using pressure waves to detect leaks has been reported to be unpractical for long-range pipelines.
+
+\subsection*{5.4 Pressure Point Analysis}
+
+Pressure Point Analysis is a fast leak detection technique based on the premise that the pressure inside the pipeline drops if a leak occurs. This technique requires continuous measurements of pressure in different points along the pipeline. Using statistical analysis of these measurements, the presence of a leak is declared when the mean value of the pressure measurements decreases under a predefined threshold. This method can work in underwater and cold environments and can detect very small leak rates, but it is not a reliable leak detection technique during transient flow.
+
+\subsection*{5.5 Statistical}
+
+A simpler way of detecting gas leaks, without the need of a mathematical model, is by using statistical analysis. This analysis is done on measured parameters like pressure and flow at multiple locations along the pipeline. The system generates a leak alarm only if it encounters certain patterns consisting of relative changes in pressure and flow.
+
+Leak thresholds are set after a tuning period during which parameter variance is analyzed under different operating states in the absence of a leak. This tuning process needs to be done over a long period of time and is required in order to reduce false alarms. If a leak is present in the system during the tuning period, it will affect the initial data collected and the system behavior will be considered as normal. This leak would not be detected unless it grew in size enough to go beyond the threshold.
+
+Statistical methods can also estimate the leak location. The technique is easy to use, robust and easy to adapt to different pipeline configurations. Some of the main disadvantages are the difficulty in estimating leak volume and high costs.
+
+\subsection*{5.6 Digital Signal Processing}
+
+Another way to detect leaks by using measurements of the flow, pressure or other pipe parameters is to use digital signal processing. During the set-up phase, the response given by the system to a known change in flow is measured. This measurement is used together with digital signal processing to detect changes in the system response. Digital signal processing allows the leak response to be recognized from noisy data.
+
+This method does not need a mathematical model of the pipeline, its main purpose being that of extracting leak information from noisy data. Like the statistical approach, if during the set-up phase a leak is already present in the system it will not be detected unless its size grows considerably. Furthermore, besides having a high cost, this leak detection technique is difficult to implement, retrofit and test.
+
+\section*{6. Compared Performance Analysis}
+
+The performance level of a leak detection system can be established by a series of factors. Some criteria usually used to evaluate the performance of leak detection systems are the ability to determine the location of the leak, the detection speed and the ability to estimate the size of the leak. The paper summarizes the most important features offered by each studied detection technique, including cost, detection speed, easy retrofitting, ease of use, leak localization and leak size estimation.
+
+Regarding leak localization capability, only techniques based on mass/volume balance and pressure point analysis lack this ability. Localization precision also differs from one method to another. Some can pinpoint the location of a leak with great precision while others, such as software based methods, can only give an estimated location. In these cases, other methods such as line patrolling need to be employed to find the exact leak location.
+
+For evaluating detection speed, systems with detection times up to several minutes are considered fast, systems that need up to several hours are considered medium speed and systems with even longer detection times are considered slow. As expected, detection methods that employ line patrolling have the longest detection time. Optical methods have a medium detection speed when devices are mounted on aircrafts since long distances can be covered faster. All other methods can detect leaks in real time or in a matter of minutes after the leak has occurred.
+
+Sensitivity is also an important factor in assessing the performance of a leak detection system. However, it is not easy to make a comparison of all techniques from the sensitivity point of view since reported values are not always quantified using the same approach. For instance, the sensitivity of computational methods is usually presented as a percentage of nominal pipeline flow or as the minimum detectable leak flow rate, while other systems report concentration based sensitivity regardless of the pipeline flow rate. Software based methods have reported sensitivities ranging from 0.1\% to 1\%. Hardware based methods generally perform better in regard to sensitivity.
+
+\section*{7. Conclusions}
+
+A wide variety of leak detecting techniques is available for gas pipelines. Some techniques have been improved since their first proposal and some new ones were designed as a result of advances in sensor manufacturing and computing power. However, each detection method comes with its advantages and disadvantages.
+
+Leak detection techniques in each category share some advantages and disadvantages. For example, all external techniques which involve detection done from outside the pipeline by visual observation or portable detectors are able to detect very small leaks and the leak location, but the detection time is very long. Methods based on the mathematical model of the pipe have good results at high flow rates while at low flow rates a mass balance based detection system would be more suitable. If the costs involved by the use of each detection system are considered, most of the available techniques are expensive. This disadvantage is prone to disappear for some of these techniques due to forthcoming technological advancements.
+
+Combining several leak detection systems is a common practice and also a recommendation in order to cope with the presented disadvantages. Hybrid systems benefiting from the real-time detection capability of a software based method and the high localization accuracy of a hardware based technique, along with other specific advantages of both approaches, seem to be the future trend in gas leak detection. Selecting from the wide variety of commercial solutions available is ultimately an action that has to be taken after assessing the needs of the system in which gas leak detection is needed.
+
+\clearpage
+
+\chapter*{中文译文}
+\addcontentsline{toc}{chapter}{中文译文}
+
+\noindent\textbf{气体泄漏检测与定位技术综述}
+
+\noindent Pal-Stefan Murvay，Ioan Silea
+
+\noindent 罗马尼亚蒂米什瓦拉理工大学自动化与计算机学院自动化与应用信息学系
+
+\noindent 录用于 \textit{Journal of Loss Prevention in the Process Industries} 的论文预印本。
+
+\section*{摘要}
+
+气体泄漏可能引发重大事故，造成人员伤害和经济损失。为了避免此类情况，研究者和工程人员已经投入大量精力开发可靠的气体泄漏检测技术。仅仅知道泄漏已经发生并不总是足以采取有效的纠正措施，因此一些泄漏检测技术还被设计为能够进一步确定泄漏位置。本文的主要目的在于识别泄漏检测与定位方法的研究现状。同时，本文还评价这些技术的能力，以明确使用每一种泄漏检测方案时可能具有的优点和不足。
+
+\noindent\textbf{关键词：} 气体泄漏；泄漏检测；泄漏定位；管道
+
+\section*{1. 引言}
+
+全球天然气输送与分配网络是一个复杂且持续扩展的系统。根据相关研究，管道作为一种运输方式虽然相对安全，但这并不意味着其完全没有风险。因此，保障天然气管道基础设施的可靠性已经成为能源领域的关键需求。在寻找提高管道网络可靠性的手段时，最主要的威胁之一就是泄漏的发生。
+
+无论泄漏规模大小，管道泄漏都会由于其可能造成的严重影响而成为重要问题。这些影响并不仅限于停机成本和维修费用，还可能包括人员伤害以及环境灾害。天然气管道事故的主要原因包括外部干扰、腐蚀、施工缺陷、材料失效以及地面运动等。
+
+为了抵消气体泄漏可能造成的灾难性后果，过去几十年中大量研究工作集中在气体泄漏检测技术的设计上。然而，仅仅揭示气体泄漏的存在还不足以制定有效的应对措施。在决定采取何种纠正行动之前，还需要了解其他信息，例如泄漏位置、泄漏大小等。这些问题同样是管道可靠性保障领域研究关注的重点。
+
+多个组织曾对气体泄漏相关事故进行统计并发布报告。部分关于海底管道系统的研究表明，在特定时期和区域内曾报告多起管道破裂事故；另一些关于管道运输风险的调查则覆盖欧洲和美洲发生的事故，并总结了管道失效的主要原因。这些证据表明，尽管现有泄漏检测方法种类繁多，气体泄漏造成事故的风险仍然不可忽视，这也构成了本文研究的动机。
+
+本文的主要目的在于梳理气体泄漏检测技术的研究现状，并针对每种被研究的方法介绍其定位能力以及其他重要特征。为实现这一目标，本文对该领域文献进行了广泛综述，既包括学术界的研究成果，也包括工业报告中的结果。
+
+过去已经有不少关于气体泄漏检测技术的综述。这些综述有的作为某种具体泄漏检测方法或气体相关主题研究的一部分出现，有的则专门围绕泄漏检测技术展开。虽然这些文献为已有检测技术提供了较好的概览，但部分综述较为简略，遗漏了一些检测方法，或者在时间上已经不够新。
+
+为了决定某种泄漏检测技术是否适合特定场景，有必要开展比较性能分析。为此，本文依据文献中报告的性能结果，使用一组共同特征对所研究的方法进行比较。总体来看，将不同检测方法结合起来形成混合系统，以达到所需系统性能，可能是未来更合适的发展方向。
+
+\section*{2. 泄漏检测技术分类}
+
+为开展综述，本文首先对已有泄漏检测技术进行分类。分类依据包括所需人工参与程度、所测量的物理量以及方法的技术性质等。
+
+如果按照每种检测方法所需人工参与程度进行分类，可以区分出三类方法。自动检测是指安装后无需人工操作员即可报告气体泄漏的完整监测系统，例如光纤传感器或电缆传感器。半自动检测是指在执行某些任务时仍需要一定输入或辅助的方案，例如统计方法或数字信号处理方法。人工检测是指只能由人员直接操作的系统和设备，例如热成像仪或激光雷达设备。
+
+大多数检测技术都依赖于某种物理量的测量，或者依赖于某种物理现象的表现。因此，也可以根据常用物理参数和现象进行分类，例如声学、流量、压力、气体采样、光学以及多种现象的组合。一些作者还将相关技术划分为直接方法和间接方法。直接检测通常沿管线巡检，通过目视检查或手持设备测量气体逸散；间接或推断方法则通过测量流量、压力等管道参数变化来判断泄漏。
+
+最常见的分类方式是根据技术性质划分泄漏检测方法。由此可以区分出两大类方法：基于硬件的方法和基于软件的方法。这两类方法有时也被称为外部式或内部式泄漏检测系统。虽然近年文献中不常将其作为单独类别列出，但还存在第三类所谓生物方法。本文将这类方法称为非技术方法。
+
+非技术泄漏检测方法不使用专门设备，而依赖人或动物的自然感官，即听觉、嗅觉和视觉。基于硬件的方法主要依靠特殊传感装置检测气体泄漏。根据传感器和设备类型不同，硬件方法可进一步分为声学方法、光学方法、电缆传感器、土壤监测、超声流量计和蒸汽采样等。基于软件的方法以软件程序为核心，其算法连续监测压力、温度、流量或其他管道参数状态，并根据这些量的变化推断是否发生泄漏。
+
+\section*{3. 非技术方法}
+
+这类方法通常由人员沿管线巡检，观察气体泄漏造成的视觉现象，闻可能通过泄漏释放出的物质，或者听气体逸出时可能产生的特定声音。有时也会使用训练犬，因为犬类对某些气体气味更加敏感。在实验室条件下，根据目标化合物不同，犬类灵敏度可以达到十亿分之一到万亿分之一量级。不过，使用犬类检测泄漏也存在不足，例如不能长时间连续有效搜索，且检测准确性会受到疲劳和训练员对犬只反应解释的影响。
+
+肥皂泡检测也可归入这一类别，它是一种低成本的小泄漏定位方法。该方法通过将肥皂溶液喷洒在管道不同部件或可疑表面上实现检测。通常，肥皂泡检测主要用于阀门和管道接头，因为这些位置更容易发生气体泄漏。该方法速度快、成本低，因此可作为日常巡检程序的一部分。
+
+此类方法的优点是不需要特殊设备，并且一旦检测到泄漏便可立即确定泄漏位置。但它们也存在缺点。例如，检测时间取决于巡检频率，而巡检频率通常较低。泄漏能否被发现很大程度上依赖于工作人员的经验和细致程度。另一缺点是该方法只能用于人员可接近的管道，因此不适用于埋地管道。
+
+\section*{4. 基于硬件的方法}
+
+\subsection*{4.1 声学方法}
+
+气体从管道破损处逸出时会产生声学信号，因此该信号可用于判断是否发生泄漏。为了记录管道内部噪声，需要使用声学传感器。这类传感器可以集成在巡检人员使用的手持检测设备中，也可以集成在管道内运行并进行检查的智能清管器中。连续监测还可通过在管道外部按一定距离安装声学传感器实现。两个声学传感器之间的距离需要根据传感器灵敏度和预算确定。传感器间距过大会增加漏检风险，间距过小则会增加系统成本。
+
+声学泄漏检测技术自 20 世纪 30 年代以来就受到研究。一些方法在管段两端分别测量声学信号，并基于这些测量值通过时频技术或低频脉冲方法检测泄漏。较新的实验研究则关注如何利用时频分析区分泄漏信号和背景噪声，并调整泄漏定位公式以提高定位精度。
+
+声学方法的优点包括可连续运行、易于自动化，还能够帮助确定泄漏位置并估计泄漏大小。该技术既可用于新建管道，也可用于已有管道。在连续监测模式下，系统能够实时响应。其缺点是高背景噪声或流动噪声可能掩盖实际泄漏信号，例如车辆噪声、阀门噪声或泵噪声。从成本角度看，对于长距离管道而言，需要安装大量传感器，因此费用较高。
+
+\subsection*{4.2 光学方法}
+
+用于泄漏检测的光学方法可分为主动方法和被动方法。主动方法需要使用辐射源照射被扫描区域，而被动方法不需要外部光源，仅依赖背景辐射或气体自身发出的辐射。
+
+光学方法的一般优点包括便携性、远程检测能力以及泄漏定位能力。常见做法是使用安装在飞机上的光学设备巡检天然气管网。由此得到的地图能够给出整个管网的概览，并比地面人员手持设备巡检更快地显示已有泄漏位置。除光纤传感外，多数光学方法都具有较好的便携性。
+
+主动方法监测天然气分子对发射辐射的吸收或散射。如果在管道上方检测到显著吸收或散射，则可推断存在泄漏。已经研究的主动光学方法包括激光雷达系统、二极管激光吸收、毫米波雷达、后向散射成像、宽带吸收以及光纤等。
+
+激光雷达系统使用脉冲激光照射场景，并通过探测器监测路径上的激光能量吸收。这是一种灵敏的远程监测技术，但脉冲激光价格高、系统寿命较短。二极管激光吸收技术与激光雷达类似，但使用二极管激光替代昂贵的脉冲激光，既适合近距离手持检测器，也适合高空航空检测，不过可能产生误报。
+
+毫米波雷达系统基于气体管道上方区域的雷达特征。甲烷等气体比空气轻，这种密度差异可能产生特定雷达特征，从而用于检测潜在泄漏。后向散射成像使用二氧化碳激光照射场景，天然气散射激光后由红外相机捕获散射特征。宽带吸收系统采用低成本灯作为辐射源，并使用多个波长降低误报概率。
+
+光纤可用于监测一系列物理和化学性质。气体从管道逸出导致的温度变化可由靠近管道布设的传感光纤电缆检测到。碳氢化合物的存在也会影响光纤传输特性，因此为气体泄漏检测提供另一种手段。光纤传感还可以检测泄漏位置和泄漏气体浓度。光纤传感的重要优点是抗电磁干扰能力强；不足则包括成本高、化学涂层长期稳定性问题，以及在已有埋地管道上部署困难。
+
+被动光学方法不需要辐射源，因此可能节省部分成本。但由于缺少辐射源，需要使用性能更高的探测器和成像设备，而这些设备通常价格昂贵。被动系统包括热成像、多光谱成像和气体滤波相关辐射测量。热成像利用泄漏气体与周围环境之间的温度差检测泄漏。多光谱成像可在吸收模式或发射模式下使用。气体滤波相关辐射测量则使用目标气体样本作为光谱滤波器，并通过测量两条光路上的辐射通量判断是否存在气体泄漏。
+
+\subsection*{4.3 电缆传感器}
+
+光纤电缆并不是唯一可用的电缆检测技术。电学电缆传感器也可用于气体泄漏检测。这类电缆使用与特定物质接触后会发生反应的材料制成。反应会改变电缆的电阻或电容等性质，通过监测这些性质变化即可感知泄漏发生。有研究表明，某些传感电缆能够以约 20 米的精度检测和定位泄漏。
+
+一些电缆包含两个电路回路，一个连接电源，另一个连接报警器。当两个回路接触时，报警器被触发。短路可由多种机制产生，具体取决于所用电缆。该技术响应较快，且比一些计算方法更灵敏。然而，系统实现成本较高，且难以改造已有管道，同时不能估计泄漏大小。
+
+\subsection*{4.4 土壤监测}
+
+土壤监测通过向气体管道中加入一定量的示踪化合物实现。该示踪化学物质为无害且高度挥发性的气体，如果发生泄漏，它会在泄漏的确切位置从管道中逸出。为了检测泄漏，需要使用仪器沿管道上方地表拖动检测设备，或通过安装在管道附近土壤中的探针进行监测。采集的样本随后使用气相色谱仪分析。
+
+误报率很低和灵敏度高是土壤监测用于泄漏检测的优点。该方法成本较高，因为检测过程中需要持续向管道中加入示踪化学物质。此外，该方法不能用于裸露管道。
+
+\subsection*{4.5 蒸汽采样}
+
+泄漏也可通过采集管道附近的碳氢化合物蒸汽进行检测。采样可通过沿管道埋设传感管的蒸汽监测系统实现，也可由人员携带移动检测器或将检测器安装在遥控车辆上实现。
+
+远程监测系统使用与管道平行埋设的传感管。该管对目标气体具有渗透性，因此当发生泄漏时，部分逸出气体会扩散进入管内。随后通过泵定期将管内气体推送至监测单元。检测单元中的传感器在被检查气柱的某一点检测气体浓度。为了确定泄漏位置，每次泵送动作开始前会向管内注入测试气体。泄漏点气体到达检测单元的传播时间相对于总传播时间的比例可用于推断泄漏位置。该方法响应时间比其他监测方法慢，通常用于短管道。
+
+手持式或车载式气体采样检测器可以采用多种传感器构建。相比非技术检测方法，该方法对很小的泄漏可能具有更好的检测效果，但其成功程度仍很大程度上取决于巡检频率。
+
+\subsection*{4.6 超声流量计}
+
+基于超声流量计的系统也可用于气体泄漏检测。这类系统将管道视为由多个管段组成，每个管段由两个站点限定。每个站点包含夹装式流量计、温度传感器和处理单元，用于测量或计算体积流量、气体和环境温度、声传播速度以及诊断状态。所有站点获得的数据由主站收集，主站通过比较进入和离开每个管段的气体体积差计算体积平衡。较短积分周期可快速显示大泄漏，较长积分周期则用于检测小泄漏。
+
+该技术能够以约 150 米的精度定位泄漏。另一个优点是所用电子设备具有非侵入式特点。缺点是对埋地管道进行改造较为困难。
+
+\section*{5. 基于软件的方法}
+
+\subsection*{5.1 质量/体积平衡}
+
+质量或体积平衡泄漏检测技术基于质量守恒原理。输入和输出气体质量或体积之间的不平衡可以揭示泄漏存在。具体做法是从进入某一管段的气体体积中减去离开该管段的气体体积，如果差值超过某一阈值，则发出泄漏报警。质量或体积可通过常用过程变量计算，例如流量、压力和温度。
+
+该方法的性能主要取决于泄漏大小、平衡计算频率以及测量仪器精度。由于其依赖于所有管道通常都具备的仪表，因此易于安装在已有管道中，也易于学习和使用。相对较低的成本是另一优点。不过，平衡技术在瞬态、停输和非满管等条件下存在局限。若发生小泄漏，需要较长时间才能检测出来。该方法不能用于泄漏定位，并且在瞬态状态下容易产生误报，除非阈值能够自适应调整。
+
+\subsection*{5.2 实时瞬态建模}
+
+一些泄漏检测技术基于管道流动模型，这些模型由质量守恒、动量守恒、能量守恒以及流体状态方程等建立。通过比较流量测量值和预测值之间的差异，可以判断是否存在泄漏。该技术需要流量、压力和温度测量值。为了尽量减少误报，还需要持续监测噪声水平和瞬态事件。
+
+该方法能够检测小泄漏，但缺点是成本很高，因为它需要大量仪表实时采集数据。所使用的模型较复杂，也需要经过训练的用户操作。
+
+\subsection*{5.3 负压波}
+
+管道发生泄漏时，泄漏位置会出现突然的压力下降，并以波的形式向上游和下游传播。该波被称为稀疏波或负压波，可通过安装在每个管段两端的压力变送器记录。泄漏检测算法需要解释压力变送器读数并判断是否存在泄漏。
+
+泄漏位置可以通过管段两端压力变送器感知到负压波的时间差来确定。如果泄漏点更靠近管道某一端，则该端变送器会首先接收到脉冲，而另一端接收到脉冲所需的时间可用于较精确地确定泄漏位置。基于负压波的泄漏检测系统也可以估计泄漏大小。
+
+使用压力波检测泄漏的另一种方式是通过周期性关闭和打开阀门有意产生瞬态压力波。如果存在泄漏，这些压力波会发生部分反射，从而允许检测和定位泄漏。不过，有研究指出，在长距离管道中使用压力波检测泄漏并不实用。
+
+\subsection*{5.4 压力点分析}
+
+压力点分析是一种快速泄漏检测技术，其前提是发生泄漏时管道内部压力会下降。该技术需要沿管道不同位置连续测量压力。通过对这些测量值进行统计分析，当压力测量均值下降到预设阈值以下时，即可判定存在泄漏。该方法可用于水下和寒冷环境，并能检测很小的泄漏率，但在瞬态流动条件下并不可靠。
+
+\subsection*{5.5 统计方法}
+
+在不需要数学模型的情况下，使用统计分析是检测气体泄漏的一种较简单方式。该分析基于管道沿线多个位置测量到的压力、流量等参数。只有当系统遇到由压力和流量相对变化构成的特定模式时，才会产生泄漏报警。
+
+泄漏阈值通常在调试阶段确定。在该阶段，需要在没有泄漏的不同运行状态下分析参数方差。为了减少误报，这一调试过程需要持续较长时间。如果调试期间系统中已经存在泄漏，则其会影响初始数据采集，系统行为将被认为是正常的。除非该泄漏进一步增大并超过阈值，否则无法被检测出来。
+
+统计方法也可以估计泄漏位置。该技术易于使用，鲁棒性较好，也易于适配不同管道配置。其主要缺点包括难以估计泄漏量以及成本较高。
+
+\subsection*{5.6 数字信号处理}
+
+利用流量、压力或其他管道参数测量值检测泄漏的另一种方式是数字信号处理。在系统设置阶段，需要测量系统对已知流量变化的响应。该测量结果随后与数字信号处理方法结合，用于检测系统响应变化。数字信号处理能够从含噪数据中识别泄漏响应。
+
+该方法不需要管道数学模型，其主要目的在于从噪声数据中提取泄漏信息。与统计方法类似，如果在系统设置阶段已经存在泄漏，则除非泄漏规模显著增大，否则系统不会检测到它。此外，该检测技术成本高，且难以实现、改造和测试。
+
+\section*{6. 性能比较分析}
+
+泄漏检测系统的性能水平可通过一系列因素确定。通常用于评价泄漏检测系统性能的标准包括能否确定泄漏位置、检测速度以及能否估计泄漏大小。原文总结了每种检测技术所提供的重要特征，包括成本、检测速度、改造难度、使用便利性、泄漏定位能力和泄漏大小估计能力等。
+
+就泄漏定位能力而言，只有基于质量/体积平衡的方法和压力点分析方法缺乏这一能力。不同方法的定位精度也存在差异。有些方法能够以较高精度指出泄漏位置，而另一些方法，例如基于软件的方法，只能给出估计位置。在这些情况下，还需要使用管线巡检等其他方法寻找泄漏的准确位置。
+
+在评价检测速度时，检测时间不超过几分钟的系统可被视为快速系统，需要数小时的系统可视为中等速度系统，而检测时间更长的系统则属于慢速系统。正如预期，依靠沿线巡检的方法检测时间最长。当光学设备安装在飞机上时，由于可以较快覆盖长距离管线，光学方法具有中等检测速度。其他方法通常可以实时或在泄漏发生后数分钟内检测到泄漏。
+
+灵敏度也是评价泄漏检测系统性能的重要因素。然而，从灵敏度角度比较所有技术并不容易，因为文献报告的数值并不总是采用相同方式量化。例如，计算方法的灵敏度通常以管道额定流量百分比或最小可检测泄漏流量表示，而其他系统则可能报告与管道流量无关的浓度灵敏度。基于软件的方法报告的灵敏度通常在 0.1\% 到 1\% 之间。总体而言，基于硬件的方法在灵敏度方面通常表现更好。
+
+\section*{7. 结论}
+
+目前可用于气体管道的泄漏检测技术种类繁多。有些技术自首次提出以来已经得到改进，也有一些新技术随着传感器制造和计算能力的进步而被设计出来。然而，每种检测方法都具有各自的优点和缺点。
+
+同一类别中的泄漏检测技术通常共享某些优点和缺点。例如，所有从管道外部通过视觉观察或便携式检测器完成检测的外部技术，都能够检测很小的泄漏并确定泄漏位置，但检测时间很长。基于管道数学模型的方法在高流量条件下效果较好，而在低流量条件下，基于质量平衡的检测系统可能更加适合。如果考虑每种检测系统的使用成本，大多数已有技术都较为昂贵。随着未来技术进步，其中一些技术的成本问题可能逐渐减弱。
+
+为了应对上述缺点，将多种泄漏检测系统组合使用是一种常见做法，也是推荐方向。混合系统同时受益于基于软件方法的实时检测能力和基于硬件方法的高定位精度，并结合两类方法的其他特定优势，似乎代表了气体泄漏检测的未来趋势。面对种类繁多的商业解决方案，最终选择哪一种方案，需要在评估具体系统需求之后作出决定。

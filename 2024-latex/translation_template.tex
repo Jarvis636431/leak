@@ -1,0 +1,237 @@
+% !Mode:: "TeX:UTF-8"
+% !TEX program = xelatex
+%
+% 外文资料和中文译文模板
+% 编译命令：
+%   latexmk -xelatex -interaction=nonstopmode translation_template.tex
+%
+% 使用方式：
+% 1. 修改下方“基本信息”中的占位内容。
+% 2. 将外文原文粘贴到“外文资料”部分。
+% 3. 将中文译文粘贴到“中文译文”部分。
+
+\documentclass[12pt,openany,oneside,fontset=none]{ctexbook}
+
+\usepackage[a4paper,top=27.5true mm,bottom=25.4true mm,left=35.7true mm,right=27.7true mm,headheight=15true mm,footskip=17.5true mm]{geometry}
+\usepackage{graphicx}
+\usepackage{fontspec}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{indentfirst}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+% 字体设置：与主论文保持一致
+\setCJKmainfont{Songti SC}[
+  BoldFont = Heiti SC,
+  ItalicFont = Songti SC
+]
+\setCJKsansfont{Heiti SC}[
+  BoldFont = Heiti SC,
+  ItalicFont = Heiti SC
+]
+\setCJKmonofont{Songti SC}[
+  BoldFont = Heiti SC,
+  ItalicFont = Songti SC
+]
+\setCJKfamilyfont{zhsong}{Songti SC}
+\setCJKfamilyfont{zhhei}{Heiti SC}
+\providecommand{\songti}{\CJKfamily{zhsong}}
+\providecommand{\heiti}{\CJKfamily{zhhei}}
+
+\setmainfont[
+  Path = /System/Library/Fonts/Supplemental/,
+  UprightFont = Times New Roman.ttf,
+  BoldFont = Times New Roman Bold.ttf,
+  ItalicFont = Times New Roman Italic.ttf,
+  BoldItalicFont = Times New Roman Bold Italic.ttf,
+  Ligatures = TeX
+]{Times New Roman}
+\setsansfont[
+  Path = /System/Library/Fonts/Supplemental/,
+  UprightFont = Times New Roman.ttf,
+  BoldFont = Times New Roman Bold.ttf,
+  ItalicFont = Times New Roman Italic.ttf,
+  BoldItalicFont = Times New Roman Bold Italic.ttf,
+  Ligatures = TeX
+]{Times New Roman}
+\setmonofont[
+  Path = /System/Library/Fonts/Supplemental/,
+  UprightFont = Times New Roman.ttf,
+  BoldFont = Times New Roman Bold.ttf,
+  ItalicFont = Times New Roman Italic.ttf,
+  BoldItalicFont = Times New Roman Bold Italic.ttf,
+  Ligatures = TeX
+]{Times New Roman}
+
+% 正文小四号，固定 20 磅行距
+\newcommand{\song}{\songti}
+\newcommand{\hei}{\heiti}
+\newcommand{\erhao}{\fontsize{22pt}{27.5pt}\selectfont}
+\newcommand{\xiaoer}{\fontsize{18pt}{22pt}\selectfont}
+\newcommand{\xiaosan}{\fontsize{15pt}{18pt}\selectfont}
+\newcommand{\sihao}{\fontsize{14pt}{18pt}\selectfont}
+\newcommand{\xiaosi}{\fontsize{12pt}{20pt}\selectfont}
+\newcommand{\wuhao}{\fontsize{10.5pt}{14pt}\selectfont}
+\newcommand{\xiaowu}{\fontsize{9pt}{12pt}\selectfont}
+
+\makeatletter
+\renewcommand\normalsize{
+  \@setfontsize\normalsize{12pt}{20pt}
+}
+\makeatother
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+\renewcommand{\baselinestretch}{1}
+
+% 标题格式：与论文正文接近
+\titleformat{\chapter}{\centering\xiaosan\hei}{\chaptername}{1em}{}
+\titlespacing{\chapter}{0pt}{0pt}{30pt}
+\titleformat{\section}{\sihao\hei}{\thesection}{1em}{}
+\titlespacing{\section}{0pt}{18pt}{18pt}
+\titleformat{\subsection}{\sihao\hei}{\thesubsection}{1em}{}
+\titlespacing{\subsection}{0pt}{12pt}{12pt}
+
+\renewcommand{\chaptername}{}
+\setcounter{secnumdepth}{2}
+\setlist{leftmargin=3em,itemsep=0em,topsep=0em,parsep=0em}
+
+% 页眉页脚
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\song\wuhao 天津大学20XX届本科生毕业论文}
+\fancyfoot[C]{\song\xiaowu \thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% =========================
+% 基本信息：按需修改
+% =========================
+\newcommand{\PaperTitle}{基于声学信号的管道泄漏检测与定位研究}
+\newcommand{\ForeignTitle}{Gas Pipeline Event Classification Based on One-Dimensional Convolutional Neural Network}
+\newcommand{\College}{请填写学院}
+\newcommand{\Major}{请填写专业}
+\newcommand{\Grade}{请填写年级}
+\newcommand{\AuthorName}{请填写姓名}
+\newcommand{\StudentID}{请填写学号}
+\newcommand{\Supervisor}{请填写指导教师}
+\newcommand{\SubmitDate}{二〇二六年五月}
+
+\begin{document}
+\xiaosi
+
+% =========================
+% 封面
+% =========================
+\begin{titlepage}
+  \centering
+  \vspace*{18pt}
+  \includegraphics[width=0.38\textwidth]{figures/tjuname.png}
+
+  \vspace{58pt}
+  {\hei\erhao 外文资料和中文译文\par}
+
+  \vspace{72pt}
+  \begin{tabular}{p{3.2cm}p{9.5cm}}
+    \hei 论文题目： & \PaperTitle \\
+    \hei 外文题目： & \ForeignTitle \\
+    \hei 学\hspace{2em}院： & \College \\
+    \hei 专\hspace{2em}业： & \Major \\
+    \hei 年\hspace{2em}级： & \Grade \\
+    \hei 姓\hspace{2em}名： & \AuthorName \\
+    \hei 学\hspace{2em}号： & \StudentID \\
+    \hei 指导教师： & \Supervisor \\
+  \end{tabular}
+
+  \vfill
+  {\song\sihao \SubmitDate\par}
+\end{titlepage}
+
+\setcounter{page}{1}
+
+% =========================
+% 外文资料
+% =========================
+\chapter*{外文资料}
+\addcontentsline{toc}{chapter}{外文资料}
+
+\noindent\textbf{Original Article Information}
+
+\noindent Title: Gas Pipeline Event Classification Based on One-Dimensional Convolutional Neural Network
+
+\noindent Authors: Yang An, Xueyan Ma, Xiaocen Wang, Zhigang Qu, Xixin Zhu, Wuliang Yin
+
+\noindent Source: Structural Health Monitoring, 2022, 21(3): 826--834.
+
+\noindent DOI: \href{https://doi.org/10.1177/14759217211010270}{10.1177/14759217211010270}
+
+\vspace{1em}
+
+\section*{Title}
+
+Paste the original English title here.
+
+\section*{Abstract}
+
+Paste the original English abstract or selected original text here.
+
+\section*{1 Introduction}
+
+Paste the selected original English text here. The format of this section follows the main thesis body: Times New Roman for English text, 12 pt font size, fixed 20 pt line spacing, and first-line paragraph indentation.
+
+\section*{2 Method}
+
+Paste the selected original English text here.
+
+\section*{3 Experiments and Results}
+
+Paste the selected original English text here.
+
+\section*{4 Conclusion}
+
+Paste the selected original English text here.
+
+\clearpage
+
+% =========================
+% 中文译文
+% =========================
+\chapter*{中文译文}
+\addcontentsline{toc}{chapter}{中文译文}
+
+\noindent\textbf{文献信息}
+
+\noindent 题目：基于一维卷积神经网络的燃气管道事件分类
+
+\noindent 作者：Yang An，Xueyan Ma，Xiaocen Wang，Zhigang Qu，Xixin Zhu，Wuliang Yin
+
+\noindent 来源：Structural Health Monitoring，2022，21(3)：826--834。
+
+\noindent DOI：\href{https://doi.org/10.1177/14759217211010270}{10.1177/14759217211010270}
+
+\vspace{1em}
+
+\section*{题目}
+
+在此处填写外文题目的中文译文。
+
+\section*{摘要}
+
+在此处填写英文摘要或所选外文资料的中文译文。
+
+\section*{1 引言}
+
+在此处填写对应外文原文的中文译文。中文译文格式与论文正文一致：中文采用宋体，小四号字，固定 20 磅行距，段落首行缩进 2 字符。
+
+\section*{2 方法}
+
+在此处填写对应外文原文的中文译文。
+
+\section*{3 实验与结果}
+
+在此处填写对应外文原文的中文译文。
+
+\section*{4 结论}
+
+在此处填写对应外文原文的中文译文。
+
+\end{document}
