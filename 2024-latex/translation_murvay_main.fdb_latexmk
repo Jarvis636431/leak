@@ -1,10 +1,10 @@
 # Fdb version 4
-["xdvipdfmx"] 1779637010.94207 "translation_murvay_main.xdv" "translation_murvay_main.pdf" "translation_murvay_main" 1779637011.21759 0
-  "translation_murvay_main.xdv" 1779637010.88431 427576 6aa3cc83e6106cc051962fe28b753185 "xelatex"
+["xdvipdfmx"] 1779637594.12899 "translation_murvay_main.xdv" "translation_murvay_main.pdf" "translation_murvay_main" 1779637594.4076 0
+  "translation_murvay_main.xdv" 1779637594.07542 422196 38da13b1b0138fe6c937f5c7a47983f9 "xelatex"
   (generated)
   "translation_murvay_main.pdf"
   (rewritten before read)
-["xelatex"] 1779637010.29331 "translation_murvay_main.tex" "translation_murvay_main.xdv" "translation_murvay_main" 1779637011.21707 0
+["xelatex"] 1779637593.51709 "translation_murvay_main.tex" "translation_murvay_main.xdv" "translation_murvay_main" 1779637594.407 0
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmr10.tfm" 1136768653 1296 45809c5a464d5f32c8f98ba97c1bb47f ""
@@ -74,10 +74,10 @@
   "/usr/local/texlive/2026/texmf-dist/web2c/texmf.cnf" 1770478701 43630 e9fa012910491fe5ae08a72c3c2997a7 ""
   "/usr/local/texlive/2026/texmf-var/web2c/xetex/xelatex.fmt" 1776598934 5948562 7cd794c9d64eb80039d363b6f78c2fe6 ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "translation_body_murvay.tex" 1779636819.24048 51917 054fc4fd512fe2b59d07bc3071c0a8c0 ""
-  "translation_murvay_main.aux" 1779637010.88373 320 c8c5f3d6e70eb1ef6ec136b35590d828 "xelatex"
-  "translation_murvay_main.out" 1779637010.88412 152 f7fbfd95463bc0d37583243a7d2f8fd0 "xelatex"
-  "translation_murvay_main.tex" 1779637002.99521 2930 369963e5fc3adaa03e08de5b28cafc8a ""
+  "translation_body_murvay.tex" 1779637329.55037 51926 2539bb2570ef23f270392aa70b01801e ""
+  "translation_murvay_main.aux" 1779637594.07487 393 b88dea2b2acf169c73f2d98b3f167a49 "xelatex"
+  "translation_murvay_main.out" 1779637594.07522 506 5ef28b518b0ecd56f3593bef16e1dcd0 "xelatex"
+  "translation_murvay_main.tex" 1779637319.84895 2878 b15dd233027791e0d4dc8b5de4fc2743 ""
   (generated)
   "translation_murvay_main.aux"
   "translation_murvay_main.log"
