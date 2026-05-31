@@ -235,50 +235,16 @@
 \fancyhead[C]{\song\wuhao \@cheading}  % 页眉显示天津大学 20XX 届本科生毕业论文
 \fancyfoot[C]{\song\xiaowu ~\thepage~}
 \newlength{\@title@width}
+\newcommand{\@coverfield}[2]{%
+  \noindent\hspace*{3.05cm}{\song\sanhao\bfseries
+  #1\quad\underline{\makebox[6.2cm][c]{#2}}}\par\vspace{4pt}%
+}
 
 %%%%%%%%%%%%%%%%%%%     Cover     %%%%%%%%%%%%%%%%%%%%%%%
 \def\makecover{
-   	\phantomsection
+    \phantomsection
     \pdfbookmark[-1]{\@ctitle}{ctitle}
-
-    \begin{titlepage}
-      	\vspace*{31.5pt}
-      	\begin{center}
-  			\begin{figure}[h]
-  				\centering
-  				\includegraphics[width=0.4\textwidth]{figures/tjuname}
-  			\end{figure}
-  			\vspace*{21pt}
-  			\hei\erhao{\textbf{本科生毕业论文}}
-  			\vspace*{32.5pt}
-
-  			\begin{figure}[h]
-  				\centering
-  				\includegraphics[width=0.4\textwidth]{figures/tjulogo}
-  			\end{figure}
-  			
-
-                \vspace*{20pt}
-                \hei\sanhao{\textbf{题目：\@ctitle}}
-                \vspace*{16pt}
-        
-  			\vspace*{16pt}
-                \renewcommand\arraystretch{1.5}
-  			\setlength{\@title@width}{6cm}{\song\sanhao{\textbf{
-    			\begin{tabular}{lc}
-      				学\qquad 院&	\underline{\makebox[\@title@width][c]{\@caffil}}	\\
-      				专\qquad 业&	\underline{\makebox[\@title@width][c]{\@csubject}}	\\
-      				年\qquad 级&	\underline{\makebox[\@title@width][c]{\@cgrade}}	\\
-      				姓\qquad 名&	\underline{\makebox[\@title@width][c]{\@cauthor}} 	\\
-                        学\qquad 号&
-                    \underline{\makebox[\@title@width][c]{\@cnumber}} 	\\
-      				指导教师   &	\underline{\makebox[\@title@width][c]{\@csupervisor}} \\
-  				\end{tabular}
-  			}}}
-  			\vspace*{21pt}
-
-		\end{center}
-	\end{titlepage}
+    \includepdf[pages=1,pagecommand={\thispagestyle{empty}}]{../【2025修订版】1-1天津大学本科生毕业论文模板.pdf}
 }
 
 %%%%%%%%%%%%%%%%%%%    Abstract    %%%%%%%%%%%%%%%%%%%%%%%
