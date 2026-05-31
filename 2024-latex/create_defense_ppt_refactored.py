@@ -391,8 +391,7 @@ def make_deck() -> Presentation:
     # 1. Cover
     s = prs.slides.add_slide(blank)
     add_rect(s, 0, 0, W, H, COLORS["paper"])
-    add_rect(s, 0, 0, Inches(0.26), H, COLORS["navy"])
-    add_rect(s, 0, 0, W, Inches(0.14), COLORS["navy"])
+    add_rect(s, 0, 0, W, Inches(0.12), COLORS["amber"])
     add_brand_corner(s)
     add_text(s, Inches(0.92), Inches(0.75), Inches(6.2), Inches(0.3), "天津大学 2026 届本科生毕业设计答辩", 13, COLORS["navy"], True)
     add_text(s, Inches(0.92), Inches(2.15), Inches(10.7), Inches(1.25), "基于双通道时序信号的\n两阶段管道泄漏检测与定位方法", 34, COLORS["navy"], True)
@@ -695,17 +694,15 @@ def make_deck() -> Presentation:
     # 22. Thanks
     s = prs.slides.add_slide(blank)
     add_rect(s, 0, 0, W, H, COLORS["paper"])
-    add_rect(s, 0, 0, Inches(0.26), H, COLORS["navy"])
-    add_rect(s, 0, 0, W, Inches(0.14), COLORS["navy"])
-    add_rect(s, 0, Inches(7.14), W, Inches(0.36), COLORS["navy"])
-    add_rect(s, Inches(8.35), Inches(0.0), Inches(4.98), H, COLORS["navy"])
-    add_brand_corner(s, dark=True)
-    add_text(s, Inches(0.95), Inches(1.55), Inches(6.2), Inches(0.8), "感谢各位老师\n批评指正", 38, COLORS["navy"], True)
-    add_rect(s, Inches(0.98), Inches(3.35), Inches(3.4), Inches(0.055), COLORS["blue"])
-    add_text(s, Inches(0.98), Inches(3.9), Inches(6.6), Inches(0.35), "基于双通道时序信号的两阶段管道泄漏检测与定位方法", 14, COLORS["ink"])
-    add_lines(s, Inches(0.98), Inches(5.25), Inches(5.8), Inches(0.75), ["答辩人：孟达", "天津大学建筑工程学院"], 13, COLORS["muted"], 1.45)
-    add_text(s, Inches(9.15), Inches(3.25), Inches(3.1), Inches(0.6), "Q & A", 30, COLORS["white"], True, PP_ALIGN.CENTER)
-    add_text(s, Inches(9.08), Inches(4.15), Inches(3.25), Inches(0.34), "欢迎提问与指导", 15, RGBColor(225, 232, 242), False, PP_ALIGN.CENTER)
+    add_rect(s, 0, 0, W, Inches(0.12), COLORS["amber"])
+    add_brand_corner(s)
+    add_text(s, Inches(0.95), Inches(1.55), Inches(10.4), Inches(0.8), "感谢各位老师批评指正", 38, COLORS["navy"], True)
+    add_rect(s, Inches(0.98), Inches(2.72), Inches(3.65), Inches(0.055), COLORS["blue"])
+    add_text(s, Inches(0.98), Inches(3.35), Inches(8.8), Inches(0.35), "基于双通道时序信号的两阶段管道泄漏检测与定位方法", 14, COLORS["ink"])
+    add_lines(s, Inches(0.98), Inches(4.18), Inches(6.8), Inches(0.75), ["答辩人：孟达  |  导师：顾鹏 讲师", "天津大学建筑工程学院  |  船舶与海洋工程"], 13, COLORS["muted"], 1.45)
+    add_rect(s, Inches(0.98), Inches(5.55), Inches(10.7), Inches(0.72), COLORS["navy"], None, True)
+    add_text(s, Inches(1.18), Inches(5.74), Inches(10.25), Inches(0.28), "Q & A  ·  欢迎提问与指导", 16, COLORS["white"], True, PP_ALIGN.CENTER)
+    add_footer(s)
 
     return prs
 
