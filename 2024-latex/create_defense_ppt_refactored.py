@@ -41,6 +41,19 @@ def cm(v: float) -> int:
     return Inches(v / 2.54)
 
 
+def display_size(size: int | float) -> int | float:
+    """Slightly enlarge generated text for projector readability."""
+    if size <= 8:
+        return size + 1
+    if size <= 13:
+        return size + 2
+    if size <= 18:
+        return size + 2
+    if size <= 25:
+        return size + 2
+    return size + 3
+
+
 def add_rect(slide, x, y, w, h, color, line=None, radius=False):
     shape_type = MSO_AUTO_SHAPE_TYPE.ROUNDED_RECTANGLE if radius else MSO_AUTO_SHAPE_TYPE.RECTANGLE
     s = slide.shapes.add_shape(shape_type, x, y, w, h)
@@ -55,6 +68,7 @@ def add_rect(slide, x, y, w, h, color, line=None, radius=False):
 
 
 def add_text(slide, x, y, w, h, text, size=16, color=None, bold=False, align=PP_ALIGN.LEFT):
+    rendered_size = display_size(size)
     box = slide.shapes.add_textbox(x, y, w, h)
     box.text_frame.margin_left = Inches(0.04)
     box.text_frame.margin_right = Inches(0.04)
@@ -65,7 +79,7 @@ def add_text(slide, x, y, w, h, text, size=16, color=None, bold=False, align=PP_
     p = box.text_frame.paragraphs[0]
     p.text = text
     p.font.name = FONT
-    p.font.size = Pt(size)
+    p.font.size = Pt(rendered_size)
     p.font.bold = bold
     p.font.color.rgb = color or COLORS["ink"]
     p.alignment = align
@@ -74,6 +88,7 @@ def add_text(slide, x, y, w, h, text, size=16, color=None, bold=False, align=PP_
 
 
 def add_lines(slide, x, y, w, h, lines, size=13, color=None, spacing=1.25, bold_first=False):
+    rendered_size = display_size(size)
     box = slide.shapes.add_textbox(x, y, w, h)
     tf = box.text_frame
     tf.margin_left = Inches(0.04)
@@ -85,10 +100,10 @@ def add_lines(slide, x, y, w, h, lines, size=13, color=None, spacing=1.25, bold_
         p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
         p.text = line
         p.font.name = FONT
-        p.font.size = Pt(size)
+        p.font.size = Pt(rendered_size)
         p.font.color.rgb = color or COLORS["ink"]
         p.font.bold = bold_first and i == 0
-        p.line_spacing = Pt(size * spacing)
+        p.line_spacing = Pt(rendered_size * spacing)
         p.space_after = Pt(2)
     return box
 
@@ -122,14 +137,14 @@ def add_image(slide, path: Path, x, y, w, h, border=True):
 
 
 def metric_card(slide, x, y, label, value, note, color):
-    add_rect(slide, x, y, Inches(2.1), Inches(1.08), COLORS["white"], COLORS["line"], radius=True)
+    add_rect(slide, x, y, Inches(2.1), Inches(1.16), COLORS["white"], COLORS["line"], radius=True)
     add_text(slide, x + Inches(0.15), y + Inches(0.12), Inches(1.8), Inches(0.2), label, 9, COLORS["muted"], True)
-    add_text(slide, x + Inches(0.15), y + Inches(0.35), Inches(1.8), Inches(0.34), value, 22, color, True)
-    add_text(slide, x + Inches(0.15), y + Inches(0.78), Inches(1.8), Inches(0.2), note, 8, COLORS["muted"])
+    add_text(slide, x + Inches(0.15), y + Inches(0.35), Inches(1.8), Inches(0.38), value, 22, color, True)
+    add_text(slide, x + Inches(0.15), y + Inches(0.84), Inches(1.8), Inches(0.2), note, 8, COLORS["muted"])
 
 
 def small_table(slide, x, y, widths, rows, header_color=COLORS["navy"], size=10):
-    row_h = Inches(0.34)
+    row_h = Inches(0.39)
     for r, row in enumerate(rows):
         cx = x
         for c, txt in enumerate(row):
