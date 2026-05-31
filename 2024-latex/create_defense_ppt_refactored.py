@@ -143,6 +143,12 @@ def metric_card(slide, x, y, label, value, note, color):
     add_text(slide, x + Inches(0.15), y + Inches(0.84), Inches(1.8), Inches(0.2), note, 8, COLORS["muted"])
 
 
+def insight_box(slide, x, y, w, h, title, body, color=COLORS["navy"]):
+    add_rect(slide, x, y, w, h, COLORS["white"], COLORS["line"], True)
+    add_text(slide, x + Inches(0.18), y + Inches(0.14), w - Inches(0.36), Inches(0.24), title, 12, color, True)
+    add_text(slide, x + Inches(0.18), y + Inches(0.48), w - Inches(0.36), h - Inches(0.62), body, 10, COLORS["ink"])
+
+
 def small_table(slide, x, y, widths, rows, header_color=COLORS["navy"], size=10):
     row_h = Inches(0.39)
     for r, row in enumerate(rows):
@@ -443,9 +449,9 @@ def make_deck() -> Presentation:
         "2. 泄漏可能造成介质损失、设备损伤和环境风险",
         "3. 人工巡检难以满足连续监测与快速响应要求",
         "4. 自动检测方法需要兼顾识别准确性和定位解释性",
+        "5. 单纯报警不足以支撑抢修，距离估计能缩小排查范围",
     ], 14, COLORS["ink"], 1.45, True)
-    add_rect(s, Inches(0.95), Inches(5.75), Inches(11.1), Inches(0.62), COLORS["white"], COLORS["line"], True)
-    add_text(s, Inches(1.2), Inches(5.92), Inches(10.6), Inches(0.25), "本文选择双通道传感信号作为切入点：先判断状态，再估计泄漏距离。", 14, COLORS["navy"], True, PP_ALIGN.CENTER)
+    insight_box(s, Inches(0.95), Inches(5.55), Inches(11.1), Inches(0.92), "本文切入点", "选择双通道传感信号作为对象，不直接做复杂工况建模，而是先验证一条可复现实验链路：状态识别是否稳定、距离信息是否可被学习。", COLORS["navy"])
     add_footer(s)
 
     # 4. Signal mechanism
@@ -458,8 +464,9 @@ def make_deck() -> Presentation:
         "2. 扰动沿管壁和流体传播到左右传感器",
         "3. 不同距离带来幅值、相位、到达响应差异",
         "4. 双通道输入比单通道更适合距离估计",
+        "5. 分类依赖局部波形差异，定位更依赖左右响应关系",
     ], 14, COLORS["ink"], 1.45, True)
-    add_text(s, Inches(1.0), Inches(5.8), Inches(11.3), Inches(0.35), "核心假设：双通道原始波形中包含可学习的泄漏状态与距离信息。", 15, COLORS["navy"], True, PP_ALIGN.CENTER)
+    insight_box(s, Inches(1.0), Inches(5.65), Inches(11.25), Inches(0.82), "核心假设", "双通道原始波形中同时包含两类信息：一类用于判断是否泄漏及泄漏形态，另一类用于通过左右通道差异估计泄漏点相对距离。", COLORS["teal"])
     add_footer(s)
 
     # 5. Data acquisition
@@ -470,8 +477,12 @@ def make_deck() -> Presentation:
     metric_card(s, Inches(9.85), Inches(1.55), "窗口长度", "5 s", "128,000 点/通道", COLORS["teal"])
     add_lines(s, Inches(7.45), Inches(3.15), Inches(4.55), Inches(2.2), [
         "处理流程",
-        "原始 CSV 文件经过固定窗口切分、逐段标准化，再分别生成分类样本和双通道回归样本。"
+        "1. 原始 CSV 保存左右通道长时序信号",
+        "2. 以 5 s 固定窗口生成训练片段",
+        "3. 对每段信号独立标准化，减少量纲影响",
+        "4. 分类样本和回归样本分开组织，避免标签混用",
     ], 14, COLORS["ink"], 1.4, True)
+    insight_box(s, Inches(7.45), Inches(5.45), Inches(4.55), Inches(0.78), "数据处理原则", "保留原始波形特征，同时把每个训练样本统一到可比较的长度和尺度。", COLORS["blue"])
     add_footer(s)
 
     # 6. Dataset design
@@ -487,6 +498,9 @@ def make_deck() -> Presentation:
         "关键约束",
         "同一原始文件的全部片段只属于一个数据子集，避免相邻片段同时出现在训练集和测试集。"
     ], 13, COLORS["ink"], 1.35, True)
+    add_lines(s, Inches(7.1), Inches(5.0), Inches(4.8), Inches(0.82), [
+        "因此，文件级结果比随机片段划分更能反映模型遇到新采集文件时的真实表现。"
+    ], 12, COLORS["navy"], 1.25)
     add_footer(s)
 
     # 7. Two-stage task
@@ -499,6 +513,7 @@ def make_deck() -> Presentation:
         ["Stage1", "左右通道配对", "距离 m", "MAE / RMSE"],
     ], size=9)
     add_text(s, Inches(7.25), Inches(4.0), Inches(4.65), Inches(0.65), "设计理由：正常样本没有距离标签，先分类再回归能避免标签语义混杂。", 14, COLORS["navy"], True)
+    insight_box(s, Inches(7.1), Inches(4.9), Inches(4.75), Inches(1.08), "任务边界", "Stage2 负责回答“属于哪种状态”，Stage1 只在泄漏样本上回答“离参考点多远”。这样的拆分更符合物理语义，也便于分别诊断错误来源。", COLORS["teal"])
     add_footer(s)
 
     # 8. CNN
@@ -511,7 +526,9 @@ def make_deck() -> Presentation:
         "2. 卷积层负责提取局部冲击、持续能量和多尺度模式",
         "3. 全局平均池化降低参数量，减少过拟合风险",
         "4. 分类头与回归头复用同一主干，输出目标不同",
+        "5. 对本课题而言，CNN 是可解释、稳定且训练成本较低的强基线",
     ], 13, COLORS["ink"], 1.42, True)
+    insight_box(s, Inches(6.75), Inches(5.2), Inches(5.35), Inches(0.82), "为什么不用复杂模型起步", "先用 1D CNN 建立性能基准，可以判断原始波形本身是否足以支撑识别和定位。", COLORS["blue"])
     add_footer(s)
 
     # 9. Conformer
@@ -520,7 +537,10 @@ def make_deck() -> Presentation:
     add_image(s, ROOT / "conformer 编码块内部结构.png", Inches(0.75), Inches(1.45), Inches(5.9), Inches(3.2))
     add_lines(s, Inches(7.05), Inches(1.55), Inches(4.95), Inches(3.05), [
         "对比目的",
-        "Conformer 在降采样后的特征序列上引入注意力，可增强全局上下文；但其收益需要通过分类与回归分别验证。"
+        "1. CNN 更擅长局部波形模式提取",
+        "2. Conformer 引入自注意力，补足长程依赖",
+        "3. 分类和回归对结构的收益不一定一致",
+        "4. 因此本文把 Conformer 作为结构对比，而不是默认最优模型",
     ], 14, COLORS["ink"], 1.4, True)
     small_table(s, Inches(1.05), Inches(5.15), [1.5, 2.1, 2.1, 2.1], [
         ["模型", "优势", "潜在问题", "适用判断"],
@@ -540,6 +560,7 @@ def make_deck() -> Presentation:
         "3. 按距离档位：避免平均值掩盖局部困难",
         "4. 物理误差：MAE、RMSE、Bias、P95、容差命中率",
     ], 13, COLORS["ink"], 1.42, True)
+    insight_box(s, Inches(7.1), Inches(5.15), Inches(4.95), Inches(0.86), "评价逻辑", "分类用准确率和 Macro-F1 防止类别不均衡掩盖问题；定位用 MAE、RMSE 和 P95 同时观察平均误差与尾部风险。", COLORS["navy"])
     add_footer(s)
 
     # 11. Stage2 metrics
@@ -557,7 +578,10 @@ def make_deck() -> Presentation:
     ], size=9)
     add_lines(s, Inches(8.85), Inches(1.62), Inches(3.2), Inches(3.2), [
         "结果解读",
-        "分类任务的类别边界较清晰；传统特征方法在文件级也很强，说明数据中存在明显判别信息。"
+        "1. 分类任务的类别边界较清晰",
+        "2. 文件级聚合能显著降低偶然片段误判",
+        "3. 传统特征方法在文件级也很强，说明数据中存在明显判别信息",
+        "4. Conformer 片段级最高，证明长程上下文对分类有帮助",
     ], 13, COLORS["ink"], 1.35, True)
     add_footer(s)
 
@@ -566,7 +590,10 @@ def make_deck() -> Presentation:
     add_title(s, "Stage2 混淆矩阵：片段级仍有局部混淆，文件级明显收敛", "CONFUSION MATRIX", 12)
     add_image(s, HERE / "figures/experiments/stage2_segment_confusion_matrix.png", Inches(0.75), Inches(1.45), Inches(5.25), Inches(4.25))
     add_image(s, HERE / "figures/experiments/stage2_file_confusion_matrix.png", Inches(6.5), Inches(1.45), Inches(5.25), Inches(4.25))
-    add_text(s, Inches(1.0), Inches(6.05), Inches(10.75), Inches(0.35), "片段级误判主要集中在相近泄漏形态；文件级聚合后仅出现 1 个文件误判。", 14, COLORS["navy"], True, PP_ALIGN.CENTER)
+    add_lines(s, Inches(1.0), Inches(5.95), Inches(10.75), Inches(0.76), [
+        "读图结论：片段级误判主要集中在相近泄漏形态，说明单个窗口仍可能受噪声和局部波动影响。",
+        "文件级聚合后仅出现 1 个文件误判，表明连续采集条件下分类结果更稳定。"
+    ], 12, COLORS["navy"], 1.18)
     add_footer(s)
 
     # 13. Stage2 training curves
@@ -574,9 +601,10 @@ def make_deck() -> Presentation:
     add_title(s, "Stage2 训练过程：分类指标随训练收敛并保持稳定", "TRAINING CURVES", 13)
     add_image(s, HERE / "figures/experiments/stage2_curves/accuracy_curves.png", Inches(0.75), Inches(1.45), Inches(5.5), Inches(3.45))
     add_image(s, HERE / "figures/experiments/stage2_curves/f1_curves.png", Inches(6.75), Inches(1.45), Inches(5.5), Inches(3.45))
-    add_lines(s, Inches(1.0), Inches(5.45), Inches(10.9), Inches(0.65), [
-        "曲线用于说明：模型不是偶然在测试集上得到高分，而是在训练过程中形成了稳定的验证集表现。"
-    ], 13, COLORS["ink"], 1.2)
+    add_lines(s, Inches(1.0), Inches(5.25), Inches(10.9), Inches(1.05), [
+        "曲线说明：模型不是偶然在测试集上得到高分，而是在训练过程中形成了稳定的验证集表现。",
+        "Accuracy 与 Macro-F1 同步提升，说明模型并非只偏向多数类；验证曲线后期保持平稳，过拟合风险相对可控。"
+    ], 12, COLORS["ink"], 1.22)
     add_footer(s)
 
     # 14. Stage1 regression
@@ -588,8 +616,12 @@ def make_deck() -> Presentation:
     add_image(s, HERE / "figures/experiments/stage1_segment_pred_vs_target.png", Inches(0.85), Inches(3.0), Inches(4.8), Inches(3.2))
     add_lines(s, Inches(6.25), Inches(3.1), Inches(5.6), Inches(2.65), [
         "结论",
-        "模型已经学到距离趋势，但预测仍存在向中间收缩的现象；这说明定位任务比状态分类更依赖数据覆盖和物理约束。"
+        "1. 模型已经学到距离变化趋势",
+        "2. 预测仍存在向中间距离收缩的现象",
+        "3. 文件级平均没有显著优于片段级，说明回归误差中存在系统偏差",
+        "4. 定位任务比状态分类更依赖数据覆盖和物理约束",
     ], 14, COLORS["ink"], 1.4, True)
+    insight_box(s, Inches(6.25), Inches(5.55), Inches(5.6), Inches(0.72), "答辩表达", "分类解决“能不能发现问题”，回归进一步回答“问题大致在哪里”，两者难度不同。", COLORS["teal"])
     add_footer(s)
 
     # 15. Stage1 error
@@ -603,7 +635,10 @@ def make_deck() -> Presentation:
     ], size=7)
     add_lines(s, Inches(7.25), Inches(3.35), Inches(4.75), Inches(1.85), [
         "解读",
-        "-1 m 样本数少且误差最大；0 m 和 +6 m 档位较稳定。后续需要补充不均衡档位数据。"
+        "1. -1 m 样本数少且误差最大",
+        "2. 0 m 和 +6 m 档位较稳定",
+        "3. 边界和少样本档位更容易被预测到中间区域",
+        "4. 后续需要补充不均衡档位数据并加入距离约束",
     ], 13, COLORS["ink"], 1.35, True)
     add_footer(s)
 
@@ -624,7 +659,10 @@ def make_deck() -> Presentation:
     ], header_color=COLORS["teal"], size=10)
     add_lines(s, Inches(7.25), Inches(3.35), Inches(4.7), Inches(1.75), [
         "答辩重点",
-        "深度模型并非在所有任务上最优。本文更重要的贡献是建立可信数据流程、任务拆分和评测框架。"
+        "1. 深度模型并非在所有任务上最优",
+        "2. SVM 回归更强，说明当前数据规模下传统特征仍有效",
+        "3. 单通道误差明显变差，证明定位依赖左右通道差异",
+        "4. 本文更重要的贡献是建立可信数据流程、任务拆分和评测框架",
     ], 13, COLORS["ink"], 1.35, True)
     add_footer(s)
 
@@ -637,6 +675,7 @@ def make_deck() -> Presentation:
         "2. 采用文件级划分，提升评测可信度",
         "3. 建立 Stage2 分类 + Stage1 回归的两阶段框架",
         "4. 对比 CNN、Conformer、传统基线和通道消融",
+        "5. 用片段级、文件级和距离档位共同解释模型表现",
     ], 14, COLORS["ink"], 1.45, True)
     add_lines(s, Inches(7.0), Inches(1.55), Inches(5.0), Inches(4.2), [
         "当前局限",
@@ -644,6 +683,7 @@ def make_deck() -> Presentation:
         "2. Stage1 回归 P95 误差仍较大",
         "3. 文件级回归聚合策略较简单",
         "4. 跨工况泛化和在线部署尚未验证",
+        "5. 物理传播规律尚未显式约束模型输出",
     ], 14, COLORS["ink"], 1.45, True)
     add_footer(s)
 
@@ -676,16 +716,17 @@ def make_deck() -> Presentation:
         "3. 当前模型主要从数据中学习映射，物理传播约束尚未显式加入",
         "4. 跨压力、流量、管径等工况泛化仍需要验证",
     ], 13, COLORS["ink"], 1.4, True)
+    insight_box(s, Inches(7.05), Inches(5.18), Inches(4.95), Inches(0.88), "对结果的态度", "Stage1 的价值在于证明“距离可学习”，不是宣称已经达到工程定位精度。后续优化方向也因此更明确。", COLORS["red"])
     add_footer(s)
 
     # 20. Future work
     s = prs.slides.add_slide(blank)
     add_title(s, "后续工作：从数据、模型和工程部署三个方向推进", "FUTURE WORK", 20)
     for i, (title, body, color) in enumerate([
-        ("数据扩充", "补充少样本距离档位，覆盖更多压力、流量、管径和泄漏强度。", COLORS["blue"]),
-        ("模型改进", "引入时频融合、距离感知损失和不确定性估计，减少边界档位偏差。", COLORS["teal"]),
-        ("决策策略", "改进文件级聚合方式，结合置信度、异常持续时间和报警阈值。", COLORS["amber"]),
-        ("工程验证", "开展跨批次、跨工况测试，评估传感器漂移和在线部署稳定性。", COLORS["red"]),
+        ("数据扩充", "补充少样本距离档位，覆盖更多压力、流量、管径和泄漏强度，并保持文件级独立划分。", COLORS["blue"]),
+        ("模型改进", "引入时频融合、距离感知损失和不确定性估计，减少边界档位偏差与中间收缩。", COLORS["teal"]),
+        ("决策策略", "改进文件级聚合方式，结合置信度、异常持续时间和报警阈值形成更稳健的报警逻辑。", COLORS["amber"]),
+        ("工程验证", "开展跨批次、跨工况测试，评估传感器漂移、噪声变化和在线部署稳定性。", COLORS["red"]),
     ]):
         x = Inches(0.9 + (i % 2) * 5.75)
         y = Inches(1.65 + (i // 2) * 2.05)
@@ -701,6 +742,7 @@ def make_deck() -> Presentation:
         "本文完成了从原始双通道 CSV 信号到泄漏识别与距离估计的完整流程验证。",
         "Stage2 分类结果表明，泄漏状态识别已经具备较高稳定性；Stage1 回归结果表明，双通道时序信号中确实存在可学习的距离信息。",
         "同时，回归任务的基线对比和误差分析说明，定位精度仍受样本规模、距离档位分布和物理约束不足影响，是后续工作的核心方向。",
+        "因此，本文的结论可以概括为：分类链路已经比较成熟，定位链路已经验证可行，工程化还需要进一步提升鲁棒性。",
     ], 18, COLORS["ink"], 1.45)
     add_rect(s, Inches(1.15), Inches(5.45), Inches(10.65), Inches(0.72), COLORS["navy"], None, True)
     add_text(s, Inches(1.35), Inches(5.65), Inches(10.25), Inches(0.26), "一句话概括：分类已经稳定，定位已经可学，工程化还需要更充分的数据和更强的物理约束。", 14, COLORS["white"], True, PP_ALIGN.CENTER)
