@@ -1,6 +1,6 @@
-# Experiment Tables
+# Experiment Tables (参考用 — 与正文 body.tex 中表格数据一致)
 
-This file collects the current paper-ready experiment tables.
+本文件收集论文正文中已使用的实验表格 LaTeX 源码，作为参考和备份。表格均已在 include/body.tex 中插入。
 
 ## 1. Dataset Statistics
 
