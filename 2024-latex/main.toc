@@ -24,36 +24,39 @@
 \contentsline {section}{\numberline {2.6}标签映射与任务拆分}{21}{section*.48}%
 \contentsline {section}{\numberline {2.7}分段策略与样本生成}{22}{section*.51}%
 \contentsline {section}{\numberline {2.8}数据集统计}{23}{section*.52}%
-\contentsline {section}{\numberline {2.9}本章小结}{24}{section*.55}%
-\contentsline {chapter}{\numberline {第三章\hspace {.3em}}两阶段泄漏检测模型设计}{25}{section*.56}%
-\contentsline {section}{\numberline {3.1}总体框架}{25}{section*.57}%
-\contentsline {section}{\numberline {3.2}输入表示与归一化}{26}{section*.60}%
-\contentsline {section}{\numberline {3.3}一维卷积特征提取网络}{27}{section*.61}%
-\contentsline {section}{\numberline {3.4}Conformer 时序建模结构}{29}{section*.66}%
-\contentsline {section}{\numberline {3.5}分类头与回归头设计}{33}{section*.71}%
-\contentsline {subsection}{\numberline {3.5.1}Stage2 分类模型}{33}{section*.72}%
-\contentsline {subsection}{\numberline {3.5.2}Stage1 回归模型}{33}{section*.75}%
-\contentsline {section}{\numberline {3.6}训练策略}{37}{section*.82}%
-\contentsline {section}{\numberline {3.7}正则化与过拟合抑制策略}{38}{section*.85}%
-\contentsline {section}{\numberline {3.8}本章小结}{41}{section*.88}%
-\contentsline {chapter}{\numberline {第四章\hspace {.3em}}实验设计与结果分析}{42}{section*.89}%
-\contentsline {section}{\numberline {4.1}实验环境与配置}{42}{section*.90}%
-\contentsline {section}{\numberline {4.2}评价指标}{43}{section*.93}%
-\contentsline {subsection}{\numberline {4.2.1}分类任务指标}{43}{section*.94}%
-\contentsline {subsection}{\numberline {4.2.2}回归任务指标}{44}{section*.95}%
-\contentsline {section}{\numberline {4.3}实验结果}{45}{section*.96}%
-\contentsline {subsection}{\numberline {4.3.1}Stage2 分类结果}{45}{section*.97}%
-\contentsline {subsection}{\numberline {4.3.2}Stage1 距离回归结果}{47}{section*.106}%
-\contentsline {section}{\numberline {4.4}结果分析}{51}{section*.127}%
-\contentsline {subsection}{\numberline {4.4.1}Stage2 分类结果分析}{51}{section*.128}%
-\contentsline {subsection}{\numberline {4.4.2}Stage1 回归结果分析}{52}{section*.129}%
-\contentsline {subsection}{\numberline {4.4.3}对比实验与消融实验分析}{53}{section*.130}%
-\contentsline {subsection}{\numberline {4.4.4}训练过程分析}{56}{section*.133}%
-\contentsline {section}{\numberline {4.5}实验局限性分析}{56}{section*.134}%
-\contentsline {section}{\numberline {4.6}本章小结}{58}{section*.135}%
-\contentsline {chapter}{\numberline {第五章\hspace {.3em}}结论与展望}{59}{section*.136}%
-\contentsline {section}{\numberline {5.1}全文总结}{59}{section*.137}%
-\contentsline {section}{\numberline {5.2}后续工作展望}{60}{section*.138}%
-\contentsline {chapter}{参考文献}{67}{section*.141}%
-\contentsline {chapter}{致\hspace {1em} 谢}{68}{section*.142}%
+\contentsline {section}{\numberline {2.9}原始数据分布与实验参数选择}{24}{section*.55}%
+\contentsline {subsection}{\numberline {2.9.1}类别与距离档位分布}{24}{section*.56}%
+\contentsline {subsection}{\numberline {2.9.2}关键参数选择依据}{25}{section*.61}%
+\contentsline {section}{\numberline {2.10}本章小结}{27}{section*.62}%
+\contentsline {chapter}{\numberline {第三章\hspace {.3em}}两阶段泄漏检测模型设计}{28}{section*.63}%
+\contentsline {section}{\numberline {3.1}总体框架}{28}{section*.64}%
+\contentsline {section}{\numberline {3.2}输入表示与归一化}{29}{section*.67}%
+\contentsline {section}{\numberline {3.3}一维卷积特征提取网络}{30}{section*.68}%
+\contentsline {section}{\numberline {3.4}Conformer 时序建模结构}{32}{section*.73}%
+\contentsline {section}{\numberline {3.5}分类头与回归头设计}{36}{section*.78}%
+\contentsline {subsection}{\numberline {3.5.1}Stage2 分类模型}{36}{section*.79}%
+\contentsline {subsection}{\numberline {3.5.2}Stage1 回归模型}{36}{section*.82}%
+\contentsline {section}{\numberline {3.6}训练策略}{40}{section*.89}%
+\contentsline {section}{\numberline {3.7}正则化与过拟合抑制策略}{41}{section*.92}%
+\contentsline {section}{\numberline {3.8}本章小结}{44}{section*.95}%
+\contentsline {chapter}{\numberline {第四章\hspace {.3em}}实验设计与结果分析}{45}{section*.96}%
+\contentsline {section}{\numberline {4.1}实验环境与配置}{45}{section*.97}%
+\contentsline {section}{\numberline {4.2}评价指标}{46}{section*.100}%
+\contentsline {subsection}{\numberline {4.2.1}分类任务指标}{46}{section*.101}%
+\contentsline {subsection}{\numberline {4.2.2}回归任务指标}{47}{section*.102}%
+\contentsline {section}{\numberline {4.3}实验结果}{48}{section*.103}%
+\contentsline {subsection}{\numberline {4.3.1}Stage2 分类结果}{48}{section*.104}%
+\contentsline {subsection}{\numberline {4.3.2}Stage1 距离回归结果}{50}{section*.113}%
+\contentsline {section}{\numberline {4.4}结果分析}{54}{section*.134}%
+\contentsline {subsection}{\numberline {4.4.1}Stage2 分类结果分析}{54}{section*.135}%
+\contentsline {subsection}{\numberline {4.4.2}Stage1 回归结果分析}{55}{section*.136}%
+\contentsline {subsection}{\numberline {4.4.3}对比实验与消融实验分析}{56}{section*.137}%
+\contentsline {subsection}{\numberline {4.4.4}训练过程分析}{58}{section*.140}%
+\contentsline {section}{\numberline {4.5}实验局限性分析}{59}{section*.141}%
+\contentsline {section}{\numberline {4.6}本章小结}{61}{section*.142}%
+\contentsline {chapter}{\numberline {第五章\hspace {.3em}}结论与展望}{62}{section*.143}%
+\contentsline {section}{\numberline {5.1}全文总结}{62}{section*.144}%
+\contentsline {section}{\numberline {5.2}后续工作展望}{63}{section*.145}%
+\contentsline {chapter}{参考文献}{70}{section*.148}%
+\contentsline {chapter}{致\hspace {1em} 谢}{71}{section*.149}%
 \contentsfinish 
