@@ -182,6 +182,53 @@ Conformer 正是在这一背景下形成的卷积-注意力混合结构。它一
   \label{fig:experiment_platform_acquisition}
 \end{figure}
 
+\section{实验平台与硬件配置}
+
+本文数据采集依托实验室搭建的闭环供水管道实验平台完成。该平台采用总长度约 60 m 的循环镀锌钢管，管道外径为 76 mm、内径为 65 mm。实验过程中，系统水压在 0.15--0.30 MPa 范围内进行不规则调节，以使采集信号包含一定的运行压力波动。平台整体布置、管路拓扑、传感器安装位置及主要采集设备如图\ref{fig:experiment_platform_real}所示\cite{zhou2026tspc}。
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.94\textwidth]{figures/experiment_platform_real.png}
+  \caption{闭环管道实验平台与主要数据采集设备}
+  \label{fig:experiment_platform_real}
+\end{figure}
+
+为获取泄漏点两侧的同步响应，实验平台在待测管段两侧布置压电声学传感器，分别形成左、右两个采集通道。传感器将管壁振动与泄漏声学响应转换为电信号，并通过高精度数据采集卡同步记录。实验采用 WTSV112E 压电声学传感器和 NI USB-4431 数据采集卡，采样率设置为 25600 Hz，使用 Signalpad 软件进行连续采集。平台主要参数汇总如表\ref{tab:experiment_platform_params}所示。
+
+\begin{table}[!htbp]
+  \centering
+  \caption{实验平台与数据采集主要参数}
+  \label{tab:experiment_platform_params}
+  \vspace{0.5em}
+  \wuhao
+  \begin{tabular}{ll}
+    \toprule
+    参数项 & 配置或取值 \\
+    \midrule
+    管道结构 & 闭环循环镀锌钢管 \\
+    管道总长度 & 约 60 m \\
+    管道外径 / 内径 & 76 mm / 65 mm \\
+    实验水压范围 & 0.15--0.30 MPa \\
+    声学传感器 & WTSV112E 压电声学传感器 \\
+    数据采集卡 & NI USB-4431 \\
+    采样率 & 25600 Hz \\
+    采集软件 & Signalpad \\
+    采集方式 & 左右双通道同步连续采集 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+实验平台中部设置了法兰连接位置，可根据采集任务更换不同状态的试验管段。图\ref{fig:leak_replacement_modules_real}展示了实验中使用的部分可替换管段实物。通过更换完整管段或具有不同人工缺陷形态的管段，可以在保持管道主体结构和采集设备基本不变的情况下获得不同状态的声学响应。该设计使泄漏形态成为可控实验变量，并为后续状态分类提供了物理样本基础。
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.58\textwidth]{figures/leak_replacement_modules_real.png}
+  \caption{可替换式试验管段实物}
+  \label{fig:leak_replacement_modules_real}
+\end{figure}
+
+需要说明的是，该实验平台主要用于在受控环境下验证双通道泄漏识别与定位方法，并未按照实际城市供水管网建立严格的几何缩尺模型。实验平台与实际管网之间的对应关系主要体现在泄漏扰动产生、管内与管壁传播以及双通道同步采集等物理过程上。因此，本文实验结果用于说明当前条件下方法的可行性；若进一步面向工程应用，还需要结合管径比、泄漏孔径比、压力范围、传感器间距和埋设环境开展更严格的等效分析与跨工况验证。
+
 \section{管道泄漏探测基本原理}
 
 管道泄漏检测的核心目标是从传感器采集到的压力、振动或声学响应中识别异常状态，并进一步推断泄漏位置。管道处于正常运行状态时，内部流体流动与外部结构响应通常保持相对稳定；当管壁出现孔洞、裂纹或连接处密封失效时，流体会在压差作用下从破损位置喷出，局部流场发生突变，并激发与泄漏有关的瞬态波动和持续扰动。这些扰动沿管壁和流体介质传播，被布置在不同位置的传感器接收后形成可观测的时序信号。

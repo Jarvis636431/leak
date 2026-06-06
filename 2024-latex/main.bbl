@@ -182,6 +182,12 @@ Gulati~A, Qin~J, Chiu~C-C, et~al.
 Conformer: Convolution-augmented transformer for speech recognition~[C].
 In Proceedings of Interspeech, 2020:  5036--5040.
 
+\bibitem{zhou2026tspc}
+Zhou~Z, Gu~S, Kong~Y, et~al.
+A Two-Stage Deep Learning Framework for Urban Water Pipeline Leak Localization
+  and Multi-Class Diagnosis~[C].
+In Proceedings of INTER-NOISE 2026, 2026.
+
 \bibitem{paszke2019pytorch}
 Paszke~A, Gross~S, Massa~F, et~al.
 PyTorch: An imperative style, high-performance deep learning library~[C].

@@ -16,47 +16,48 @@
 \contentsline {section}{\numberline {1.4}论文结构安排}{12}{section*.24}%
 \contentsline {section}{\numberline {1.5}本章小结}{12}{section*.25}%
 \contentsline {chapter}{\numberline {第二章\hspace {.3em}}管道泄漏探测原理与数据集构建}{13}{section*.26}%
-\contentsline {section}{\numberline {2.1}管道泄漏探测基本原理}{13}{section*.29}%
-\contentsline {section}{\numberline {2.2}泄漏声信号形成机制}{14}{section*.32}%
-\contentsline {section}{\numberline {2.3}数据特征分析与建模需求}{16}{section*.35}%
-\contentsline {section}{\numberline {2.4}原始数据组织方式}{17}{section*.40}%
-\contentsline {section}{\numberline {2.5}长时序信号建模难点}{19}{section*.47}%
-\contentsline {section}{\numberline {2.6}标签映射与任务拆分}{21}{section*.48}%
-\contentsline {section}{\numberline {2.7}分段策略与样本生成}{22}{section*.51}%
-\contentsline {section}{\numberline {2.8}数据集统计}{23}{section*.52}%
-\contentsline {section}{\numberline {2.9}原始数据分布与实验参数选择}{24}{section*.55}%
-\contentsline {subsection}{\numberline {2.9.1}类别与距离档位分布}{24}{section*.56}%
-\contentsline {subsection}{\numberline {2.9.2}关键参数选择依据}{25}{section*.61}%
-\contentsline {section}{\numberline {2.10}本章小结}{27}{section*.62}%
-\contentsline {chapter}{\numberline {第三章\hspace {.3em}}两阶段泄漏检测模型设计}{28}{section*.63}%
-\contentsline {section}{\numberline {3.1}总体框架}{28}{section*.64}%
-\contentsline {section}{\numberline {3.2}输入表示与归一化}{29}{section*.67}%
-\contentsline {section}{\numberline {3.3}一维卷积特征提取网络}{30}{section*.68}%
-\contentsline {section}{\numberline {3.4}Conformer 时序建模结构}{32}{section*.73}%
-\contentsline {section}{\numberline {3.5}分类头与回归头设计}{36}{section*.78}%
-\contentsline {subsection}{\numberline {3.5.1}Stage2 分类模型}{36}{section*.79}%
-\contentsline {subsection}{\numberline {3.5.2}Stage1 回归模型}{36}{section*.82}%
-\contentsline {section}{\numberline {3.6}训练策略}{40}{section*.89}%
-\contentsline {section}{\numberline {3.7}正则化与过拟合抑制策略}{41}{section*.92}%
-\contentsline {section}{\numberline {3.8}本章小结}{44}{section*.95}%
-\contentsline {chapter}{\numberline {第四章\hspace {.3em}}实验设计与结果分析}{45}{section*.96}%
-\contentsline {section}{\numberline {4.1}实验环境与配置}{45}{section*.97}%
-\contentsline {section}{\numberline {4.2}评价指标}{46}{section*.100}%
-\contentsline {subsection}{\numberline {4.2.1}分类任务指标}{46}{section*.101}%
-\contentsline {subsection}{\numberline {4.2.2}回归任务指标}{47}{section*.102}%
-\contentsline {section}{\numberline {4.3}实验结果}{48}{section*.103}%
-\contentsline {subsection}{\numberline {4.3.1}Stage2 分类结果}{48}{section*.104}%
-\contentsline {subsection}{\numberline {4.3.2}Stage1 距离回归结果}{50}{section*.113}%
-\contentsline {section}{\numberline {4.4}结果分析}{54}{section*.134}%
-\contentsline {subsection}{\numberline {4.4.1}Stage2 分类结果分析}{54}{section*.135}%
-\contentsline {subsection}{\numberline {4.4.2}Stage1 回归结果分析}{55}{section*.136}%
-\contentsline {subsection}{\numberline {4.4.3}对比实验与消融实验分析}{56}{section*.137}%
-\contentsline {subsection}{\numberline {4.4.4}训练过程分析}{58}{section*.140}%
-\contentsline {section}{\numberline {4.5}实验局限性分析}{59}{section*.141}%
-\contentsline {section}{\numberline {4.6}本章小结}{61}{section*.142}%
-\contentsline {chapter}{\numberline {第五章\hspace {.3em}}结论与展望}{62}{section*.143}%
-\contentsline {section}{\numberline {5.1}全文总结}{62}{section*.144}%
-\contentsline {section}{\numberline {5.2}后续工作展望}{63}{section*.145}%
-\contentsline {chapter}{参考文献}{70}{section*.148}%
-\contentsline {chapter}{致\hspace {1em} 谢}{71}{section*.149}%
+\contentsline {section}{\numberline {2.1}实验平台与硬件配置}{13}{section*.29}%
+\contentsline {section}{\numberline {2.2}管道泄漏探测基本原理}{15}{section*.36}%
+\contentsline {section}{\numberline {2.3}泄漏声信号形成机制}{16}{section*.39}%
+\contentsline {section}{\numberline {2.4}数据特征分析与建模需求}{18}{section*.42}%
+\contentsline {section}{\numberline {2.5}原始数据组织方式}{19}{section*.47}%
+\contentsline {section}{\numberline {2.6}长时序信号建模难点}{21}{section*.54}%
+\contentsline {section}{\numberline {2.7}标签映射与任务拆分}{23}{section*.55}%
+\contentsline {section}{\numberline {2.8}分段策略与样本生成}{24}{section*.58}%
+\contentsline {section}{\numberline {2.9}数据集统计}{25}{section*.59}%
+\contentsline {section}{\numberline {2.10}原始数据分布与实验参数选择}{26}{section*.62}%
+\contentsline {subsection}{\numberline {2.10.1}类别与距离档位分布}{26}{section*.63}%
+\contentsline {subsection}{\numberline {2.10.2}关键参数选择依据}{27}{section*.68}%
+\contentsline {section}{\numberline {2.11}本章小结}{29}{section*.69}%
+\contentsline {chapter}{\numberline {第三章\hspace {.3em}}两阶段泄漏检测模型设计}{30}{section*.70}%
+\contentsline {section}{\numberline {3.1}总体框架}{30}{section*.71}%
+\contentsline {section}{\numberline {3.2}输入表示与归一化}{31}{section*.74}%
+\contentsline {section}{\numberline {3.3}一维卷积特征提取网络}{32}{section*.75}%
+\contentsline {section}{\numberline {3.4}Conformer 时序建模结构}{34}{section*.80}%
+\contentsline {section}{\numberline {3.5}分类头与回归头设计}{38}{section*.85}%
+\contentsline {subsection}{\numberline {3.5.1}Stage2 分类模型}{38}{section*.86}%
+\contentsline {subsection}{\numberline {3.5.2}Stage1 回归模型}{38}{section*.89}%
+\contentsline {section}{\numberline {3.6}训练策略}{42}{section*.96}%
+\contentsline {section}{\numberline {3.7}正则化与过拟合抑制策略}{43}{section*.99}%
+\contentsline {section}{\numberline {3.8}本章小结}{46}{section*.102}%
+\contentsline {chapter}{\numberline {第四章\hspace {.3em}}实验设计与结果分析}{47}{section*.103}%
+\contentsline {section}{\numberline {4.1}实验环境与配置}{47}{section*.104}%
+\contentsline {section}{\numberline {4.2}评价指标}{48}{section*.107}%
+\contentsline {subsection}{\numberline {4.2.1}分类任务指标}{48}{section*.108}%
+\contentsline {subsection}{\numberline {4.2.2}回归任务指标}{49}{section*.109}%
+\contentsline {section}{\numberline {4.3}实验结果}{50}{section*.110}%
+\contentsline {subsection}{\numberline {4.3.1}Stage2 分类结果}{50}{section*.111}%
+\contentsline {subsection}{\numberline {4.3.2}Stage1 距离回归结果}{52}{section*.120}%
+\contentsline {section}{\numberline {4.4}结果分析}{56}{section*.141}%
+\contentsline {subsection}{\numberline {4.4.1}Stage2 分类结果分析}{56}{section*.142}%
+\contentsline {subsection}{\numberline {4.4.2}Stage1 回归结果分析}{57}{section*.143}%
+\contentsline {subsection}{\numberline {4.4.3}对比实验与消融实验分析}{58}{section*.144}%
+\contentsline {subsection}{\numberline {4.4.4}训练过程分析}{60}{section*.147}%
+\contentsline {section}{\numberline {4.5}实验局限性分析}{61}{section*.148}%
+\contentsline {section}{\numberline {4.6}本章小结}{63}{section*.149}%
+\contentsline {chapter}{\numberline {第五章\hspace {.3em}}结论与展望}{64}{section*.150}%
+\contentsline {section}{\numberline {5.1}全文总结}{64}{section*.151}%
+\contentsline {section}{\numberline {5.2}后续工作展望}{65}{section*.152}%
+\contentsline {chapter}{参考文献}{72}{section*.155}%
+\contentsline {chapter}{致\hspace {1em} 谢}{73}{section*.156}%
 \contentsfinish 
